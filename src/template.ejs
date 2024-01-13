@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NPM Audit Report</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f4f4f4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: start;
+      padding: 3rem;
+    }
+
+    h1 {
+      color: #333;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .info-block {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      padding: 20px;
+      margin: 10px 10px;
+      min-width: 200px;
+      max-width: 300px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .info-categories {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+    }
+
+    .vulnerability-category {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      margin: 10px;
+      padding: 10px;
+      min-width: 100px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .vulnerability-category strong, .info-block strong {
+      margin-top: 7px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 20px;
+      border-radius: 5px;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .critical {
+      background-color: #dc3545;
+    }
+
+    .high {
+      background-color: #ff7b00;
+    }
+
+    .moderate {
+      background-color: #ffc107;
+    }
+
+    .low {
+      background-color: #28a745;
+    }
+
+    .informative {
+      background-color: #17a2b8;
+    }
+
+    table {
+      width: 100%;
+      max-width: 1200px;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th,
+    td {
+      border: 1px solid #ddd;
+      padding: 6px 10px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+      position: relative;
+      cursor: pointer;
+    }
+
+    a {
+      color: #007bff;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .sort-icon {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #acacac;
+      font-weight: normal;
+      font-size: 12px;
+    }
+
+    .sort-icon.asc {
+      font-weight: bold;
+      color: #000;
+    }
+
+    .sort-icon.desc {
+      font-weight: bold;
+      color: #000;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>NPM Audit Report</h1>
+
+  <div class="info-categories">
+    <div class="info-block">
+      <p>Vulnerabilities Found:</p> <strong><%= vulnsFound %></strong>
+    </div>
+    <div class="info-block">
+      <p>Total Dependencies:</p> <strong><%= totalDependencies %></strong>
+    </div>
+    <div class="info-block">
+      <p>Last Updated:</p> <strong><%= currentDate %></strong>
+    </div>
+  </div>
+
+  <div class="info-categories">
+    <div class="vulnerability-category"><p>Critical:</p> <strong class="badge critical"><%= criticalVulns %></strong></div>
+    <div class="vulnerability-category"><p>High:</p> <strong class="badge high"><%= highVulns %></strong></div>
+    <div class="vulnerability-category"><p>Moderate:</p> <strong class="badge moderate"><%= moderateVulns %></strong></div>
+    <div class="vulnerability-category"><p>Low:</p> <strong class="badge low"><%= lowVulns %></strong></div>
+    <div class="vulnerability-category"><p>Informative:</p> <strong class="badge informative"><%= infoVulns %></strong></div>
+  </div>
+
+  <table id="sortable-table">
+    <thead>
+      <tr>
+        <th onclick="sortTable(0, this)">Title<span class="sort-icon">▼</span></th>
+        <th onclick="sortTable(1, this)">Package Name<span class="sort-icon">▼</span></th>
+        <th onclick="sortTable(2, this)">Severity<span class="sort-icon desc">▲</span></th>
+        <th onclick="sortTable(3, this)">Related CVEs<span class="sort-icon">▼</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Put Vulns Content -->
+    </tbody>
+  </table>
+
+  <script>
+    let sortDirection = 1;
+
+    function sortTable(columnIndex, header) {
+      const table = document.getElementById("sortable-table");
+      const rows = Array.from(table.getElementsByTagName("tr"));
+
+      rows.shift(); // Remove the header row from the sorting
+
+      rows.sort((a, b) => {
+        const aValue = a.children[columnIndex].textContent.trim();
+        const bValue = b.children[columnIndex].textContent.trim();
+
+        if (!isNaN(aValue) && !isNaN(bValue)) {
+          return sortDirection * (parseFloat(aValue) - parseFloat(bValue));
+        } else {
+          return sortDirection * aValue.localeCompare(bValue);
+        }
+      });
+
+      const tbody = table.getElementsByTagName("tbody")[0];
+      tbody.innerHTML = "";
+      rows.forEach(row => {
+        tbody.appendChild(row);
+      });
+
+      // Toggle sort direction for the next click
+      sortDirection *= -1;
+
+      // Update sort icons
+      resetSortIcons();
+      updateSortIcon(header);
+    }
+
+    function resetSortIcons() {
+      const sortIcons = document.querySelectorAll('.sort-icon');
+      sortIcons.forEach(icon => {
+        icon.classList.remove('asc', 'desc');
+      });
+    }
+
+    function updateSortIcon(header) {
+      const sortIcon = header.querySelector('.sort-icon');
+
+      // Clear existing content
+      sortIcon.textContent = '';
+
+      if (sortDirection === 1) {
+        sortIcon.classList.remove('desc');
+        sortIcon.classList.add('asc');
+        sortIcon.textContent = '▼';
+      } else {
+        sortIcon.classList.remove('asc');
+        sortIcon.classList.add('desc');
+        sortIcon.textContent = '▲';
+      }
+    }
+
+    window.onload = function () {
+      sortTable(2, document.querySelector('#sortable-table th:nth-child(3)'));
+    };
+  </script>
+
+</body>
+
+</html>

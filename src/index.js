@@ -2,8 +2,11 @@
 
 const fs = require("fs-extra");
 const path = require("path");
+const dayjs = require("dayjs");
+const ejs = require("ejs");
 
-const OUTPUT_FILE_NAME = "audit-report.log";
+const OUTPUT_FILE_NAME = "audit-report.html";
+const TEMPLATE = fs.readFileSync(path.join(__dirname, "template.ejs"), "utf-8");
 
 /**
  * Reads data from stdin and writes it to the specified file or folder.
@@ -45,7 +48,8 @@ function writeIfFolderExists(folderPath, path, data) {
  * @param {string} data - Data to be written to the file.
  */
 function writeOutput(path, data) {
-  fs.writeFile(path, data, (err) => {
+  const output = generateHtmlTemplateContent(data);
+  fs.writeFile(path, output, (err) => {
     if (err) {
       console.error("Error: Unable to write to file.", err);
       process.exit(1);
@@ -54,6 +58,23 @@ function writeOutput(path, data) {
     console.log("Audit exported successfully!");
     process.exit(0);
   });
+}
+
+function generateHtmlTemplateContent(data) {
+  data = JSON.parse(data);
+
+  const templateData = {
+    vulnsFound: data.metadata.vulnerabilities.total,
+    totalDependencies: data.metadata.dependencies.total,
+    currentDate: dayjs().format("DD [of] MMMM, YYYY - HH:mm:ss"),
+    criticalVulns: data.metadata.vulnerabilities.total,
+    highVulns: data.metadata.vulnerabilities.critical,
+    moderateVulns: data.metadata.vulnerabilities.high,
+    lowVulns: data.metadata.vulnerabilities.low,
+    infoVulns: data.metadata.vulnerabilities.info,
+  };
+
+  return ejs.render(TEMPLATE, templateData);
 }
 
 // Command-line arguments
