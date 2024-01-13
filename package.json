@@ -9,7 +9,8 @@
   "scripts": {
     "lint:check": "eslint **/*.js",
     "lint:fix": "eslint **/*.js --fix",
-    "postinstall": "husky install",
+    "postinstall": "node ./postinstall.js",
+    "husky": "husky install",
     "release": "commit-and-tag-version",
     "pre-release": "commit-and-tag-version --prerelease beta"
   },
