@@ -170,11 +170,18 @@
         <th onclick="sortTable(0, this)">Title<span class="sort-icon">▼</span></th>
         <th onclick="sortTable(1, this)">Package Name<span class="sort-icon">▼</span></th>
         <th onclick="sortTable(2, this)">Severity<span class="sort-icon desc">▲</span></th>
-        <th onclick="sortTable(3, this)">Related CVEs<span class="sort-icon">▼</span></th>
+        <th onclick="sortTable(3, this)">Related CWEs<span class="sort-icon">▼</span></th>
       </tr>
     </thead>
     <tbody>
-      <!-- Put Vulns Content -->
+      <% vulnerabilities.forEach((vuln) => { %>
+        <tr>
+          <td><a href="<%= vuln.link %>"><%= vuln.name %></a></td>
+          <td><a href="https://www.npmjs.com/package/<%= vuln.package %>"><%= vuln.package %></a></td>
+          <td><span class="badge <%= vuln.severity %>"><%= vuln.severity %></span></td>
+          <td><%= vuln.cwes %></td>
+        </tr>
+      <% }); %>
     </tbody>
   </table>
 

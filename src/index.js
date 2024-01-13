@@ -67,14 +67,33 @@ function generateHtmlTemplateContent(data) {
     vulnsFound: data.metadata.vulnerabilities.total,
     totalDependencies: data.metadata.dependencies.total,
     currentDate: dayjs().format("DD [of] MMMM, YYYY - HH:mm:ss"),
-    criticalVulns: data.metadata.vulnerabilities.total,
-    highVulns: data.metadata.vulnerabilities.critical,
-    moderateVulns: data.metadata.vulnerabilities.high,
+    criticalVulns: data.metadata.vulnerabilities.critical,
+    highVulns: data.metadata.vulnerabilities.high,
+    moderateVulns: data.metadata.vulnerabilities.moderate,
     lowVulns: data.metadata.vulnerabilities.low,
     infoVulns: data.metadata.vulnerabilities.info,
+    vulnerabilities: getVulnerabilities(data),
   };
 
   return ejs.render(TEMPLATE, templateData);
+}
+
+function getVulnerabilities(data) {
+  let allVulns = [];
+
+  for (const package in data.vulnerabilities) {
+    allVulns.push(...data.vulnerabilities[package].via);
+  }
+
+  return allVulns.map((vuln) => {
+    return {
+      link: vuln.url,
+      name: vuln.title,
+      package: vuln.name,
+      severity: vuln.severity,
+      cwes: vuln.cwe.join(", "),
+    };
+  });
 }
 
 // Command-line arguments
