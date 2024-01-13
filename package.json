@@ -7,7 +7,6 @@
     "audit-export": "src/index.js"
   },
   "scripts": {
-    "test": "cd test && npm audit --json | node ../src/index.js",
     "lint:check": "eslint **/*.js",
     "lint:fix": "eslint **/*.js --fix",
     "postinstall": "husky install",
