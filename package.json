@@ -18,6 +18,7 @@
   "contributors": [
     "TaylorHo <taylor@hotay.dev>"
   ],
+  "keywords": ["security", "audit", "npm-audit", "packages", "vulnerabilities"],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/hotaydev/audit-export/issues",
