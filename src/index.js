@@ -9,37 +9,39 @@ const OUTPUT_FILE_NAME = "audit-report.html";
 const TEMPLATE = fs.readFileSync(path.join(__dirname, "template.ejs"), "utf-8");
 
 /**
- * Reads data from stdin and writes it to the specified file or folder.
+ * Processes the input data and writes it to the specified file or folder.
  * @param {string} folderPath - Path to the folder.
  * @param {string} filePath - Path to the file within the folder (optional).
  * @param {string} inputData - Data read from stdin.
  */
 function processInput(folderPath, filePath, inputData) {
-  let finalPath;
+  const finalPath = getFinalPath(folderPath, filePath);
+  writeIfFolderExists(folderPath, finalPath, inputData);
+}
 
-  if (folderPath) {
-    finalPath = filePath ? path.join(folderPath, filePath) : path.join(folderPath, OUTPUT_FILE_NAME);
-  } else {
-    finalPath = path.join(process.cwd(), OUTPUT_FILE_NAME);
-  }
-
-  // Not using ?? due to Node.js multiple versions support
-  writeIfFolderExists(folderPath ? folderPath : process.cwd(), finalPath, inputData);
+/**
+ * Constructs the final path based on the folder and file paths.
+ * @param {string} folderPath - Path to the folder.
+ * @param {string} filePath - Path to the file within the folder (optional).
+ * @returns {string} - The final path to write the output.
+ */
+function getFinalPath(folderPath, filePath) {
+  return filePath ? path.join(folderPath, filePath) : path.join(folderPath, OUTPUT_FILE_NAME);
 }
 
 /**
  * Checks if the provided folder exists and calls the writeOutput function.
  * @param {string} folderPath - Path to the folder.
- * @param {string} path - Final path to write the output.
+ * @param {string} finalPath - Final path to write the output.
  * @param {string} data - Data to be written to the file.
  */
-function writeIfFolderExists(folderPath, path, data) {
+function writeIfFolderExists(folderPath, finalPath, data) {
   fs.access(folderPath, fs.constants.F_OK, (err) => {
     if (err) {
       console.error("Error: The provided folder does not exist.");
       process.exit(1);
     }
-    writeOutput(path, data);
+    writeOutput(finalPath, data);
   });
 }
 
@@ -61,6 +63,11 @@ function writeOutput(path, data) {
   });
 }
 
+/**
+ * Generates HTML template content based on the provided data.
+ * @param {string} data - JSON string containing vulnerability data.
+ * @returns {string} - HTML content generated from the template.
+ */
 function generateHtmlTemplateContent(data) {
   const vulnerabilities = getVulnerabilities(JSON.parse(data));
 
@@ -68,24 +75,38 @@ function generateHtmlTemplateContent(data) {
     vulnsFound: vulnerabilities.length,
     vulnerableDependencies: [...new Set(vulnerabilities.map((vuln) => vuln.package))].length,
     currentDate: dayjs().format("DD [of] MMMM, YYYY - HH:mm:ss"),
-    criticalVulns: vulnerabilities.filter((vuln) => vuln.severity === "critcal").length,
-    highVulns: vulnerabilities.filter((vuln) => vuln.severity === "high").length,
-    moderateVulns: vulnerabilities.filter((vuln) => vuln.severity === "moderate").length,
-    lowVulns: vulnerabilities.filter((vuln) => vuln.severity === "low").length,
-    infoVulns: vulnerabilities.filter((vuln) => vuln.severity === "info").length,
+    criticalVulns: countVulnerabilities(vulnerabilities, "critical"),
+    highVulns: countVulnerabilities(vulnerabilities, "high"),
+    moderateVulns: countVulnerabilities(vulnerabilities, "moderate"),
+    lowVulns: countVulnerabilities(vulnerabilities, "low"),
+    infoVulns: countVulnerabilities(vulnerabilities, "info"),
     vulnerabilities: vulnerabilities,
   };
 
   return ejs.render(TEMPLATE, templateData);
 }
 
+/**
+ * Counts the number of vulnerabilities with the specified severity.
+ * @param {Array} vulnerabilities - Array of vulnerability objects.
+ * @param {string} severity - Severity level to count.
+ * @returns {number} - Number of vulnerabilities with the specified severity.
+ */
+function countVulnerabilities(vulnerabilities, severity) {
+  return vulnerabilities.filter((vuln) => vuln.severity === severity).length;
+}
+
+/**
+ * Extracts and processes vulnerability data from the provided JSON data.
+ * @param {string} data - JSON string containing vulnerability data.
+ * @returns {Array} - Array of processed vulnerability objects.
+ */
 function getVulnerabilities(data) {
   let allVulns = [];
 
-  // Chaining to keep support for older versions of Node.js
   if (data.vulnerabilities) {
-    for (const package in data.vulnerabilities) {
-      allVulns.push(...data.vulnerabilities[package].via);
+    for (const pkg in data.vulnerabilities) {
+      allVulns.push(...data.vulnerabilities[pkg].via);
     }
   } else if (data.advisories) {
     for (const vuln in data.advisories) {
@@ -93,21 +114,28 @@ function getVulnerabilities(data) {
     }
   }
 
-  return allVulns.map((vuln) => {
-    if (vuln.title) {
-      return {
-        link: vuln.url,
-        name: vuln.title,
-        package: vuln.name || vuln.module_name,
-        severity: vuln.severity,
-        cwes: vuln.cwe.concat(vuln.cves).join(", "),
-      };
-    }
-  }).filter(vuln => vuln);
+  return allVulns.map((vuln) => processVulnerability(vuln)).filter(vuln => vuln);
+}
+
+/**
+ * Processes a single vulnerability object and returns a standardized format.
+ * @param {Object} vuln - Raw vulnerability object.
+ * @returns {Object} - Processed vulnerability object.
+ */
+function processVulnerability(vuln) {
+  if (vuln.title) {
+    return {
+      link: vuln.url,
+      name: vuln.title,
+      package: vuln.name || vuln.module_name,
+      severity: vuln.severity,
+      cwes: vuln.cwe.concat(vuln.cves).join(", "),
+    };
+  }
 }
 
 // Command-line arguments
-const folderPath = process.argv[2];
+const folderPath = process.argv[2] || process.cwd();
 const filePath = process.argv[3];
 
 // Set encoding for stdin

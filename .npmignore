@@ -5,3 +5,4 @@ node_modules/
 *.log
 *.html
 .github/
+CHANGELOG.md

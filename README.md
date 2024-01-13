@@ -3,7 +3,9 @@
 ![npm version](https://img.shields.io/npm/v/audit-export?style=flat-square)
 ![npm downloads](https://img.shields.io/npm/dt/audit-export?style=flat-square)
 
-A convenient tool to export npm audit results to a comprehensive offline HTML page, providing a clear overview of your project's vulnerabilities.
+A convenient tool to **export npm audit results** to a comprehensive **offline HTML page**, providing a clear overview of your project's vulnerabilities.
+
+> Inspired by [npm-audit-html](https://www.npmjs.com/package/npm-audit-html), but with more Node.js versions supported, offline support and lightweight ⚡
 
 ## Compatibility
 
@@ -21,7 +23,7 @@ npm install -g audit-export
 
 You can use `audit-export` with `npx audit-report` or install it globally for convenient access. Here are some usage options:
 
-1. Export audit results to the default location (`./audit-report.log`):
+1. Export audit results to the default location (`./audit-report.html`):
 
     ```bash
     npm audit --json | audit-export
@@ -49,6 +51,6 @@ You can download the package from [npm](https://www.npmjs.com/package/audit-expo
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/hotaydev/audit-export/blob/main/LICENSE) file for details.
 
 Happy auditing! 🛡️🚀
