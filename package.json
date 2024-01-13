@@ -7,7 +7,12 @@
     "audit-export": "src/index.js"
   },
   "scripts": {
-    "test": "cd test && npm audit --json | node ../src/index.js"
+    "test": "cd test && npm audit --json | node ../src/index.js",
+    "lint:check": "eslint **/*.js",
+    "lint:fix": "eslint **/*.js --fix",
+    "postinstall": "husky install",
+    "release": "commit-and-tag-version",
+    "pre-release": "commit-and-tag-version --prerelease beta"
   },
   "author": "Hotay <hi@hotay.dev>",
   "contributors": [
@@ -30,5 +35,10 @@
   "dependencies": {
     "fs-extra": "^11.2.0",
     "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "commit-and-tag-version": "^12.1.0",
+    "eslint": "^8.56.0",
+    "husky": "^8.0.3"
   }
 }

@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-const fs = require('fs-extra');
-const path = require('path');
+const fs = require("fs-extra");
+const path = require("path");
 
-const OUTPUT_FILE_NAME = 'audit-report.log';
+const OUTPUT_FILE_NAME = "audit-report.log";
 
 /**
  * Reads data from stdin and writes it to the specified file or folder.
@@ -32,7 +32,7 @@ function processInput(folderPath, filePath, inputData) {
 function writeIfFolderExists(folderPath, path, data) {
   fs.access(folderPath, fs.constants.F_OK, (err) => {
     if (err) {
-      console.error('Error: The provided folder does not exist.');
+      console.error("Error: The provided folder does not exist.");
       process.exit(1);
     }
     writeOutput(path, data);
@@ -47,11 +47,11 @@ function writeIfFolderExists(folderPath, path, data) {
 function writeOutput(path, data) {
   fs.writeFile(path, data, (err) => {
     if (err) {
-      console.error('Error: Unable to write to file.', err);
+      console.error("Error: Unable to write to file.", err);
       process.exit(1);
     }
     
-    console.log('Audit exported successfully!');
+    console.log("Audit exported successfully!");
     process.exit(0);
   });
 }
@@ -61,9 +61,9 @@ const folderPath = process.argv[2];
 const filePath = process.argv[3];
 
 // Set encoding for stdin
-process.stdin.setEncoding('utf8');
+process.stdin.setEncoding("utf8");
 
 // Read data from stdin
-process.stdin.on('data', (data) => {
+process.stdin.on("data", (data) => {
   processInput(folderPath, filePath, data);
 });
