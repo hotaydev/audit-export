@@ -11,6 +11,6 @@
   "license": "MIT",
   "dependencies": {
     "axios": "0.18.0",
-    "electron": "22.3.3"
+    "electron": "22.3.25"
   }
 }
