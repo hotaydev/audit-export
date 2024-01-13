@@ -62,17 +62,18 @@ function writeOutput(path, data) {
 
 function generateHtmlTemplateContent(data) {
   data = JSON.parse(data);
+  const vulnerabilities = getVulnerabilities(data);
 
   const templateData = {
-    vulnsFound: data.metadata.vulnerabilities.total,
-    totalDependencies: data.metadata.dependencies.total,
+    vulnsFound: vulnerabilities.length,
+    vulnerableDependencies: Object.keys(data.vulnerabilities).length,
     currentDate: dayjs().format("DD [of] MMMM, YYYY - HH:mm:ss"),
-    criticalVulns: data.metadata.vulnerabilities.critical,
-    highVulns: data.metadata.vulnerabilities.high,
-    moderateVulns: data.metadata.vulnerabilities.moderate,
-    lowVulns: data.metadata.vulnerabilities.low,
-    infoVulns: data.metadata.vulnerabilities.info,
-    vulnerabilities: getVulnerabilities(data),
+    criticalVulns: vulnerabilities.filter((vuln) => vuln.severity === "critcal").length,
+    highVulns: vulnerabilities.filter((vuln) => vuln.severity === "high").length,
+    moderateVulns: vulnerabilities.filter((vuln) => vuln.severity === "moderate").length,
+    lowVulns: vulnerabilities.filter((vuln) => vuln.severity === "low").length,
+    infoVulns: vulnerabilities.filter((vuln) => vuln.severity === "info").length,
+    vulnerabilities: vulnerabilities,
   };
 
   return ejs.render(TEMPLATE, templateData);
