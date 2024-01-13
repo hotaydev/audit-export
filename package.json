@@ -1,0 +1,34 @@
+{
+  "name": "audit-export",
+  "version": "1.0.0",
+  "description": "Pretty export your npm audit output as an offline accessible html page",
+  "main": "src/index.js",
+  "bin": {
+    "audit-export": "src/index.js"
+  },
+  "scripts": {
+    "test": "cd test && npm audit --json | node ../src/index.js"
+  },
+  "author": "Hotay <hi@hotay.dev>",
+  "contributors": [
+    "TaylorHo <taylor@hotay.dev>"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hotaydev/audit-export/issues",
+    "email": "hi@hotay.dev"
+  },
+  "homepage": "https://github.com/hotaydev/audit-export#readme",
+  "funding": "https://github.com/sponsors/hotaydev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hotaydev/audit-export.git"
+  },
+  "engines": {
+    "node": ">=10 <=20"
+  },
+  "dependencies": {
+    "fs-extra": "^11.2.0",
+    "path": "^0.12.7"
+  }
+}
