@@ -10,7 +10,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "axios": "0.18.0",
+    "axios": "1.6.0",
     "electron": "22.3.3"
   }
 }
