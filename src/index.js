@@ -23,7 +23,8 @@ function processInput(folderPath, filePath, inputData) {
     finalPath = path.join(process.cwd(), OUTPUT_FILE_NAME);
   }
 
-  writeIfFolderExists(folderPath ?? process.cwd(), finalPath, inputData);
+  // Not using ?? due to Node.js multiple versions support
+  writeIfFolderExists(folderPath ? folderPath : process.cwd(), finalPath, inputData);
 }
 
 /**
@@ -61,12 +62,11 @@ function writeOutput(path, data) {
 }
 
 function generateHtmlTemplateContent(data) {
-  data = JSON.parse(data);
-  const vulnerabilities = getVulnerabilities(data);
+  const vulnerabilities = getVulnerabilities(JSON.parse(data));
 
   const templateData = {
     vulnsFound: vulnerabilities.length,
-    vulnerableDependencies: vulnerabilities.filter((item, index) => vulnerabilities.indexOf(item) === index).length,
+    vulnerableDependencies: [...new Set(vulnerabilities.map((vuln) => vuln.package))].length,
     currentDate: dayjs().format("DD [of] MMMM, YYYY - HH:mm:ss"),
     criticalVulns: vulnerabilities.filter((vuln) => vuln.severity === "critcal").length,
     highVulns: vulnerabilities.filter((vuln) => vuln.severity === "high").length,
@@ -82,8 +82,15 @@ function generateHtmlTemplateContent(data) {
 function getVulnerabilities(data) {
   let allVulns = [];
 
-  for (const package in data.vulnerabilities) {
-    allVulns.push(...data.vulnerabilities[package].via);
+  // Chaining to keep support for older versions of Node.js
+  if (data.vulnerabilities) {
+    for (const package in data.vulnerabilities) {
+      allVulns.push(...data.vulnerabilities[package].via);
+    }
+  } else if (data.advisories) {
+    for (const vuln in data.advisories) {
+      allVulns.push(data.advisories[vuln]);
+    }
   }
 
   return allVulns.map((vuln) => {
@@ -91,9 +98,9 @@ function getVulnerabilities(data) {
       return {
         link: vuln.url,
         name: vuln.title,
-        package: vuln.name,
+        package: vuln.name || vuln.module_name,
         severity: vuln.severity,
-        cwes: vuln.cwe.join(", "),
+        cwes: vuln.cwe.concat(vuln.cves).join(", "),
       };
     }
   }).filter(vuln => vuln);

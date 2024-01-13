@@ -3,7 +3,11 @@
 ![npm version](https://img.shields.io/npm/v/audit-export?style=flat-square)
 ![npm downloads](https://img.shields.io/npm/dt/audit-export?style=flat-square)
 
-A handy tool to export npm audit results to a full offline HTML page for a better view of your project's vulnerabilities.
+A convenient tool to export npm audit results to a comprehensive offline HTML page, providing a clear overview of your project's vulnerabilities.
+
+## Compatibility
+
+**This package is compatible with Node.js versions 10 through 20, as well as future versions.**
 
 ## Installation
 
