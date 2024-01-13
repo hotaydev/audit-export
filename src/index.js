@@ -66,7 +66,7 @@ function generateHtmlTemplateContent(data) {
 
   const templateData = {
     vulnsFound: vulnerabilities.length,
-    vulnerableDependencies: Object.keys(data.vulnerabilities).length,
+    vulnerableDependencies: vulnerabilities.filter((item, index) => vulnerabilities.indexOf(item) === index).length,
     currentDate: dayjs().format("DD [of] MMMM, YYYY - HH:mm:ss"),
     criticalVulns: vulnerabilities.filter((vuln) => vuln.severity === "critcal").length,
     highVulns: vulnerabilities.filter((vuln) => vuln.severity === "high").length,
@@ -87,14 +87,16 @@ function getVulnerabilities(data) {
   }
 
   return allVulns.map((vuln) => {
-    return {
-      link: vuln.url,
-      name: vuln.title,
-      package: vuln.name,
-      severity: vuln.severity,
-      cwes: vuln.cwe.join(", "),
-    };
-  });
+    if (vuln.title) {
+      return {
+        link: vuln.url,
+        name: vuln.title,
+        package: vuln.name,
+        severity: vuln.severity,
+        cwes: vuln.cwe.join(", "),
+      };
+    }
+  }).filter(vuln => vuln);
 }
 
 // Command-line arguments
