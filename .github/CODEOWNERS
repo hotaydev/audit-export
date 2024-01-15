@@ -1,0 +1,6 @@
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners#example-of-a-codeowners-file
+
+# After creating a new file, please add that file here, following the example:
+# <path> <owner (you)>
+
+* @TaylorHo
