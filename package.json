@@ -51,5 +51,52 @@
     "eslint": "^8.56.0",
     "husky": "^8.0.3",
     "pinst": "^3.0.0"
+  },
+  "commit-and-tag-version": {
+    "types": [
+      {
+        "type": "feat",
+        "section": "Features"
+      },
+      {
+        "type": "fix",
+        "section": "Bug Fixes"
+      },
+      {
+        "type": "chore",
+        "section": "Enhancements",
+        "hidden": false
+      },
+      {
+        "type": "enhance",
+        "section": "Enhancements",
+        "hidden": false
+      },
+      {
+        "type": "build",
+        "section": "Enhancements",
+        "hidden": false
+      },
+      {
+        "type": "docs",
+        "section": "Documentation",
+        "hidden": false
+      },
+      {
+        "type": "style",
+        "section": "Code Style",
+        "hidden": false
+      },
+      {
+        "type": "refactor",
+        "section": "Enhancements",
+        "hidden": false
+      },
+      {
+        "type": "perf",
+        "section": "Enhancements",
+        "hidden": false
+      }
+    ]
   }
 }

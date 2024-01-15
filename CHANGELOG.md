@@ -11,6 +11,11 @@ All notable changes to this project will be documented in this file. See [commit
 
 ## [1.0.1](https://github.com/hotaydev/audit-export/compare/v1.0.0...v1.0.1) (2024-01-13)
 
+
+### Enhancements
+
+* overall performance improvement ([ff899a2](https://github.com/hotaydev/audit-export/commit/ff899a224dc9ab61b2e5096c3aa39a05ad3144ea))
+
 ## 1.0.0 (2024-01-13)
 
 
@@ -25,3 +30,13 @@ All notable changes to this project will be documented in this file. See [commit
 ### Bug Fixes
 
 * total vuln numbers ([1c0650f](https://github.com/hotaydev/audit-export/commit/1c0650f7835430d4cdd85b94617e9c897c16cf67))
+
+
+### Code Styles
+
+* added eslint, husky and releases-support ([d95ae75](https://github.com/hotaydev/audit-export/commit/d95ae75ae159a712710e852acf9a110c613741b2))
+
+
+### Enhancements
+
+* ci/cd changes for npm publishing ([cdfd04f](https://github.com/hotaydev/audit-export/commit/cdfd04ff02e5a0836c224d77f1508d864ec3fa5c))
