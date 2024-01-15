@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.0.4](https://github.com/hotaydev/audit-export/compare/v1.0.3...v1.0.4) (2024-01-15)
+
+
+### Bug Fixes
+
+* removing version limit for Node.js ([c73987d](https://github.com/hotaydev/audit-export/commit/c73987d30573d759f81db0b54d4dbb89f93d8dbe))
+
 ## [1.0.3](https://github.com/hotaydev/audit-export/compare/v1.0.2...v1.0.3) (2024-01-15)
 
 
