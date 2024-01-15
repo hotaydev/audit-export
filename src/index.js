@@ -148,7 +148,7 @@ let inputData = "";
 // Read data from stdin
 process.stdin.on("data", chunk => {
   inputData += chunk;
-})
+});
 
 // Read data from stdin
 process.stdin.on("end", () => {
