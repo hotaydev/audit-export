@@ -141,7 +141,16 @@ const filePath = process.argv[3];
 // Set encoding for stdin
 process.stdin.setEncoding("utf8");
 
+
+// Support chunked input
+let inputData = "";
+
 // Read data from stdin
-process.stdin.on("data", (data) => {
-  processInput(folderPath, filePath, data);
+process.stdin.on("data", chunk => {
+  inputData += chunk;
+})
+
+// Read data from stdin
+process.stdin.on("end", () => {
+  processInput(folderPath, filePath, inputData);
 });
