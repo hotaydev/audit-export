@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.0.3](https://github.com/hotaydev/audit-export/compare/v1.0.2...v1.0.3) (2024-01-15)
+
+
+### Bug Fixes
+
+* added keywords ([6f27d03](https://github.com/hotaydev/audit-export/commit/6f27d030201f93de86987e71acfb6bf2fcb7ff80))
+* bot PR message ([f16afb8](https://github.com/hotaydev/audit-export/commit/f16afb8d27ded4dbf7da00f09779cc241702f4d4))
+* ignoring postinstall using pinst ([fb4e062](https://github.com/hotaydev/audit-export/commit/fb4e0626017c1cadda409a14860998b2df9d2708))
+* linting changes ([489a82e](https://github.com/hotaydev/audit-export/commit/489a82ec7281815295d1a74a3e8d206db91dd9bf))
+* Support Chunk from Stdin entry ([709227b](https://github.com/hotaydev/audit-export/commit/709227b5f62d34d4e75d914a48894ce701db188c))
+
+
+### Enhancements
+
+* added a Funding file ([553bf08](https://github.com/hotaydev/audit-export/commit/553bf0823974e082c7fa7942ca40fd086f60e8f0))
+
+
+### Documentation
+
+* community guides ([6e7cec0](https://github.com/hotaydev/audit-export/commit/6e7cec076806983f92159ee6a0e9f5b890c8c60f))
+
+
+### Code Style
+
+* improved look and feel of the changelog ([5ecc686](https://github.com/hotaydev/audit-export/commit/5ecc68685209922d04d20cc824b7d4ba9b7587b0))
+
 ## [1.0.2](https://github.com/hotaydev/audit-export/compare/v1.0.1...v1.0.2) (2024-01-13)
 
 
