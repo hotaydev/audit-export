@@ -21,6 +21,13 @@ npm install -g audit-export
 
 ## Usage
 
+The basic usage of this tool is:
+
+```
+npm audit --json | audit-export <path> <file_name>
+```
+<sub>Note the space between the path and the file name.</sub>
+
 You can use `audit-export` with `npx audit-report` or install it globally for convenient access. Here are some usage options:
 
 1. Export audit results to the default location (`./audit-report.html`):
