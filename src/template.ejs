@@ -174,14 +174,24 @@
       </tr>
     </thead>
     <tbody>
-      <% vulnerabilities.forEach((vuln) => { %>
+      <% if (vulnerabilities.lenght > 0) { %>
+        <% vulnerabilities.forEach((vuln) => { %>
+          <tr>
+            <td><a href="<%= vuln.link %>"><%= vuln.name %></a></td>
+            <td><a href="https://www.npmjs.com/package/<%= vuln.package %>"><%= vuln.package %></a></td>
+            <td><span class="badge <%= vuln.severity %>"><%= vuln.severity %></span></td>
+            <td><%= vuln.cwes %></td>
+          </tr>
+        <% }); %>
+      <% } else { %>
         <tr>
-          <td><a href="<%= vuln.link %>"><%= vuln.name %></a></td>
-          <td><a href="https://www.npmjs.com/package/<%= vuln.package %>"><%= vuln.package %></a></td>
-          <td><span class="badge <%= vuln.severity %>"><%= vuln.severity %></span></td>
-          <td><%= vuln.cwes %></td>
+          <td colspan="4">
+            <div style="width: 100%; text-align: center; opacity: 0.8;">
+              <p>No vulnerabilities found!</p>
+            </div>
+          </td>
         </tr>
-      <% }); %>
+      <% } %>
     </tbody>
   </table>
 
