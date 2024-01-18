@@ -5,10 +5,10 @@
 
 A convenient tool to **export npm audit results** to a comprehensive **offline HTML page**, providing a clear overview of your project's vulnerabilities.
 
-<figure align="center" width="100%">
-    <img src="https://raw.githubusercontent.com/hotaydev/audit-export/main/.github/images/screenshot.jpg" alt="Screenshot of the output of audit-export" width="80%" />
-    <figcaption>Example of the output file from audit-export</figcaption>
-</figure><br/>
+<div align="center" width="100%">
+    <img src="https://raw.githubusercontent.com/hotaydev/audit-export/main/.github/images/screenshot.jpg" alt="Screenshot of the output of audit-export" width="80%" /><br/>
+    <sub align="center">Example of the output file from audit-export</sub>
+</div><br/><br/>
 
 > Inspired by [npm-audit-html](https://www.npmjs.com/package/npm-audit-html), but with more Node.js versions supported, offline support and lightweight ⚡
 
