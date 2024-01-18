@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.0.5](https://github.com/hotaydev/audit-export/compare/v1.0.4...v1.0.5) (2024-01-18)
+
+
+### Enhancements
+
+* added a message for an empty table ([3287233](https://github.com/hotaydev/audit-export/commit/328723368f96dec25a3c9ce5ddbf5b3d236e364a))
+* improved the pre pack steps ([55a06b1](https://github.com/hotaydev/audit-export/commit/55a06b1346e5d6eae0ff41d8092033cd8a5012a0))
+
+
+### Documentation
+
+* added better documentation to README.md ([08f5bae](https://github.com/hotaydev/audit-export/commit/08f5bae5e7234a3d7a766fb340cd704bece776f6))
+* added screenshot to README.md ([668d10b](https://github.com/hotaydev/audit-export/commit/668d10b61e08301da421fe9b5a30191ffa8bcafb))
+* improved image align ([4cdc785](https://github.com/hotaydev/audit-export/commit/4cdc785c9330baa65ec89326b44d28c1bada3c38))
+* removed extra messages ([dfcc751](https://github.com/hotaydev/audit-export/commit/dfcc751dd262e37c192fe49d0a50cce286b7b4c2))
+* resuming content ([bafc031](https://github.com/hotaydev/audit-export/commit/bafc031655cc3fa5b6161d41e2ba63cc2092bbe2))
+
 ## [1.0.4](https://github.com/hotaydev/audit-export/compare/v1.0.3...v1.0.4) (2024-01-15)
 
 
