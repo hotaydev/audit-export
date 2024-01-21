@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.0.6](https://github.com/hotaydev/audit-export/compare/v1.0.5...v1.0.6) (2024-01-21)
+
+
+### Bug Fixes
+
+* table listing ([661e9c2](https://github.com/hotaydev/audit-export/commit/661e9c2f4101457ba3f2a8bb9cb78879bc6b2c9f))
+
 ## [1.0.5](https://github.com/hotaydev/audit-export/compare/v1.0.4...v1.0.5) (2024-01-18)
 
 
