@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
 const fs = require("fs-extra");
-const path = require("path");
+const os = require("os");
 const dayjs = require("dayjs");
 const ejs = require("ejs");
 
 const OUTPUT_FILE_NAME = "audit-report.html";
-const TEMPLATE = fs.readFileSync(path.join(__dirname, "template.ejs"), "utf-8");
+const TEMPLATE = fs.readFileSync(join([__dirname, "template.ejs"]), "utf-8");
 
 /**
  * Processes the input data and writes it to the specified file or folder.
@@ -26,7 +26,7 @@ function processInput(folderPath, filePath, inputData) {
  * @returns {string} - The final path to write the output.
  */
 function getFinalPath(folderPath, filePath) {
-  return filePath ? path.join(folderPath, filePath) : path.join(folderPath, OUTPUT_FILE_NAME);
+  return filePath ? join([folderPath, filePath]) : join([folderPath, OUTPUT_FILE_NAME]);
 }
 
 /**
@@ -131,6 +131,14 @@ function processVulnerability(vuln) {
       severity: vuln.severity,
       cwes: vuln.cwe.concat(vuln.cves).join(", "),
     };
+  }
+}
+
+function join(paths) {
+  if (os.platform() === "win32") {
+    return paths.join("\\");
+  } else {
+    return paths.join("/");
   }
 }
 

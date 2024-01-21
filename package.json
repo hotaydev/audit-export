@@ -41,8 +41,7 @@
   "dependencies": {
     "dayjs": "^1.11.10",
     "ejs": "^3.1.9",
-    "fs-extra": "^11.2.0",
-    "path": "^0.12.7"
+    "fs-extra": "^11.2.0"
   },
   "devDependencies": {
     "commit-and-tag-version": "^12.1.0",
