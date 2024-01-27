@@ -7,9 +7,9 @@
     "audit-export": "src/index.js"
   },
   "scripts": {
-    "lint:check": "eslint **/*.js",
-    "lint:fix": "eslint **/*.js --fix",
-    "prepare": "husky install",
+    "lint:check": "eslint ./src/**/*.js",
+    "lint:fix": "eslint ./src/**/*.js --fix",
+    "prepare": "husky",
     "release": "commit-and-tag-version",
     "pre-release": "commit-and-tag-version --prerelease beta"
   },
@@ -46,7 +46,7 @@
   "devDependencies": {
     "commit-and-tag-version": "^12.1.0",
     "eslint": "^8.56.0",
-    "husky": "^8.0.3"
+    "husky": "^9.0.6"
   },
   "commit-and-tag-version": {
     "types": [
