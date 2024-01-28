@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.0.7](https://github.com/hotaydev/audit-export/compare/v1.0.6...v1.0.7) (2024-01-28)
+
+
+### Enhancements
+
+* changed git hooks use ([9c26a0f](https://github.com/hotaydev/audit-export/commit/9c26a0fd3c866757c51265927cc4ddb31191bd24))
+* removed a dependency ([d30d529](https://github.com/hotaydev/audit-export/commit/d30d5298be348565ef3adba0a2397a88fb685392))
+* upgraded husky dependency ([a5187cd](https://github.com/hotaydev/audit-export/commit/a5187cd23546381ef83d335b31d9af98406db9cb))
+
 ## [1.0.6](https://github.com/hotaydev/audit-export/compare/v1.0.5...v1.0.6) (2024-01-21)
 
 
