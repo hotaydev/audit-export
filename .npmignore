@@ -1,8 +1,9 @@
-.husky/
+.hooks/
 node_modules/
 .eslintrc.js
 .npmignore
 *.log
 *.html
 .github/
+.gitignore
 CHANGELOG.md

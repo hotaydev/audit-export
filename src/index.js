@@ -2,7 +2,6 @@
 
 const fs = require("fs-extra");
 const os = require("os");
-const dayjs = require("dayjs");
 const ejs = require("ejs");
 
 const OUTPUT_FILE_NAME = "audit-report.html";
@@ -74,7 +73,7 @@ function generateHtmlTemplateContent(data) {
   const templateData = {
     vulnsFound: vulnerabilities.length,
     vulnerableDependencies: [...new Set(vulnerabilities.map((vuln) => vuln.package))].length,
-    currentDate: dayjs().format("DD [of] MMMM, YYYY - HH:mm:ss"),
+    currentDate: getCurrentDate(),
     criticalVulns: countVulnerabilities(vulnerabilities, "critical"),
     highVulns: countVulnerabilities(vulnerabilities, "high"),
     moderateVulns: countVulnerabilities(vulnerabilities, "moderate"),
@@ -134,6 +133,11 @@ function processVulnerability(vuln) {
   }
 }
 
+/**
+ * Joins array elements into a path string based on the operating system.
+ * @param {Array} paths - Array of path elements.
+ * @returns {string} - The joined path string.
+ */
 function join(paths) {
   if (os.platform() === "win32") {
     return paths.join("\\");
@@ -142,13 +146,42 @@ function join(paths) {
   }
 }
 
+/**
+ * Gets the current date in a formatted string.
+ * @returns {string} - Formatted current date string.
+ */
+function getCurrentDate() {
+  const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  const d = new Date();
+
+  return `${checkNumLength(str(d.getDate()))} of ${months[d.getMonth()]}, ${d.getFullYear()} - ${checkNumLength(str(d.getHours()))}:${checkNumLength(str(d.getMinutes()))}:${checkNumLength(str(d.getSeconds()))}`;
+}
+
+/**
+ * Converts a value to a string.
+ * @param {any} string - Value to be converted to a string.
+ * @returns {string} - The converted string.
+ */
+function str(string) {
+  return string.toString();
+}
+
+/**
+ * Ensures a two-digit format for numbers by adding a leading zero if necessary.
+ * @param {string} number - Number to check and possibly add a leading zero.
+ * @returns {string} - Number with a leading zero if necessary.
+ */
+function checkNumLength(number) {
+  if (number.length === 2) return number;
+  return `0${number}`;
+}
+
 // Command-line arguments
 const folderPath = process.argv[2] || process.cwd();
 const filePath = process.argv[3];
 
 // Set encoding for stdin
 process.stdin.setEncoding("utf8");
-
 
 // Support chunked input
 let inputData = "";
