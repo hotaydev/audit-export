@@ -9,7 +9,7 @@
   "scripts": {
     "lint:check": "eslint ./src/**/*.js",
     "lint:fix": "eslint ./src/**/*.js --fix",
-    "prepare": "git config --local core.hooksPath .hooks/",
+    "prepare": "git init && git config --local core.hooksPath .hooks/",
     "release": "commit-and-tag-version",
     "pre-release": "commit-and-tag-version --prerelease beta"
   },
