@@ -128,7 +128,7 @@ function processVulnerability(vuln) {
       name: vuln.title,
       package: vuln.name || vuln.module_name,
       severity: vuln.severity,
-      cwes: vuln.cwe.concat(vuln.cves).join(", "),
+      cwes: (vuln.cwe || []).concat(vuln.cves).join(", "),
     };
   }
 }
