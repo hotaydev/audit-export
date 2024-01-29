@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.0.8](https://github.com/hotaydev/audit-export/compare/v1.0.7...v1.0.8) (2024-01-29)
+
+
+### Bug Fixes
+
+* npm install ([5a84235](https://github.com/hotaydev/audit-export/commit/5a84235e44cc7a81e2c7af11c7702092938efcaa))
+
 ## [1.0.7](https://github.com/hotaydev/audit-export/compare/v1.0.6...v1.0.7) (2024-01-28)
 
 
