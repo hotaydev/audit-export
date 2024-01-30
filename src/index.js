@@ -5,17 +5,15 @@ const os = require("os");
 const ejs = require("ejs");
 
 const OUTPUT_FILE_NAME = "audit-report.html";
-const TEMPLATE = fs.readFileSync(join([__dirname, "template.ejs"]), "utf-8");
 
 /**
  * Processes the input data and writes it to the specified file or folder.
- * @param {string} folderPath - Path to the folder.
- * @param {string} filePath - Path to the file within the folder (optional).
+ * @param {object} options - App options
  * @param {string} inputData - Data read from stdin.
  */
-function processInput(folderPath, filePath, inputData) {
-  const finalPath = getFinalPath(folderPath, filePath);
-  writeIfFolderExists(folderPath, finalPath, inputData);
+function processInput(options, inputData) {
+  const finalPath = getFinalPath(options.folderPath, options.filePath);
+  writeIfFolderExists(options, finalPath, inputData);
 }
 
 /**
@@ -30,27 +28,28 @@ function getFinalPath(folderPath, filePath) {
 
 /**
  * Checks if the provided folder exists and calls the writeOutput function.
- * @param {string} folderPath - Path to the folder.
+ * @param {object} options - App options
  * @param {string} finalPath - Final path to write the output.
  * @param {string} data - Data to be written to the file.
  */
-function writeIfFolderExists(folderPath, finalPath, data) {
-  fs.access(folderPath, fs.constants.F_OK, (err) => {
+function writeIfFolderExists(options, finalPath, data) {
+  fs.access(options.folderPath, fs.constants.F_OK, (err) => {
     if (err) {
       console.error("Error: The provided folder does not exist.");
       process.exit(1);
     }
-    writeOutput(finalPath, data);
+    writeOutput(options, finalPath, data);
   });
 }
 
 /**
  * Writes the given data to the specified file.
+ * @param {object} options - App options
  * @param {string} path - Path to the file.
  * @param {string} data - Data to be written to the file.
  */
-function writeOutput(path, data) {
-  const output = generateHtmlTemplateContent(data);
+function writeOutput(options, path, data) {
+  const output = generateHtmlTemplateContent(options, data);
   fs.writeFile(path, output, (err) => {
     if (err) {
       console.error("Error: Unable to write to file.", err);
@@ -64,13 +63,17 @@ function writeOutput(path, data) {
 
 /**
  * Generates HTML template content based on the provided data.
+ * @param {object} options - App options
  * @param {string} data - JSON string containing vulnerability data.
  * @returns {string} - HTML content generated from the template.
  */
-function generateHtmlTemplateContent(data) {
+function generateHtmlTemplateContent(options, data) {
+  const TEMPLATE = fs.readFileSync(options.template, "utf-8");
+
   const vulnerabilities = getVulnerabilities(JSON.parse(data));
 
   const templateData = {
+    npmReportTitle: options.title,
     vulnsFound: vulnerabilities.length,
     vulnerableDependencies: [...new Set(vulnerabilities.map((vuln) => vuln.package))].length,
     currentDate: getCurrentDate(),
@@ -176,9 +179,45 @@ function checkNumLength(number) {
   return `0${number}`;
 }
 
-// Command-line arguments
-const folderPath = process.argv[2] || process.cwd();
-const filePath = process.argv[3];
+const options = {
+  folderPath: undefined,
+  filePath: undefined,
+  title: "NPM Audit Report",
+  template: join([__dirname, "template.ejs"])
+};
+
+/**
+ * Gets a command line option
+ * @param {number} index - Argv index
+ * @returns {number} - Option
+ */
+function processArgument(index) {
+  if(process.argv[index].startsWith("-")) {
+    if(process.argv.length === index) {
+      return index; // Last argument... no value could be extracted
+    }
+    const argumentNameOffsetStart = (process.argv[index].startsWith("--") ? 2 : 1);
+    const argumentName = process.argv[index].substring(argumentNameOffsetStart);
+    options[argumentName] = process.argv[index + 1];
+    return index + 1;
+  } else {
+    if(!options.folderPath) {
+      options.folderPath = process.argv[index]; // First unnamed arg
+    } else if(!options.filePath) {
+      options.filePath = process.argv[index]; // Second unnamed arg (all other will be skipped)
+    }
+  }
+  return index;
+}
+
+// Command-line arguments (simple processor)
+for (let argIndex = 2; argIndex < process.argv.length; argIndex++) {
+  argIndex = processArgument(argIndex);
+}
+
+if(!options.folderPath) {
+  options.folderPath = process.cwd();
+}
 
 // Set encoding for stdin
 process.stdin.setEncoding("utf8");
@@ -193,5 +232,5 @@ process.stdin.on("data", chunk => {
 
 // Read data from stdin
 process.stdin.on("end", () => {
-  processInput(folderPath, filePath, inputData);
+  processInput(options, inputData);
 });
