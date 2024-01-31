@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [2.0.0](https://github.com/hotaydev/audit-export/compare/v1.1.0...v2.0.0) (2024-01-31)
+
+
+### Enhancements
+
+* **release:** 1.1.1 ([1f4202d](https://github.com/hotaydev/audit-export/commit/1f4202d21bc3d69d8fda0c09ff67ca3321585a51))
+
+
+### Documentation
+
+* enhanced documentation for command line arguments ([54b1433](https://github.com/hotaydev/audit-export/commit/54b14338003355dc78ef4225dbeaa6e7c076828c))
+
 ## [1.1.1](https://github.com/hotaydev/audit-export/compare/v1.1.0...v1.1.1) (2024-01-31)
 
 
