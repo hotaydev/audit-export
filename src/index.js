@@ -5,6 +5,12 @@ const os = require("os");
 const ejs = require("ejs");
 
 const OUTPUT_FILE_NAME = "audit-report.html";
+const OPTIONS = {
+  folder: undefined,
+  file: undefined,
+  title: "NPM Audit Report",
+  template: join([__dirname, "template.ejs"])
+};
 
 /**
  * Processes the input data and writes it to the specified file or folder.
@@ -12,7 +18,7 @@ const OUTPUT_FILE_NAME = "audit-report.html";
  * @param {string} inputData - Data read from stdin.
  */
 function processInput(options, inputData) {
-  const finalPath = getFinalPath(options.folderPath, options.filePath);
+  const finalPath = getFinalPath(options.folder, options.file);
   writeIfFolderExists(options, finalPath, inputData);
 }
 
@@ -33,7 +39,7 @@ function getFinalPath(folderPath, filePath) {
  * @param {string} data - Data to be written to the file.
  */
 function writeIfFolderExists(options, finalPath, data) {
-  fs.access(options.folderPath, fs.constants.F_OK, (err) => {
+  fs.access(options.folder, fs.constants.F_OK, (err) => {
     if (err) {
       console.error("Error: The provided folder does not exist.");
       process.exit(1);
@@ -179,13 +185,6 @@ function checkNumLength(number) {
   return `0${number}`;
 }
 
-const options = {
-  folderPath: undefined,
-  filePath: undefined,
-  title: "NPM Audit Report",
-  template: join([__dirname, "template.ejs"])
-};
-
 /**
  * Gets a command line option
  * @param {number} index - Argv index
@@ -198,13 +197,13 @@ function processArgument(index) {
     }
     const argumentNameOffsetStart = (process.argv[index].startsWith("--") ? 2 : 1);
     const argumentName = process.argv[index].substring(argumentNameOffsetStart);
-    options[argumentName] = process.argv[index + 1];
+    OPTIONS[argumentName] = process.argv[index + 1];
     return index + 1;
   } else {
-    if(!options.folderPath) {
-      options.folderPath = process.argv[index]; // First unnamed arg
-    } else if(!options.filePath) {
-      options.filePath = process.argv[index]; // Second unnamed arg (all other will be skipped)
+    if(!OPTIONS.folder) {
+      OPTIONS.folder = process.argv[index]; // First unnamed arg
+    } else if(!OPTIONS.file) {
+      OPTIONS.file = process.argv[index]; // Second unnamed arg (all other will be skipped)
     }
   }
   return index;
@@ -215,8 +214,8 @@ for (let argIndex = 2; argIndex < process.argv.length; argIndex++) {
   argIndex = processArgument(argIndex);
 }
 
-if(!options.folderPath) {
-  options.folderPath = process.cwd();
+if(!OPTIONS.folder) {
+  OPTIONS.folder = process.cwd();
 }
 
 // Set encoding for stdin
@@ -232,5 +231,5 @@ process.stdin.on("data", chunk => {
 
 // Read data from stdin
 process.stdin.on("end", () => {
-  processInput(options, inputData);
+  processInput(OPTIONS, inputData);
 });
