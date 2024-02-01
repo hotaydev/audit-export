@@ -10,13 +10,11 @@ newIssueWelcomeComment: >
 
 # Comment to be posted to on PRs from first time contributors in your repository
 newPRWelcomeComment: >
-  Thanks so much for opening your first PR here!
+  Thanks so much for opening your first PR here! A maintainer will get back to you shortly!
 
 # Configuration for first-pr-merge - https://github.com/behaviorbot/first-pr-merge
 
 # Comment to be posted to on pull requests merged by a first time user
 firstPRMergeComment: >
-  Congrats on merging your first pull request here! :tada: How awesome!<br/><br/>
-  ![Shocked Cat](https://media.giphy.com/media/Cdkk6wFFqisTe/giphy.gif)
-
-# It is recommended to include as many gifs and emojis as possible!
+  Thank you for successfully merging your first pull request here! :tada: <br/></br>
+  We appreciate your valuable contributions :heart:!
