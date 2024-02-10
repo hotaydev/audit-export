@@ -29,7 +29,7 @@ npm install -g audit-export
 You can use the tool in two different main ways:
 
 ```
-npm audit --json | audit-export --folder <_folder_path> --name <file_name.html> --title <HTML_file_title>
+npm audit --json | audit-export --folder <folder_path> --name <file_name.html> --title <HTML_file_title>
 ```
 
 or:
