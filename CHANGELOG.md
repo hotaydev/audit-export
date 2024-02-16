@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [2.1.1](https://github.com/hotaydev/audit-export/compare/v2.1.0...v2.1.1) (2024-02-16)
+
+
+### Enhancements
+
+* adjusted parameter parsing functionality ([7163766](https://github.com/hotaydev/audit-export/commit/71637669c4d8908c4c06ac8b0c2bc9544a6c4fa8))
+
 ## [2.1.0](https://github.com/hotaydev/audit-export/compare/v2.0.0...v2.1.0) (2024-02-16)
 
 
