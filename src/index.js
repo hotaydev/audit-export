@@ -75,7 +75,7 @@ function writeOutput(options, path, data) {
       console.error("Error: Unable to write to file.", err);
       process.exit(1);
     }
-    
+
     console.log("Audit exported successfully!");
     process.exit(0);
   });
@@ -174,7 +174,7 @@ function join(paths) {
  * @returns {string} - Formatted current date string.
  */
 function getCurrentDate() {
-  const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   const d = new Date();
 
   return `${checkNumLength(str(d.getDate()))} of ${months[d.getMonth()]}, ${d.getFullYear()} - ${checkNumLength(str(d.getHours()))}:${checkNumLength(str(d.getMinutes()))}:${checkNumLength(str(d.getSeconds()))}`;
@@ -200,39 +200,89 @@ function checkNumLength(number) {
 }
 
 /**
- * Gets a command line option
- * @param {number} index - Argv index
- * @returns {number} - Option
+ * Processes command line arguments passed to the script.
+ * If a parameter is provided, it invokes the processParameter function to handle it.
+ * If folder or file parameters are provided as positional arguments, it assigns them to the OPTIONS object.
  */
-function processArgument(index) {
-  if(process.argv[index].startsWith("-")) {
-    if(process.argv.length === index) {
-      return index; // Last argument... no value could be extracted
-    }
-    const argumentNameOffsetStart = (process.argv[index].startsWith("--") ? 2 : 1);
-    const argumentName = process.argv[index].substring(argumentNameOffsetStart);
+function processArgument() {
+  const args = process.argv.slice(2);
 
-    if (argumentName === "help") {
-      console.log(HELP_TEXT);
-      process.exit(0);
+  args.forEach((arg, index) => {
+    if (arg.startsWith("--")) {
+      processParameter(arg, args, index);
+    } else if (!OPTIONS.folder) {
+      OPTIONS.folder = arg;
+    } else if (!OPTIONS.file) {
+      OPTIONS.file = arg;
     }
+  });
+}
 
-    OPTIONS[argumentName] = process.argv[index + 1];
-    return index + 1;
-  } else if(!OPTIONS.folder) {
-    OPTIONS.folder = process.argv[index]; // First unnamed arg
-  } else if(!OPTIONS.file) {
-    OPTIONS.file = process.argv[index]; // Second unnamed arg (all other will be skipped)
+/**
+ * Processes a single command line parameter.
+ * Determines the parameter and its value if applicable, then performs the appropriate action.
+ *
+ * @param {string} arg - The command line argument to process.
+ * @param {string[]} args - The array of command line arguments.
+ * @param {number} index - The index of the current argument in the args array.
+ */
+function processParameter(arg, args, index) {
+  let param, value;
+  if (arg.includes("=")) {
+    [param, value] = arg.slice(2).split(/=(.+)/);
+  } else if (args[index + 1] && !args[index + 1].startsWith("--") && arg.slice(2) !== "help") {
+    param = arg.slice(2);
+    value = args[index + 1];
+  } else if (arg.slice(2) !== "help") {
+    console.error(`Error: Missing value for parameter '${arg.slice(2)}'.`);
+    process.exit(1);
+  } else {
+    param = arg.slice(2);
   }
-  return index;
+
+  switch (param) {
+  case "folder":
+  case "file":
+  case "title":
+    handleParameter(param, value);
+    break;
+  case "help":
+    showHelp();
+    break;
+  default:
+    console.error(`Error: Unknown parameter '${param}'.`);
+    process.exit(1);
+  }
 }
 
-// Command-line arguments (simple processor)
-for (let argIndex = 2; argIndex < process.argv.length; argIndex++) {
-  processArgument(argIndex);
+/**
+ * Handles a parameter with its corresponding value.
+ * Assigns the value to the OPTIONS object if it is required.
+ *
+ * @param {string} param - The parameter to handle.
+ * @param {string} value - The value associated with the parameter.
+ */
+function handleParameter(param, value) {
+  if (!value) {
+    console.error(`Error: ${param} parameter requires a value.`);
+    process.exit(1);
+  }
+  OPTIONS[param] = value;
 }
 
-if(!OPTIONS.folder) {
+/**
+ * Displays the help text and exits the script with a success status code.
+ */
+function showHelp() {
+  console.log(HELP_TEXT);
+  process.exit(0);
+}
+
+if (process.argv.length > 2) {
+  processArgument();
+}
+
+if (!OPTIONS.folder) {
   OPTIONS.folder = process.cwd();
 }
 

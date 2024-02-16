@@ -16,6 +16,8 @@ A convenient tool to **export npm audit results** to a comprehensive **offline H
 
 **This package is compatible with Node.js versions 10 through 20, as well as future versions.**
 
+The syntax remains consistent with the earlier version 1.0.0; however, it's advisable to always use the latest version, as it offers numerous new features and enhancements.
+
 ## Installation
 
 Install globally using npm:
