@@ -26,10 +26,18 @@ npm install -g audit-export
 
 ## Usage
 
-You can use the tool in two different main ways:
+The tool is packed with a help function to see the usage ways. To see it, just pass the `--help` option.
+
+The simplest usage is as the following:
 
 ```
-npm audit --json | audit-export --folder <folder_path> --name <file_name.html> --title <HTML_file_title>
+npm audit --json | audit-export
+```
+
+But with more customizations you can use it in two different main ways:
+
+```
+npm audit --json | audit-export --folder <folder_path> --file <file_name.html> --title <HTML_file_title>
 ```
 
 or:

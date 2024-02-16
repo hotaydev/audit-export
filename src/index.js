@@ -11,6 +11,20 @@ const OPTIONS = {
   title: "NPM Audit Report",
   template: join([__dirname, "template.ejs"])
 };
+const HELP_TEXT = `
+  Usage:
+
+    // Option 1
+    $ npm audit --json | audit-export
+
+    // Option 2
+    $ npm audit --json | audit-export <path> <file_name>
+
+    // Option 3
+    $ npm audit --json | audit-export --folder <folder_path> --file <file_name.html> --title <HTML_file_title>
+
+    // All parameters are optional
+`;
 
 /**
  * Processes the input data and writes it to the specified file or folder.
@@ -197,21 +211,25 @@ function processArgument(index) {
     }
     const argumentNameOffsetStart = (process.argv[index].startsWith("--") ? 2 : 1);
     const argumentName = process.argv[index].substring(argumentNameOffsetStart);
+
+    if (argumentName === "help") {
+      console.log(HELP_TEXT);
+      process.exit(0);
+    }
+
     OPTIONS[argumentName] = process.argv[index + 1];
     return index + 1;
-  } else {
-    if(!OPTIONS.folder) {
-      OPTIONS.folder = process.argv[index]; // First unnamed arg
-    } else if(!OPTIONS.file) {
-      OPTIONS.file = process.argv[index]; // Second unnamed arg (all other will be skipped)
-    }
+  } else if(!OPTIONS.folder) {
+    OPTIONS.folder = process.argv[index]; // First unnamed arg
+  } else if(!OPTIONS.file) {
+    OPTIONS.file = process.argv[index]; // Second unnamed arg (all other will be skipped)
   }
   return index;
 }
 
 // Command-line arguments (simple processor)
 for (let argIndex = 2; argIndex < process.argv.length; argIndex++) {
-  argIndex = processArgument(argIndex);
+  processArgument(argIndex);
 }
 
 if(!OPTIONS.folder) {
