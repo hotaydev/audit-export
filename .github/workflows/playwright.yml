@@ -18,6 +18,8 @@ jobs:
           - '18'
           - 'lts/*'
     name: Node ${{ matrix.node-version }} Tests
+    env:
+      WORKING_DIRECTORY: ${{ github.workspace }}
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
@@ -29,7 +31,7 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install chrome firefox
     - name: Generate mock audit report (default options)
-      run: cat .playwright/fixtures/npm-audit.json | ./src/index.js --folder .reports --file npm-audit.html
+      run: cat ${{ github.workspace }}/.playwright/fixtures/npm-audit.json | ./src/index.js --folder ${{ github.workspace }}/.reports --file npm-audit.html
     - name: Run Playwright tests
       run: npx playwright test
     - uses: actions/upload-artifact@v4
