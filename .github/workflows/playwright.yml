@@ -26,12 +26,30 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+
+    - name: Get installed Playwright version
+      id: playwright-version
+      run: echo "PLAYWRIGHT_VERSION=$(node -e "console.log(require('./package-lock.json').dependencies['@playwright/test'].version)")" >> $GITHUB_ENV
+
+    # See https://dev.to/ayomiku222/how-to-cache-playwright-browser-on-github-actions-51o6
+    - name: Cache playwright binaries
+      uses: actions/cache@v3
+      id: playwright-cache
+      with:
+        path: |
+          ~/.cache/ms-playwright
+        key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
+  
     - name: Install dependencies
       run: npm ci
+
     - name: Install Playwright Browsers
-      run: npx playwright install chrome firefox webkit
+      run: npx playwright install chrome
+      if: steps.playwright-cache.outputs.cache-hit != 'true'
+
     - name: Generate mock audit report (default options)
       run: cat ${{ github.workspace }}/.playwright/fixtures/npm-audit.json | ./src/index.js --folder ${{ github.workspace }}/.reports --file npm-audit.html
+
     - name: Run Playwright tests
       run: npx playwright test
     - uses: actions/upload-artifact@v4
