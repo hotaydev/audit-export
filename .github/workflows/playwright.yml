@@ -54,6 +54,10 @@ jobs:
       run: npx playwright install
       if: steps.playwright-cache.outputs.cache-hit != 'true'
 
+    - name: Install Playwright additional dependencies (for WebKit)
+      run: npx playwright install-deps
+      if: matrix.browser == 'webkit'
+
     - name: Generate mock audit report (default options)
       run: cat ${{ github.workspace }}/.playwright/fixtures/npm-audit.json | ./src/index.js --folder ${{ github.workspace }}/.reports --file npm-audit.html
 

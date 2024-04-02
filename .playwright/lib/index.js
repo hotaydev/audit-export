@@ -14,10 +14,7 @@ function inDevelopment() {
 }
 
 function getBrowserConfig() {
-  const config = [{
-    name: "chromium",
-    use: { ...devices["Desktop Chrome"] },
-  }];
+  const config = [];
   if (inDevelopment() || WEB_BROWSER === 'firefox' || usingSetting(PLAYWRIGHT_ENABLE_FIREFOX_BROWSER)) {
     config.push({
       name: "firefox",
@@ -28,6 +25,12 @@ function getBrowserConfig() {
     config.push({
       name: "webkit",
       use: { ...devices["Desktop Safari"] },
+    })
+  }
+  if(inDevelopment() || WEB_BROWSER === 'chromium' || config.length < 1) {
+    config.push({
+      name: "chromium",
+      use: { ...devices["Desktop Chrome"] },
     })
   }
   return config
