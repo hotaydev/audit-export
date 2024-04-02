@@ -15,7 +15,7 @@ jobs:
         node-version:
           - '16'
           - '18'
-          - '22'
+          - '20'
           - 'lts/*'
         browser:
           - 'chromium'
