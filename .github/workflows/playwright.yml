@@ -29,7 +29,7 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install chrome firefox
     - name: Run Playwright tests
-      run: npm run test
+      run: npx playwright test
     - uses: actions/upload-artifact@v4
       if: always()
       with:
