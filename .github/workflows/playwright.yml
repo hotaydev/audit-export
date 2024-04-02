@@ -20,6 +20,7 @@ jobs:
     name: Node ${{ matrix.node-version }} Tests
     env:
       WORKING_DIRECTORY: ${{ github.workspace }}
+      CI: true
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
@@ -44,8 +45,8 @@ jobs:
       run: npm ci
 
     - name: Install Playwright Browsers
-      run: npx playwright install chrome
-      if: steps.playwright-cache.outputs.cache-hit != 'true'
+      run: npx playwright install
+      # if: steps.playwright-cache.outputs.cache-hit != 'true'
 
     - name: Generate mock audit report (default options)
       run: cat ${{ github.workspace }}/.playwright/fixtures/npm-audit.json | ./src/index.js --folder ${{ github.workspace }}/.reports --file npm-audit.html
