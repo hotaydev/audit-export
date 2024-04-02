@@ -28,6 +28,8 @@ jobs:
       run: npm ci
     - name: Install Playwright Browsers
       run: npx playwright install chrome firefox
+    - name: Generate mock audit report (default options)
+      run: cat .playwright/fixtures/npm-audit.json | ./src/index.js --folder .reports --file npm-audit.html
     - name: Run Playwright tests
       run: npx playwright test
     - uses: actions/upload-artifact@v4
@@ -35,4 +37,4 @@ jobs:
       with:
         name: playwright-report
         path: playwright-report/
-        retention-days: 14
+        retention-days: 15
