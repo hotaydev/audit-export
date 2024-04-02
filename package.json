@@ -46,9 +46,7 @@
     "globals": "^15.0.0"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.0.2",
     "@playwright/test": "^1.42.1",
-    "@types/node": "^20.12.2",
     "commit-and-tag-version": "^12.2.0",
     "eslint": "^8.57.0"
   },
