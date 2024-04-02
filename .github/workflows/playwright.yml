@@ -13,8 +13,6 @@ jobs:
       matrix:
         # See https://endoflife.date/nodejs
         node-version:
-          - '12'
-          - '14'
           - '16'
           - '18'
           - '22'
