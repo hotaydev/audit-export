@@ -135,6 +135,7 @@ dist
 .idea/
 .vscode/
 *.code-workspace
+.reports/
 .tool-versions
 /test-results/
 /playwright-report/
