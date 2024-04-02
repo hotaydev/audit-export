@@ -29,7 +29,7 @@ jobs:
     - name: Install dependencies
       run: npm ci
     - name: Install Playwright Browsers
-      run: npx playwright install chrome firefox
+      run: npx playwright install chrome firefox webkit
     - name: Generate mock audit report (default options)
       run: cat ${{ github.workspace }}/.playwright/fixtures/npm-audit.json | ./src/index.js --folder ${{ github.workspace }}/.reports --file npm-audit.html
     - name: Run Playwright tests
