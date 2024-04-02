@@ -136,3 +136,7 @@ dist
 .vscode/
 *.code-workspace
 .tool-versions
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
