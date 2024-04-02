@@ -11,7 +11,12 @@ jobs:
     runs-on: ubuntu-latest
     strategy: 
       matrix:
-        node-version: ['12', '14', '16', '18', 'lts/*']
+        node-version: 
+          # - '12'
+          # - '14'
+          - '16'
+          - '18'
+          - 'lts/*'
     name: Node ${{ matrix.node-version }} Tests
     steps:
     - uses: actions/checkout@v4
