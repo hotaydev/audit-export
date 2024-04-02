@@ -1,6 +1,7 @@
 // @ts-check
-const { defineConfig, devices } = require("@playwright/test");
+const { defineConfig} = require("@playwright/test");
 const path = require("path");
+const { getBrowserConfig } = require("./.playwright/lib");
 
 /**
  * Read environment variables from file.
@@ -34,22 +35,7 @@ module.exports = defineConfig({
 
   /* Configure projects for major browsers */
   projects: [
-    {
-      name: "chromium",
-      use: { ...devices["Desktop Chrome"] },
-    },
-
-    {
-      name: "firefox",
-      use: { ...devices["Desktop Firefox"] },
-    },
-
-    /* Test against WebKit. */
-    // {
-    //   name: "webkit",
-    //   use: { ...devices["Desktop Safari"] },
-    // },
-
+    ...getBrowserConfig(),
     /* Test against mobile viewports. */
     // {
     //   name: 'Mobile Chrome',

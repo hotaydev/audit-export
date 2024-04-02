@@ -1,7 +1,7 @@
 name: Playwright Tests
 on:
   push:
-    branches: 
+    branches:
       - main
   pull_request:
 
@@ -9,14 +9,18 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
-    strategy: 
+    strategy:
       matrix:
-        node-version: 
+        node-version:
           # - '12'
           # - '14'
           - '16'
           - '18'
           - 'lts/*'
+        browser:
+          - 'chromium'
+          - 'firefox'
+          - 'webkit'
     name: Node ${{ matrix.node-version }} Tests
     env:
       WORKING_DIRECTORY: ${{ github.workspace }}
@@ -34,10 +38,6 @@ jobs:
         calculatedSha=$(git rev-parse --short ${{ github.sha }})
         echo "COMMIT_SHORT_SHA=$calculatedSha" >> $GITHUB_ENV
 
-    # - name: Get installed Playwright version
-    #   id: playwright-version
-    #   run: echo "PLAYWRIGHT_VERSION=$(node -e "console.log(require('./package-lock.json').devDependencies['@playwright/test'].version)")" >> $GITHUB_ENV
-
     # See https://dev.to/ayomiku222/how-to-cache-playwright-browser-on-github-actions-51o6
     - name: Cache playwright binaries
       uses: actions/cache@v3
@@ -46,7 +46,7 @@ jobs:
         path: |
           ~/.cache/ms-playwright
         key: ${{ runner.os }}-playwright-${{ env.COMMIT_SHORT_SHA }}
-  
+
     - name: Install dependencies
       run: npm ci
 
@@ -57,8 +57,11 @@ jobs:
     - name: Generate mock audit report (default options)
       run: cat ${{ github.workspace }}/.playwright/fixtures/npm-audit.json | ./src/index.js --folder ${{ github.workspace }}/.reports --file npm-audit.html
 
-    - name: Run Playwright tests
+    - name: Run Playwright tests for ${{ matrix.browser }}
+      env:
+        WEB_BROWSER: ${{ matrix.browser }}
       run: npx playwright test
+
     - uses: actions/upload-artifact@v4
       if: always()
       with:
