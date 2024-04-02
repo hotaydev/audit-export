@@ -21,7 +21,7 @@ jobs:
           - 'chromium'
           - 'firefox'
           - 'webkit'
-    name: Node ${{ matrix.node-version }} Tests
+    name: Node ${{ matrix.node-version }} (with ${{ matrix.browser }} browser) tests
     env:
       WORKING_DIRECTORY: ${{ github.workspace }}
       CI: true
