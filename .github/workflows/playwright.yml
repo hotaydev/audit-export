@@ -46,7 +46,7 @@ jobs:
 
     - name: Install Playwright Browsers
       run: npx playwright install
-      # if: steps.playwright-cache.outputs.cache-hit != 'true'
+      if: steps.playwright-cache.outputs.cache-hit != 'true'
 
     - name: Generate mock audit report (default options)
       run: cat ${{ github.workspace }}/.playwright/fixtures/npm-audit.json | ./src/index.js --folder ${{ github.workspace }}/.reports --file npm-audit.html
@@ -59,3 +59,4 @@ jobs:
         name: playwright-report
         path: playwright-report/
         retention-days: 15
+        overwrite: true
