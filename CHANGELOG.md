@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [2.1.3](https://github.com/hotaydev/audit-export/compare/v2.1.2...v2.1.3) (2024-04-03)
+
+
+### Bug Fixes
+
+* npm ignoring unecessary files ([f837393](https://github.com/hotaydev/audit-export/commit/f837393745c67eb2e1bdd6392297e8346bb09c9c))
+
 ## [2.1.2](https://github.com/hotaydev/audit-export/compare/v2.1.1...v2.1.2) (2024-04-03)
 
 
