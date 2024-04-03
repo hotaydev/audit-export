@@ -10,6 +10,8 @@
     "lint:check": "eslint ./src/**/*.js",
     "lint:fix": "eslint ./src/**/*.js --fix",
     "prepare": "git init && git config --local core.hooksPath .hooks/",
+    "pretest": "cat .playwright/fixtures/npm-audit.json | ./src/index.js --folder .reports --file npm-audit.html",
+    "test": "playwright test",
     "release": "commit-and-tag-version",
     "pre-release": "commit-and-tag-version --prerelease beta"
   },
@@ -40,9 +42,11 @@
   },
   "dependencies": {
     "ejs": "^3.1.9",
-    "fs-extra": "^11.2.0"
+    "fs-extra": "^11.2.0",
+    "globals": "^15.0.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.42.1",
     "commit-and-tag-version": "^12.2.0",
     "eslint": "^8.57.0"
   },
