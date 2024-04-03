@@ -2,11 +2,11 @@
 const { test, expect } = require("@playwright/test");
 
 test.beforeEach(async ({ page }) => {
-  await page.goto("npm-audit.html");
+  await page.goto("npm-audit-v10.html");
 });
 
 test("has the expected title", async ({ page }) => {
-  await expect(page).toHaveTitle(/NPM Audit Report/);
+  await expect(page).toHaveTitle(/playwright-test/);
 });
 
 test("reports the total number of vulnerabilities", async ({ page }) => {

@@ -2,7 +2,7 @@
 const { test, expect } = require("@playwright/test");
 
 test.beforeEach(async ({ page }) => {
-  await page.goto("npm-audit.html");
+  await page.goto("npm-audit-v16.html");
 });
 
 test("displays the rows for critical vulnerabilities", async ({ page }) => {

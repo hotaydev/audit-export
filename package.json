@@ -10,14 +10,20 @@
     "lint:check": "eslint ./src/**/*.js",
     "lint:fix": "eslint ./src/**/*.js --fix",
     "prepare": "git init && git config --local core.hooksPath .hooks/",
-    "pretest": "cat .playwright/fixtures/npm-audit.json | ./src/index.js --folder .reports --file npm-audit.html",
+    "playwright:install": "npx playwright install",
+    "test:prepare:nodev10": "cat .playwright/fixtures/npm-audit-v10.json | node ./src/index.js --folder . --file npm-audit-v10.html --title playwright-test",
+    "test:prepare:nodev16": "cat .playwright/fixtures/npm-audit-v16.json | node ./src/index.js --folder . --file npm-audit-v16.html --title playwright-test",
+    "pretest": "npm run playwright:install && npm run test:prepare:nodev10 && npm run test:prepare:nodev16",
     "test": "playwright test",
     "release": "commit-and-tag-version",
     "pre-release": "commit-and-tag-version --prerelease beta"
   },
   "author": "Hotay <hi@hotay.dev>",
   "contributors": [
-    "TaylorHo <taylor@hotay.dev>"
+    "TaylorHo <taylor@hotay.dev>",
+    "Camilo Bernal <https://github.com/CamiloBernal>",
+    "VeekeeFr <https://github.com/VeekeeFr>",
+    "Uchenna Chilaka <https://github.com/uchilaka>"
   ],
   "keywords": [
     "security",
@@ -42,8 +48,7 @@
   },
   "dependencies": {
     "ejs": "^3.1.9",
-    "fs-extra": "^11.2.0",
-    "globals": "^15.0.0"
+    "fs-extra": "^11.2.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.42.1",

@@ -13,6 +13,9 @@ jobs:
       matrix:
         # See https://endoflife.date/nodejs
         node-version:
+          - '10'
+          - '12'
+          - '14'
           - '16'
           - '18'
           - '20'
@@ -40,7 +43,7 @@ jobs:
 
     # See https://dev.to/ayomiku222/how-to-cache-playwright-browser-on-github-actions-51o6
     - name: Cache playwright binaries
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       id: playwright-cache
       with:
         path: |
@@ -58,8 +61,11 @@ jobs:
       run: npx playwright install-deps
       if: matrix.browser == 'webkit'
 
-    - name: Generate mock audit report (default options)
-      run: cat ${{ github.workspace }}/.playwright/fixtures/npm-audit.json | ./src/index.js --folder ${{ github.workspace }}/.reports --file npm-audit.html
+    - name: Generate mock audit report for Node v10 ~ v14 (default options)
+      run: cat ${{ github.workspace }}/.playwright/fixtures/npm-audit-v10.json | node ./src/index.js --folder ${{ github.workspace }}/ --file npm-audit-v10.html --title playwright-test
+
+    - name: Generate mock audit report for Node v16 ~ lts (default options)
+      run: cat ${{ github.workspace }}/.playwright/fixtures/npm-audit-v16.json | node ./src/index.js --folder ${{ github.workspace }}/ --file npm-audit-v16.html --title playwright-test
 
     - name: Run Playwright tests for ${{ matrix.browser }}
       env:
