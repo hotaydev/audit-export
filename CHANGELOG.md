@@ -2,6 +2,46 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [2.1.2](https://github.com/hotaydev/audit-export/compare/v2.1.1...v2.1.2) (2024-04-03)
+
+
+### Bug Fixes
+
+* (WIP) generate mock npm audit ([e7250c6](https://github.com/hotaydev/audit-export/commit/e7250c641088abc7514e47cbe6c49c8791d94a7f))
+* ejs install error ([fb000ce](https://github.com/hotaydev/audit-export/commit/fb000ce2a0324b73f9b723b993b659f1a387c8a2))
+* running based on mock scan data ([980a91f](https://github.com/hotaydev/audit-export/commit/980a91f28489ed79a8661dc2e73aa5e9deaed998))
+
+
+### Enhancements
+
+* (WIP) dialing back parallel runs ([f47bcac](https://github.com/hotaydev/audit-export/commit/f47bcac9a29da3d9b7b2fe5345498417b8d963d5))
+* (WIP) explicitly versioning reports ([f50f6e8](https://github.com/hotaydev/audit-export/commit/f50f6e890b798e8c373ca3af94525f17fc5778b7))
+* (WIP) support for working directory ([2092be0](https://github.com/hotaydev/audit-export/commit/2092be0ca30be4f0d300fa5fee9ee3bee467f636))
+* (WIP) try using npx instead ([e5e9722](https://github.com/hotaydev/audit-export/commit/e5e9722f76b58012ea8648a87162de4f3bf3580b))
+* (WIP) trying from v16 ([ec1de03](https://github.com/hotaydev/audit-export/commit/ec1de0347090d1c977cd0026cd04117fd944e84f))
+* (WIP) tweak github actions config ([b600468](https://github.com/hotaydev/audit-export/commit/b60046822f50e56d0b01c4451ac6b1a7811ed08c))
+* (WIP) using just chrome while getting things working ([08ce8e4](https://github.com/hotaydev/audit-export/commit/08ce8e45acb8c7fb34f58ea6d8dff0a8a7a90d8d))
+* (WIP) webkit dependencies ([36e43b2](https://github.com/hotaydev/audit-export/commit/36e43b2d2da87bd3a552315cfe963644584020e3))
+* +firefox ([124fd63](https://github.com/hotaydev/audit-export/commit/124fd638f7de7bfc5b59334c16c4529e5df74db6))
+* +webkit ([c077524](https://github.com/hotaydev/audit-export/commit/c0775247c9487894f17614b36bcfee404e528462))
+* add browser to test name ([3435d64](https://github.com/hotaydev/audit-export/commit/3435d6416faddc721164561d5c88888a4300a9a2))
+* allow overwriting playwright report ([e6d82d0](https://github.com/hotaydev/audit-export/commit/e6d82d0e0cc180c604c51071ec7c87169dbda059))
+* cleanup to focus on playwright setup ([9ade4f2](https://github.com/hotaydev/audit-export/commit/9ade4f228d93f26811988f884ef7c1c6c1584e7e))
+* code review ([8e3d4ed](https://github.com/hotaydev/audit-export/commit/8e3d4ed9244fb1104fe37bf1a6d71ccbefc08791))
+* gitignore updates ([3c23192](https://github.com/hotaydev/audit-export/commit/3c23192b9438e5b442b10f69d65c0a55b60eb7ce))
+* playwright specs & nodejs testing strategy ([98c3995](https://github.com/hotaydev/audit-export/commit/98c3995e1e51e642d1a367f617b892d57c6f37f2))
+* remove extraneous dependencies ([4514718](https://github.com/hotaydev/audit-export/commit/4514718c9ad4c224def6122c5e080a169f149ecf))
+* remove nodejs v12 and v14 ([0e1a365](https://github.com/hotaydev/audit-export/commit/0e1a365c9031848d2d63d8d102a691f17fb07b8a))
+* removing some browsers ([12ec0f8](https://github.com/hotaydev/audit-export/commit/12ec0f88e17c7c14fb0789e39743c67cb754f1d5))
+* SAVEPOINT ([24ee940](https://github.com/hotaydev/audit-export/commit/24ee940c56f38498f2dca732ef5af327a0a9591c))
+* SAVEPOINT ([aaca710](https://github.com/hotaydev/audit-export/commit/aaca710b1f78a0d32ad3756c6441e25ffff675aa))
+* shorter test name and bringing all the nodejs versions back 🤞🏾 ([9714778](https://github.com/hotaydev/audit-export/commit/9714778919c40c6b8303a62b73b6fbb0444c2142))
+* support for browser tests ([4dcf959](https://github.com/hotaydev/audit-export/commit/4dcf9598ca0f9f2feda486ec34211bf5f19b3eb3))
+* testing nodejs v20 instead (v22 unavailable) ([a7c66c0](https://github.com/hotaydev/audit-export/commit/a7c66c0233f7281fce3bf8a7267ed5847b21df8a))
+* update .gitignore ([8cdec1e](https://github.com/hotaydev/audit-export/commit/8cdec1e8f9eae5b6f6bcc44ba7632cf00febc84f))
+* upgraded dependency ([133d8f5](https://github.com/hotaydev/audit-export/commit/133d8f571240ea7eefed962f953bc9387bfaa0f2))
+* using the old format for audit export ([f8dee29](https://github.com/hotaydev/audit-export/commit/f8dee29d79e84bccd7e338f08faccced8b4671ff))
+
 ## [2.1.1](https://github.com/hotaydev/audit-export/compare/v2.1.0...v2.1.1) (2024-02-16)
 
 
