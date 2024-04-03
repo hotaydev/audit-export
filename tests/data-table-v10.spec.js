@@ -7,20 +7,25 @@ test.beforeEach(async ({ page }) => {
 
 test("displays the rows for critical vulnerabilities", async ({ page }) => {
   const criticalRows = page.locator("tbody > tr > td > .badge.critical");
-  await expect(criticalRows).toHaveCount(4);
+  await expect(criticalRows).toHaveCount(0);
 });
 
 test("displays the rows for high vulnerabilities", async ({ page }) => {
   const highRows = page.locator("tbody > tr > td > .badge.high");
-  await expect(highRows).toHaveCount(30);
+  await expect(highRows).toHaveCount(2);
 });
 
 test("displays the rows for moderate vulnerabilities", async ({ page }) => {
   const moderateRows = page.locator("tbody > tr > td > .badge.moderate");
-  await expect(moderateRows).toHaveCount(17);
+  await expect(moderateRows).toHaveCount(4);
 });
 
 test("displays the rows for low vulnerabilities", async ({ page }) => {
   const lowRows = page.locator("tbody > tr > td > .badge.low");
-  await expect(lowRows).toHaveCount(3);
+  await expect(lowRows).toHaveCount(0);
+});
+
+test("displays the rows for info vulnerabilities", async ({ page }) => {
+  const lowRows = page.locator("tbody > tr > td > .badge.informative");
+  await expect(lowRows).toHaveCount(0);
 });

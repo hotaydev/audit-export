@@ -24,3 +24,8 @@ test("displays the rows for low vulnerabilities", async ({ page }) => {
   const lowRows = page.locator("tbody > tr > td > .badge.low");
   await expect(lowRows).toHaveCount(3);
 });
+
+test("displays the rows for info vulnerabilities", async ({ page }) => {
+  const lowRows = page.locator("tbody > tr > td > .badge.informative");
+  await expect(lowRows).toHaveCount(0);
+});

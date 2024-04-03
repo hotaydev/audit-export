@@ -10,11 +10,11 @@ test("has the expected title", async ({ page }) => {
 });
 
 test("reports the total number of vulnerabilities", async ({ page }) => {
-  await expect(page.getByText("Vulnerabilities Found: 54")).toBeVisible();
+  await expect(page.getByText("Vulnerabilities Found: 6")).toBeVisible();
 });
 
 test("displays the number of vulnerable dependencies", async ({ page }) => {
-  await expect(page.getByText("Vulnerable Dependencies: 36")).toBeVisible();
+  await expect(page.getByText("Vulnerable Dependencies: 4")).toBeVisible();
 });
 
 test("displays the date when the report was last updated", async ({ page }) => {
@@ -22,19 +22,19 @@ test("displays the date when the report was last updated", async ({ page }) => {
 });
 
 test("displays the number of critical vulnerabilities", async ({ page }) => {
-  await expect(page.getByText("Critical: 4")).toBeVisible();
+  await expect(page.getByText("Critical: 0")).toBeVisible();
 });
 
 test("displays the number of high vulnerabilities", async ({ page }) => {
-  await expect(page.getByText("High: 30")).toBeVisible();
+  await expect(page.getByText("High: 2")).toBeVisible();
 });
 
 test("displays the number of moderate vulnerabilities", async ({ page }) => {
-  await expect(page.getByText("Moderate: 17")).toBeVisible();
+  await expect(page.getByText("Moderate: 4")).toBeVisible();
 });
 
 test("displays the number of low vulnerabilities", async ({ page }) => {
-  await expect(page.getByText("Low: 3")).toBeVisible();
+  await expect(page.getByText("Low: 0")).toBeVisible();
 });
 
 test("displays the number of informative vulnerabilities", async ({ page }) => {
