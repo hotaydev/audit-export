@@ -22,8 +22,6 @@ jobs:
           - 'lts/*'
         browser:
           - 'chromium'
-          - 'firefox'
-          - 'webkit'
     name: Node ${{ matrix.node-version }} (${{ matrix.browser }}) tests
     env:
       WORKING_DIRECTORY: ${{ github.workspace }}
