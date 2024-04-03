@@ -11,17 +11,12 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        # See https://endoflife.date/nodejs
         node-version:
-          - '10'
-          - '12'
-          - '14'
-          - '16'
-          - '18'
-          - '20'
           - 'lts/*'
         browser:
           - 'chromium'
+          - 'firefox'
+          - 'webkit'
     name: Node ${{ matrix.node-version }} (${{ matrix.browser }}) tests
     env:
       WORKING_DIRECTORY: ${{ github.workspace }}
@@ -49,7 +44,7 @@ jobs:
         key: ${{ runner.os }}-playwright-${{ env.COMMIT_SHORT_SHA }}
 
     - name: Install dependencies
-      run: rm -rf package-lock.json && npm install
+      run: npm ci
 
     - name: Install Playwright Browsers
       run: npx playwright install
