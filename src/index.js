@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 
 const fs = require("fs-extra");
-const os = require("os");
+const os = require("node:os");
 const ejs = require("ejs");
 
 const OUTPUT_FILE_NAME = "audit-report.html";
 const OPTIONS = {
-  folder: undefined,
-  file: undefined,
-  title: "NPM Audit Report",
-  template: join([__dirname, "template.ejs"])
+	folder: undefined,
+	file: undefined,
+	title: "NPM Audit Report",
+	template: join([__dirname, "template.ejs"]),
 };
 const HELP_TEXT = `
   Usage:
@@ -32,8 +32,8 @@ const HELP_TEXT = `
  * @param {string} inputData - Data read from stdin.
  */
 function processInput(options, inputData) {
-  const finalPath = getFinalPath(options.folder, options.file);
-  writeIfFolderExists(options, finalPath, inputData);
+	const finalPath = getFinalPath(options.folder, options.file);
+	writeIfFolderExists(options, finalPath, inputData);
 }
 
 /**
@@ -43,7 +43,9 @@ function processInput(options, inputData) {
  * @returns {string} - The final path to write the output.
  */
 function getFinalPath(folderPath, filePath) {
-  return filePath ? join([folderPath, filePath]) : join([folderPath, OUTPUT_FILE_NAME]);
+	return filePath
+		? join([folderPath, filePath])
+		: join([folderPath, OUTPUT_FILE_NAME]);
 }
 
 /**
@@ -53,13 +55,13 @@ function getFinalPath(folderPath, filePath) {
  * @param {string} data - Data to be written to the file.
  */
 function writeIfFolderExists(options, finalPath, data) {
-  fs.access(options.folder, fs.constants.F_OK, (err) => {
-    if (err) {
-      console.error("Error: The provided folder does not exist.");
-      process.exit(1);
-    }
-    writeOutput(options, finalPath, data);
-  });
+	fs.access(options.folder, fs.constants.F_OK, (err) => {
+		if (err) {
+			console.error("Error: The provided folder does not exist.");
+			process.exit(1);
+		}
+		writeOutput(options, finalPath, data);
+	});
 }
 
 /**
@@ -69,16 +71,16 @@ function writeIfFolderExists(options, finalPath, data) {
  * @param {string} data - Data to be written to the file.
  */
 function writeOutput(options, path, data) {
-  const output = generateHtmlTemplateContent(options, data);
-  fs.writeFile(path, output, (err) => {
-    if (err) {
-      console.error("Error: Unable to write to file.", err);
-      process.exit(1);
-    }
+	const output = generateHtmlTemplateContent(options, data);
+	fs.writeFile(path, output, (err) => {
+		if (err) {
+			console.error("Error: Unable to write to file.", err);
+			process.exit(1);
+		}
 
-    console.log("Audit exported successfully!");
-    process.exit(0);
-  });
+		console.log("Audit exported successfully!");
+		process.exit(0);
+	});
 }
 
 /**
@@ -88,24 +90,26 @@ function writeOutput(options, path, data) {
  * @returns {string} - HTML content generated from the template.
  */
 function generateHtmlTemplateContent(options, data) {
-  const TEMPLATE = fs.readFileSync(options.template, "utf-8");
+	const TEMPLATE = fs.readFileSync(options.template, "utf-8");
 
-  const vulnerabilities = getVulnerabilities(JSON.parse(data));
+	const vulnerabilities = getVulnerabilities(JSON.parse(data));
 
-  const templateData = {
-    npmReportTitle: options.title,
-    vulnsFound: vulnerabilities.length,
-    vulnerableDependencies: [...new Set(vulnerabilities.map((vuln) => vuln.package))].length,
-    currentDate: getCurrentDate(),
-    criticalVulns: countVulnerabilities(vulnerabilities, "critical"),
-    highVulns: countVulnerabilities(vulnerabilities, "high"),
-    moderateVulns: countVulnerabilities(vulnerabilities, "moderate"),
-    lowVulns: countVulnerabilities(vulnerabilities, "low"),
-    infoVulns: countVulnerabilities(vulnerabilities, "info"),
-    vulnerabilities: vulnerabilities,
-  };
+	const templateData = {
+		npmReportTitle: options.title,
+		vulnsFound: vulnerabilities.length,
+		vulnerableDependencies: [
+			...new Set(vulnerabilities.map((vuln) => vuln.package)),
+		].length,
+		currentDate: getCurrentDate(),
+		criticalVulns: countVulnerabilities(vulnerabilities, "critical"),
+		highVulns: countVulnerabilities(vulnerabilities, "high"),
+		moderateVulns: countVulnerabilities(vulnerabilities, "moderate"),
+		lowVulns: countVulnerabilities(vulnerabilities, "low"),
+		infoVulns: countVulnerabilities(vulnerabilities, "info"),
+		vulnerabilities: vulnerabilities,
+	};
 
-  return ejs.render(TEMPLATE, templateData);
+	return ejs.render(TEMPLATE, templateData);
 }
 
 /**
@@ -115,7 +119,7 @@ function generateHtmlTemplateContent(options, data) {
  * @returns {number} - Number of vulnerabilities with the specified severity.
  */
 function countVulnerabilities(vulnerabilities, severity) {
-  return vulnerabilities.filter((vuln) => vuln.severity === severity).length;
+	return vulnerabilities.filter((vuln) => vuln.severity === severity).length;
 }
 
 /**
@@ -124,19 +128,21 @@ function countVulnerabilities(vulnerabilities, severity) {
  * @returns {Array} - Array of processed vulnerability objects.
  */
 function getVulnerabilities(data) {
-  let allVulns = [];
+	const allVulns = [];
 
-  if (data.vulnerabilities) {
-    for (const pkg in data.vulnerabilities) {
-      allVulns.push(...data.vulnerabilities[pkg].via);
-    }
-  } else if (data.advisories) {
-    for (const vuln in data.advisories) {
-      allVulns.push(data.advisories[vuln]);
-    }
-  }
+	if (data.vulnerabilities) {
+		for (const pkg in data.vulnerabilities) {
+			allVulns.push(...data.vulnerabilities[pkg].via);
+		}
+	} else if (data.advisories) {
+		for (const vuln in data.advisories) {
+			allVulns.push(data.advisories[vuln]);
+		}
+	}
 
-  return allVulns.map((vuln) => processVulnerability(vuln)).filter(vuln => vuln);
+	return allVulns
+		.map((vuln) => processVulnerability(vuln))
+		.filter((vuln) => vuln);
 }
 
 /**
@@ -145,16 +151,19 @@ function getVulnerabilities(data) {
  * @returns {Object} - Processed vulnerability object.
  */
 function processVulnerability(vuln) {
-  if (vuln.title) {
-    return {
-      link: vuln.url,
-      name: vuln.title,
-      package: vuln.name || vuln.module_name,
-      severity: vuln.severity,
-      severity_number: getNumberOfSeverity(vuln.severity),
-      cwes: (vuln.cwe || []).concat(vuln.cves).filter((cwe) => cwe).join(", "),
-    };
-  }
+	if (vuln.title) {
+		return {
+			link: vuln.url,
+			name: vuln.title,
+			package: vuln.name || vuln.module_name,
+			severity: vuln.severity,
+			severity_number: getNumberOfSeverity(vuln.severity),
+			cwes: (vuln.cwe || [])
+				.concat(vuln.cves)
+				.filter((cwe) => cwe)
+				.join(", "),
+		};
+	}
 }
 
 /**
@@ -163,22 +172,22 @@ function processVulnerability(vuln) {
  * @returns {number} - Number of the severity, from 0 to 5
  */
 function getNumberOfSeverity(severity) {
-  switch (severity) {
-    case "critical":
-      return 5;
-    case "high":
-      return 4;
-    case "moderate":
-      return 3;
-    case "low":
-      return 2;
-    case "info":
-      return 1;
-    case "none":
-      return 0;
-    default:
-      return 0;
-  }
+	switch (severity) {
+		case "critical":
+			return 5;
+		case "high":
+			return 4;
+		case "moderate":
+			return 3;
+		case "low":
+			return 2;
+		case "info":
+			return 1;
+		case "none":
+			return 0;
+		default:
+			return 0;
+	}
 }
 
 /**
@@ -187,11 +196,11 @@ function getNumberOfSeverity(severity) {
  * @returns {string} - The joined path string.
  */
 function join(paths) {
-  if (os.platform() === "win32") {
-    return paths.join("\\");
-  } else {
-    return paths.join("/");
-  }
+	if (os.platform() === "win32") {
+		return paths.join("\\");
+	}
+
+	return paths.join("/");
 }
 
 /**
@@ -199,10 +208,23 @@ function join(paths) {
  * @returns {string} - Formatted current date string.
  */
 function getCurrentDate() {
-  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-  const d = new Date();
+	const months = [
+		"January",
+		"February",
+		"March",
+		"April",
+		"May",
+		"June",
+		"July",
+		"August",
+		"September",
+		"October",
+		"November",
+		"December",
+	];
+	const d = new Date();
 
-  return `${checkNumLength(str(d.getDate()))} of ${months[d.getMonth()]}, ${d.getFullYear()} - ${checkNumLength(str(d.getHours()))}:${checkNumLength(str(d.getMinutes()))}:${checkNumLength(str(d.getSeconds()))}`;
+	return `${checkNumLength(str(d.getDate()))} of ${months[d.getMonth()]}, ${d.getFullYear()} - ${checkNumLength(str(d.getHours()))}:${checkNumLength(str(d.getMinutes()))}:${checkNumLength(str(d.getSeconds()))}`;
 }
 
 /**
@@ -211,7 +233,7 @@ function getCurrentDate() {
  * @returns {string} - The converted string.
  */
 function str(string) {
-  return string.toString();
+	return string.toString();
 }
 
 /**
@@ -220,8 +242,8 @@ function str(string) {
  * @returns {string} - Number with a leading zero if necessary.
  */
 function checkNumLength(number) {
-  if (number.length === 2) return number;
-  return `0${number}`;
+	if (number.length === 2) return number;
+	return `0${number}`;
 }
 
 /**
@@ -230,17 +252,17 @@ function checkNumLength(number) {
  * If folder or file parameters are provided as positional arguments, it assigns them to the OPTIONS object.
  */
 function processArgument() {
-  const args = process.argv.slice(2);
+	const args = process.argv.slice(2);
 
-  args.forEach((arg, index) => {
-    if (arg.startsWith("--")) {
-      processParameter(arg, args, index);
-    } else if (!OPTIONS.folder) {
-      OPTIONS.folder = arg;
-    } else if (!OPTIONS.file) {
-      OPTIONS.file = arg;
-    }
-  });
+	args.forEach((arg, index) => {
+		if (arg.startsWith("--")) {
+			processParameter(arg, args, index);
+		} else if (!OPTIONS.folder) {
+			OPTIONS.folder = arg;
+		} else if (!OPTIONS.file) {
+			OPTIONS.file = arg;
+		}
+	});
 }
 
 /**
@@ -252,32 +274,38 @@ function processArgument() {
  * @param {number} index - The index of the current argument in the args array.
  */
 function processParameter(arg, args, index) {
-  let param, value;
-  if (arg.includes("=")) {
-    [param, value] = arg.slice(2).split(/=(.+)/);
-  } else if (args[index + 1] && !args[index + 1].startsWith("--") && arg.slice(2) !== "help") {
-    param = arg.slice(2);
-    value = args[index + 1];
-  } else if (arg.slice(2) !== "help") {
-    console.error(`Error: Missing value for parameter '${arg.slice(2)}'.`);
-    process.exit(1);
-  } else {
-    param = arg.slice(2);
-  }
+	let param;
+	let value;
 
-  switch (param) {
-    case "folder":
-    case "file":
-    case "title":
-      handleParameter(param, value);
-      break;
-    case "help":
-      showHelp();
-      break;
-    default:
-      console.error(`Error: Unknown parameter '${param}'.`);
-      process.exit(1);
-  }
+	if (arg.includes("=")) {
+		[param, value] = arg.slice(2).split(/=(.+)/);
+	} else if (
+		args[index + 1] &&
+		!args[index + 1].startsWith("--") &&
+		arg.slice(2) !== "help"
+	) {
+		param = arg.slice(2);
+		value = args[index + 1];
+	} else if (arg.slice(2) !== "help") {
+		console.error(`Error: Missing value for parameter '${arg.slice(2)}'.`);
+		process.exit(1);
+	} else {
+		param = arg.slice(2);
+	}
+
+	switch (param) {
+		case "folder":
+		case "file":
+		case "title":
+			handleParameter(param, value);
+			break;
+		case "help":
+			showHelp();
+			break;
+		default:
+			console.error(`Error: Unknown parameter '${param}'.`);
+			process.exit(1);
+	}
 }
 
 /**
@@ -288,27 +316,27 @@ function processParameter(arg, args, index) {
  * @param {string} value - The value associated with the parameter.
  */
 function handleParameter(param, value) {
-  if (!value) {
-    console.error(`Error: ${param} parameter requires a value.`);
-    process.exit(1);
-  }
-  OPTIONS[param] = value;
+	if (!value) {
+		console.error(`Error: ${param} parameter requires a value.`);
+		process.exit(1);
+	}
+	OPTIONS[param] = value;
 }
 
 /**
  * Displays the help text and exits the script with a success status code.
  */
 function showHelp() {
-  console.log(HELP_TEXT);
-  process.exit(0);
+	console.log(HELP_TEXT);
+	process.exit(0);
 }
 
 if (process.argv.length > 2) {
-  processArgument();
+	processArgument();
 }
 
 if (!OPTIONS.folder) {
-  OPTIONS.folder = process.cwd();
+	OPTIONS.folder = process.cwd();
 }
 
 // Set encoding for stdin
@@ -318,11 +346,11 @@ process.stdin.setEncoding("utf8");
 let inputData = "";
 
 // Read data from stdin
-process.stdin.on("data", chunk => {
-  inputData += chunk;
+process.stdin.on("data", (chunk) => {
+	inputData += chunk;
 });
 
 // Read data from stdin
 process.stdin.on("end", () => {
-  processInput(OPTIONS, inputData);
+	processInput(OPTIONS, inputData);
 });

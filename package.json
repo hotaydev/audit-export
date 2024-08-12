@@ -7,8 +7,7 @@
     "audit-export": "src/index.js"
   },
   "scripts": {
-    "lint:check": "eslint ./src/**/*.js",
-    "lint:fix": "eslint ./src/**/*.js --fix",
+    "format": "npx @biomejs/biome check --write ./src/",
     "prepare": "git init && git config --local core.hooksPath .hooks/",
     "playwright:install": "npx playwright install",
     "test:prepare:nodev10": "cat .playwright/fixtures/npm-audit-v10.json | node ./src/index.js --folder . --file npm-audit-v10.html --title playwright-test",
@@ -51,9 +50,9 @@
     "fs-extra": "^11.2.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.8.3",
     "@playwright/test": "^1.46.0",
-    "commit-and-tag-version": "^12.4.1",
-    "eslint": "^8.57.0"
+    "commit-and-tag-version": "^12.4.1"
   },
   "commit-and-tag-version": {
     "types": [
