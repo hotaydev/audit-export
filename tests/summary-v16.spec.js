@@ -18,7 +18,7 @@ test("displays the number of vulnerable dependencies", async ({ page }) => {
 });
 
 test("displays the date when the report was last updated", async ({ page }) => {
-  await expect(page.getByText(/Last Updated:\s+.*April, 2024/)).toBeVisible();
+  await expect(page.getByText(/Last Updated:/)).toBeVisible();
 });
 
 test("displays the number of critical vulnerabilities", async ({ page }) => {

@@ -4,7 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= npmReportTitle %></title>
+  <title>
+    <%= npmReportTitle %>
+  </title>
   <style>
     * {
       margin: 0;
@@ -60,7 +62,8 @@
       flex-direction: column;
     }
 
-    .vulnerability-category strong, .info-block strong {
+    .vulnerability-category strong,
+    .info-block strong {
       margin-top: 7px;
     }
 
@@ -142,26 +145,54 @@
 
 <body>
 
-  <h1><%= npmReportTitle %></h1>
+  <h1>
+    <%= npmReportTitle %>
+  </h1>
 
   <div class="info-categories">
     <div class="info-block">
-      <p>Vulnerabilities Found:</p> <strong><%= vulnsFound %></strong>
+      <p>Vulnerabilities Found:</p> <strong>
+        <%= vulnsFound %>
+      </strong>
     </div>
     <div class="info-block">
-      <p>Vulnerable Dependencies:</p> <strong><%= vulnerableDependencies %></strong>
+      <p>Vulnerable Dependencies:</p> <strong>
+        <%= vulnerableDependencies %>
+      </strong>
     </div>
     <div class="info-block">
-      <p>Last Updated:</p> <strong><%= currentDate %></strong>
+      <p>Last Updated:</p> <strong>
+        <%= currentDate %>
+      </strong>
     </div>
   </div>
 
   <div class="info-categories">
-    <div class="vulnerability-category"><p>Critical:</p> <strong class="badge critical"><%= criticalVulns %></strong></div>
-    <div class="vulnerability-category"><p>High:</p> <strong class="badge high"><%= highVulns %></strong></div>
-    <div class="vulnerability-category"><p>Moderate:</p> <strong class="badge moderate"><%= moderateVulns %></strong></div>
-    <div class="vulnerability-category"><p>Low:</p> <strong class="badge low"><%= lowVulns %></strong></div>
-    <div class="vulnerability-category"><p>Informative:</p> <strong class="badge informative"><%= infoVulns %></strong></div>
+    <div class="vulnerability-category">
+      <p>Critical:</p> <strong class="badge critical">
+        <%= criticalVulns %>
+      </strong>
+    </div>
+    <div class="vulnerability-category">
+      <p>High:</p> <strong class="badge high">
+        <%= highVulns %>
+      </strong>
+    </div>
+    <div class="vulnerability-category">
+      <p>Moderate:</p> <strong class="badge moderate">
+        <%= moderateVulns %>
+      </strong>
+    </div>
+    <div class="vulnerability-category">
+      <p>Low:</p> <strong class="badge low">
+        <%= lowVulns %>
+      </strong>
+    </div>
+    <div class="vulnerability-category">
+      <p>Informative:</p> <strong class="badge informative">
+        <%= infoVulns %>
+      </strong>
+    </div>
   </div>
 
   <table id="sortable-table">
@@ -174,24 +205,35 @@
       </tr>
     </thead>
     <tbody>
-      <% if (vulnerabilities.length > 0) { %>
-        <% vulnerabilities.forEach((vuln) => { %>
+      <% if (vulnerabilities.length> 0) { %>
+        <% vulnerabilities.forEach((vuln)=> { %>
           <tr>
-            <td><a href="<%= vuln.link %>"><%= vuln.name %></a></td>
-            <td><a href="https://www.npmjs.com/package/<%= vuln.package %>"><%= vuln.package %></a></td>
-            <td><span class="badge <%= vuln.severity %>"><%= vuln.severity %></span></td>
-            <td><%= vuln.cwes %></td>
+            <td><a href="<%= vuln.link %>">
+                <%= vuln.name %>
+              </a></td>
+            <td><a href="https://www.npmjs.com/package/<%= vuln.package %>">
+                <%= vuln.package %>
+              </a></td>
+            <td><span class="badge <%= vuln.severity %>">
+                <span style="display: none;">
+                  <%= vuln.severity_number %>
+                </span>
+                <%= vuln.severity %>
+              </span></td>
+            <td>
+              <%= vuln.cwes %>
+            </td>
           </tr>
-        <% }); %>
-      <% } else { %>
-        <tr>
-          <td colspan="4">
-            <div style="width: 100%; text-align: center; opacity: 0.8;">
-              <p>No vulnerabilities found!</p>
-            </div>
-          </td>
-        </tr>
-      <% } %>
+          <% }); %>
+            <% } else { %>
+              <tr>
+                <td colspan="4">
+                  <div style="width: 100%; text-align: center; opacity: 0.8;">
+                    <p>No vulnerabilities found!</p>
+                  </div>
+                </td>
+              </tr>
+              <% } %>
     </tbody>
   </table>
 

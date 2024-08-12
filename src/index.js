@@ -151,8 +151,33 @@ function processVulnerability(vuln) {
       name: vuln.title,
       package: vuln.name || vuln.module_name,
       severity: vuln.severity,
-      cwes: (vuln.cwe || []).concat(vuln.cves).join(", "),
+      severity_number: getNumberOfSeverity(vuln.severity),
+      cwes: (vuln.cwe || []).concat(vuln.cves).filter((cwe) => cwe).join(", "),
     };
+  }
+}
+
+/**
+ * Turn a string severity into the correspondent number
+ * @param {string} severity - Severity string name
+ * @returns {number} - Number of the severity, from 0 to 5
+ */
+function getNumberOfSeverity(severity) {
+  switch (severity) {
+    case "critical":
+      return 5;
+    case "high":
+      return 4;
+    case "moderate":
+      return 3;
+    case "low":
+      return 2;
+    case "info":
+      return 1;
+    case "none":
+      return 0;
+    default:
+      return 0;
   }
 }
 
@@ -241,17 +266,17 @@ function processParameter(arg, args, index) {
   }
 
   switch (param) {
-  case "folder":
-  case "file":
-  case "title":
-    handleParameter(param, value);
-    break;
-  case "help":
-    showHelp();
-    break;
-  default:
-    console.error(`Error: Unknown parameter '${param}'.`);
-    process.exit(1);
+    case "folder":
+    case "file":
+    case "title":
+      handleParameter(param, value);
+      break;
+    case "help":
+      showHelp();
+      break;
+    default:
+      console.error(`Error: Unknown parameter '${param}'.`);
+      process.exit(1);
   }
 }
 
