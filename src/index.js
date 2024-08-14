@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
 const fs = require("fs-extra");
-const os = require("node:os");
+// biome-ignore lint/style/useNodejsImportProtocol: The node: protocol doesn't work on NodeJS v10 and v12, so it's not added to make the compatibility possible.
+const os = require("os");
 const ejs = require("ejs");
 
 const OUTPUT_FILE_NAME = "audit-report.html";
