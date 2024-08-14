@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [2.1.5](https://github.com/hotaydev/audit-export/compare/v2.1.4...v2.1.5) (2024-08-14)
+
+
+### Bug Fixes
+
+* working on node v10 ([62b7e06](https://github.com/hotaydev/audit-export/commit/62b7e067598267926caae5f3249d95cdd31a461a))
+
+
+### Enhancements
+
+* linting engine changed ([829d1b6](https://github.com/hotaydev/audit-export/commit/829d1b6c132095d891ae8b303df555459baca47f))
+* tea contribution ([26cd901](https://github.com/hotaydev/audit-export/commit/26cd9015856204dae72a9ed61ecdb24f74d2817c))
+
 ## [2.1.4](https://github.com/hotaydev/audit-export/compare/v2.1.3...v2.1.4) (2024-08-12)
 
 
