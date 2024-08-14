@@ -1,6 +1,5 @@
 .hooks/
 node_modules/
-.eslintrc.js
 .npmignore
 *.log
 *.html
@@ -10,3 +9,6 @@ CHANGELOG.md
 .playwright/
 tests/
 playwright.config.js
+biome.json
+tea.yaml
+README.md
