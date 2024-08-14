@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [2.1.6](https://github.com/hotaydev/audit-export/compare/v2.1.5...v2.1.6) (2024-08-14)
+
+
+### Enhancements
+
+* removing unused assets from the version publishing ([571afb7](https://github.com/hotaydev/audit-export/commit/571afb7a32604663075364f64e35a3fee490ec80))
+
 ## [2.1.5](https://github.com/hotaydev/audit-export/compare/v2.1.4...v2.1.5) (2024-08-14)
 
 
