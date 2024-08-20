@@ -1,6 +1,6 @@
 {
   "name": "audit-export",
-  "version": "2.1.6",
+  "version": "2.1.7",
   "description": "Pretty export your npm audit output as an offline accessible html page",
   "main": "src/index.js",
   "bin": {

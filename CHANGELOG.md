@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [2.1.7](https://github.com/hotaydev/audit-export/compare/v2.1.6...v2.1.7) (2024-08-20)
+
+
+### Enhancements
+
+* changed all files from CRLF to LF ([3d90c6d](https://github.com/hotaydev/audit-export/commit/3d90c6dc3863a1a5764eab765f328f27c0edaf3b))
+* using global funding file ([cdb9c04](https://github.com/hotaydev/audit-export/commit/cdb9c04b799688144d7be2c52fa16c311792b6a4))
+
 ## [2.1.6](https://github.com/hotaydev/audit-export/compare/v2.1.5...v2.1.6) (2024-08-14)
 
 
