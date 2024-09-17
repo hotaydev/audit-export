@@ -133,7 +133,15 @@ function getVulnerabilities(data) {
 
 	if (data.vulnerabilities) {
 		for (const pkg in data.vulnerabilities) {
-			allVulns.push(...data.vulnerabilities[pkg].via);
+			for (const vulnerability of data.vulnerabilities[pkg].via) {
+				if (typeof vulnerability !== "string") {
+					allVulns.push({
+						...vulnerability,
+						isDirect: data.vulnerabilities[pkg].isDirect,
+						fixAvailable: data.vulnerabilities[pkg].fixAvailable,
+					});
+				}
+			}
 		}
 	} else if (data.advisories) {
 		for (const vuln in data.advisories) {
@@ -156,6 +164,14 @@ function processVulnerability(vuln) {
 		return {
 			link: vuln.url,
 			name: vuln.title,
+			tags:
+				"isDirect" in vuln && "fixAvailable" in vuln
+					? [
+							// This `if` is used to avoid errors on node v10/v12, since these versions doesn't export these informations
+							vuln.isDirect ? "Direct" : "Indirect", // Direct or Indirect
+							vuln.fixAvailable == false ? "No Fix" : "Fix Available", // There's a fix available (we check if it's different than false because if there's a fix available the value will be an object, else it will be "false")
+						].filter((tag) => tag)
+					: [], // Ensure "null" items are removed
 			package: vuln.name || vuln.module_name,
 			severity: vuln.severity,
 			severity_number: getNumberOfSeverity(vuln.severity),

@@ -95,6 +95,11 @@
       background-color: #17a2b8;
     }
 
+    .tag {
+      background-color: #742eff;
+      margin-bottom: 5px;
+    }
+
     table {
       width: 100%;
       max-width: 1200px;
@@ -161,7 +166,7 @@
       </strong>
     </div>
     <div class="info-block">
-      <p>Last Updated:</p> <strong>
+      <p>Generated at:</p> <strong>
         <%= currentDate %>
       </strong>
     </div>
@@ -201,7 +206,8 @@
         <th onclick="sortTable(0, this)">Title<span class="sort-icon">▼</span></th>
         <th onclick="sortTable(1, this)">Package Name<span class="sort-icon">▼</span></th>
         <th onclick="sortTable(2, this)">Severity<span class="sort-icon desc">▲</span></th>
-        <th onclick="sortTable(3, this)">Related CWEs and CVEs<span class="sort-icon">▼</span></th>
+        <th onclick="sortTable(3, this)">Tags<span class="sort-icon desc">▼</span></th>
+        <th onclick="sortTable(4, this)">Related CWEs and CVEs<span class="sort-icon">▼</span></th>
       </tr>
     </thead>
     <tbody>
@@ -220,6 +226,13 @@
                 </span>
                 <%= vuln.severity %>
               </span></td>
+            <td>
+              <% vuln.tags.forEach((tag)=> { %>
+                <span class="badge tag">
+                  <%= tag %>
+                </span>
+                <% }); %>
+            </td>
             <td>
               <%= vuln.cwes %>
             </td>
