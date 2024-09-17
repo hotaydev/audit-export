@@ -228,8 +228,9 @@
               </span></td>
             <td>
               <% vuln.tags.forEach((tag)=> { %>
-                <span class="badge tag">
-                  <%= tag %>
+                <span class="badge tag" <% if (tag==="Fix Available" ) {%>title="Run `npm audit fix` to fix this
+                  vulnerability"<%} %>>
+                    <%= tag %>
                 </span>
                 <% }); %>
             </td>

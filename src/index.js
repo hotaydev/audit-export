@@ -169,7 +169,7 @@ function processVulnerability(vuln) {
 					? [
 							// This `if` is used to avoid errors on node v10/v12, since these versions doesn't export these informations
 							vuln.isDirect ? "Direct" : "Indirect", // Direct or Indirect
-							vuln.fixAvailable == false ? "No Fix" : "Fix Available", // There's a fix available (we check if it's different than false because if there's a fix available the value will be an object, else it will be "false")
+							vuln.fixAvailable === false ? "No Fix" : "Fix Available", // There's a fix available (we check if it's different than false because if there's a fix available the value will be an object, else it will be "false")
 						].filter((tag) => tag)
 					: [], // Ensure "null" items are removed
 			package: vuln.name || vuln.module_name,
