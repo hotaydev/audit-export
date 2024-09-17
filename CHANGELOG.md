@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [2.2.0](https://github.com/hotaydev/audit-export/compare/v2.1.7...v2.2.0) (2024-09-17)
+
+
+### Features
+
+* added descritive tags ([acccc4e](https://github.com/hotaydev/audit-export/commit/acccc4e16b02c0f0a8f16f390dc7446a47a9dd3a))
+
+
+### Enhancements
+
+* added title to npm audit fix in html ([774582f](https://github.com/hotaydev/audit-export/commit/774582fe56c21b7820339215c4c5219db74c0421))
+
 ## [2.1.7](https://github.com/hotaydev/audit-export/compare/v2.1.6...v2.1.7) (2024-08-20)
 
 
