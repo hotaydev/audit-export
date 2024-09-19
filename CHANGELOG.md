@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [3.0.0](https://github.com/hotaydev/audit-export/compare/v2.1.7...v3.0.0) (2024-09-19)
+
+
+### Features
+
+* added descritive tags ([acccc4e](https://github.com/hotaydev/audit-export/commit/acccc4e16b02c0f0a8f16f390dc7446a47a9dd3a))
+* dinamically rendering vulnerabilities using JS ([ff1e184](https://github.com/hotaydev/audit-export/commit/ff1e18451f48f6276b8557335a1f48ab271f85b9))
+* filters and searching in the export file ([99f5a15](https://github.com/hotaydev/audit-export/commit/99f5a15a39961f29c17d7e3ced91bf5c3be95643))
+* searching by package name or title ([18dfef0](https://github.com/hotaydev/audit-export/commit/18dfef0357ac778a0dbf4b62c39acdcbf1f1d97a))
+* **wip:** showing severity and tag filters ([de77ce8](https://github.com/hotaydev/audit-export/commit/de77ce81ad741bb5de84e817e0028db877879e9e))
+
+
+### Enhancements
+
+* added title to npm audit fix in html ([774582f](https://github.com/hotaydev/audit-export/commit/774582fe56c21b7820339215c4c5219db74c0421))
+* enhanced documentation in the README ([6786e05](https://github.com/hotaydev/audit-export/commit/6786e052be541e77bba42903df784d8707ac9199))
+* final adjusts for v3 ([50503fd](https://github.com/hotaydev/audit-export/commit/50503fda3f983bb9dcbacfa0f2e282d4e52f8216))
+* improved filtering functions and simplified HTML structure ([369284a](https://github.com/hotaydev/audit-export/commit/369284a6e39fe4a3cc3495d9d2f07738859fd338))
+* **release:** 2.2.0 ([a4863d9](https://github.com/hotaydev/audit-export/commit/a4863d91c38e4399f1030cef70d7b389af7f0322))
+
 ## [2.2.0](https://github.com/hotaydev/audit-export/compare/v2.1.7...v2.2.0) (2024-09-17)
 
 
