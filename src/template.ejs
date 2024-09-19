@@ -19,7 +19,6 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: start;
       padding: 3rem;
     }
 
@@ -29,42 +28,26 @@
       margin-bottom: 2rem;
     }
 
-    .info-block {
+    .info-block,
+    .vulnerability-category {
       background-color: #fff;
       border: 1px solid #ddd;
       padding: 20px;
-      margin: 10px 10px;
-      min-width: 200px;
-      max-width: 300px;
+      margin: 10px;
       text-align: center;
       display: flex;
-      align-items: center;
-      justify-content: center;
       flex-direction: column;
+    }
+
+    .info-block strong,
+    .vulnerability-category strong {
+      margin-top: 7px;
     }
 
     .info-categories {
       display: flex;
-      justify-content: space-around;
       flex-wrap: wrap;
-    }
-
-    .vulnerability-category {
-      background-color: #fff;
-      border: 1px solid #ddd;
-      margin: 10px;
-      padding: 10px;
-      min-width: 100px;
-      text-align: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-    }
-
-    .vulnerability-category strong,
-    .info-block strong {
-      margin-top: 7px;
+      justify-content: space-around;
     }
 
     .badge {
@@ -97,8 +80,7 @@
 
     .tag {
       background-color: #742eff;
-      margin-bottom: 5px;
-      margin-right: 5px;
+      margin: 0 5px 5px 0;
     }
 
     table {
@@ -121,35 +103,23 @@
       cursor: pointer;
     }
 
-    a {
-      color: #007bff;
-      text-decoration: none;
-      cursor: pointer;
-    }
-
     .sort-icon {
       position: absolute;
       right: 8px;
       top: 50%;
       transform: translateY(-50%);
       color: #acacac;
-      font-weight: normal;
       font-size: 12px;
     }
 
-    .sort-icon.asc {
-      font-weight: bold;
-      color: #000;
-    }
-
+    .sort-icon.asc,
     .sort-icon.desc {
       font-weight: bold;
       color: #000;
     }
 
-    [data-title]:hover:after {
-      opacity: 1;
-      visibility: visible;
+    [data-title] {
+      position: relative;
     }
 
     [data-title]:after {
@@ -163,24 +133,23 @@
       bottom: 30px;
       left: -40%;
       white-space: nowrap;
-      /* box-shadow: 1px 1px 4px #585858; */
-      opacity: 0;
       border: 1px solid #6a6a6a;
       z-index: 100;
       visibility: hidden;
-      font-weight: 500;
+      opacity: 0;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
     }
 
-    [data-title] {
-      position: relative;
+    [data-title]:hover:after {
+      opacity: 1;
+      visibility: visible;
     }
 
     input[type="text"] {
       width: 100%;
       max-width: 800px;
       padding: 10px 15px;
-      margin-bottom: 20px;
-      margin-top: 15px;
+      margin: 15px 0 20px;
       border: 1px solid #ddd;
       border-radius: 10px;
       font-size: 16px;
@@ -195,6 +164,11 @@
     input[type="text"]:focus {
       border-color: #007bff;
     }
+
+    a {
+      color: #007bff;
+      text-decoration: none;
+    }
   </style>
 </head>
 
@@ -205,49 +179,34 @@
   </h1>
 
   <div class="info-categories">
-    <div class="info-block">
-      <p>Vulnerabilities Found:</p> <strong>
-        <%= vulnsFound %>
-      </strong>
-    </div>
-    <div class="info-block">
-      <p>Vulnerable Dependencies:</p> <strong>
-        <%= vulnerableDependencies %>
-      </strong>
-    </div>
-    <div class="info-block">
-      <p>Generated at:</p> <strong>
-        <%= currentDate %>
-      </strong>
-    </div>
+    <% const infoBlocks=[ { label: 'Vulnerabilities Found' , value: vulnsFound }, { label: 'Vulnerable Dependencies' ,
+      value: vulnerableDependencies }, { label: 'Generated at' , value: currentDate } ]; %>
+      <% infoBlocks.forEach(block=> { %>
+        <div class="info-block">
+          <p>
+            <%= block.label %>:
+          </p>
+          <strong>
+            <%= block.value %>
+          </strong>
+        </div>
+        <% }); %>
   </div>
 
   <div class="info-categories">
-    <div class="vulnerability-category">
-      <p>Critical:</p> <strong class="badge critical">
-        <%= criticalVulns %>
-      </strong>
-    </div>
-    <div class="vulnerability-category">
-      <p>High:</p> <strong class="badge high">
-        <%= highVulns %>
-      </strong>
-    </div>
-    <div class="vulnerability-category">
-      <p>Moderate:</p> <strong class="badge moderate">
-        <%= moderateVulns %>
-      </strong>
-    </div>
-    <div class="vulnerability-category">
-      <p>Low:</p> <strong class="badge low">
-        <%= lowVulns %>
-      </strong>
-    </div>
-    <div class="vulnerability-category">
-      <p>Informative:</p> <strong class="badge informative">
-        <%= infoVulns %>
-      </strong>
-    </div>
+    <% const vulnCategories=[ { label: 'Critical' , value: criticalVulns, class: 'critical' }, { label: 'High' , value:
+      highVulns, class: 'high' }, { label: 'Moderate' , value: moderateVulns, class: 'moderate' }, { label: 'Low' ,
+      value: lowVulns, class: 'low' }, { label: 'Informative' , value: infoVulns, class: 'informative' } ]; %>
+      <% vulnCategories.forEach(category=> { %>
+        <div class="vulnerability-category">
+          <p>
+            <%= category.label %>:
+          </p>
+          <strong class="badge <%= category.class %>">
+            <%= category.value %>
+          </strong>
+        </div>
+        <% }); %>
   </div>
 
   <!-- Add a search input field -->
@@ -275,6 +234,7 @@
 
     function sortTable(columnIndex, header) {
       const table = document.getElementById("sortable-table");
+      const sortIcons = document.querySelectorAll('.sort-icon');
       const rows = Array.from(table.getElementsByTagName("tr"));
 
       rows.shift(); // Remove the header row from the sorting
@@ -300,15 +260,8 @@
       sortDirection *= -1;
 
       // Update sort icons
-      resetSortIcons();
+      sortIcons.forEach(icon => icon.classList.remove('asc', 'desc'));
       updateSortIcon(header);
-    }
-
-    function resetSortIcons() {
-      const sortIcons = document.querySelectorAll('.sort-icon');
-      sortIcons.forEach(icon => {
-        icon.classList.remove('asc', 'desc');
-      });
     }
 
     function updateSortIcon(header) {
@@ -365,21 +318,22 @@
     // Function to filter the table based on search input
     function filterTable() {
       const searchInput = document.getElementById('search-input').value.toLowerCase();
-      const table = document.getElementById('sortable-table');
-      const rows = table.getElementsByTagName('tr');
 
-      // Loop through table rows, skipping the header row
-      for (let i = 1; i < rows.length; i++) {
-        const title = rows[i].getElementsByTagName('td')[0].textContent.toLowerCase();
-        const packageName = rows[i].getElementsByTagName('td')[1].textContent.toLowerCase();
+      // Filter the vulnerabilities array based on search input (Title or Package)
+      const filteredVulnerabilities = vulnerabilities.filter(vuln => {
+        const title = vuln.name.toLowerCase();
+        const packageName = vuln.package.toLowerCase();
 
-        // Show or hide rows based on matching Title or Package Name
-        if (title.includes(searchInput) || packageName.includes(searchInput)) {
-          rows[i].style.display = '';
-        } else {
-          rows[i].style.display = 'none';
-        }
-      }
+        // Check if the search input matches either the title or the package name
+        return title.includes(searchInput) || packageName.includes(searchInput);
+      });
+
+      // Repopulate the table with the filtered results
+      const tbody = document.getElementById('vulnerability-table-body');
+      tbody.innerHTML = ''; // Clear current table content
+
+      // Populate table with filtered vulnerabilities
+      populateTable(filteredVulnerabilities);
     }
 
     window.onload = function () {
