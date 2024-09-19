@@ -130,7 +130,7 @@
       position: absolute;
       padding: 4px 6px;
       border-radius: 4px;
-      bottom: 30px;
+      bottom: 35px;
       left: -40%;
       white-space: nowrap;
       border: 1px solid #6a6a6a;
@@ -260,10 +260,10 @@
 
     <div class="dropdown-container">
       <button class="dropdownButton" onclick="showCheckboxDropdown(event, 'checkboxDropdown-severity')">Filter by
-        Severity</button>
+        Severity <span>(<span id="selected-severities">0</span>/<%= vulnCategories.length %>)</span></button>
       <div id="checkboxDropdown-severity" class="checkbox-list">
         <% vulnCategories.forEach(category=> { %>
-          <label><input type="checkbox">
+          <label><input type="checkbox" onclick="filterTable()">
             <%=category.label%>
           </label>
           <% }); %>
@@ -276,14 +276,18 @@
 
       <div class="dropdown-container">
         <button class="dropdownButton" onclick="showCheckboxDropdown(event, 'checkboxDropdown-tags')">Filter by
-          Tags</button>
+          Tags <span>(<span id="selected-tags">0</span>/<%= available_tags.length %>)</span></button>
         <div id="checkboxDropdown-tags" class="checkbox-list">
           <% available_tags.forEach(tag=> { %>
-            <label><input type="checkbox">
+            <label><input type="checkbox" onclick="filterTable()">
               <%=tag%>
             </label>
             <% }); %>
         </div>
+      </div>
+
+      <div>
+        <button data-title="Clear filters" class="dropdownButton" onclick="clearFilters()">x</button>
       </div>
   </div>
 
@@ -391,22 +395,60 @@
     // Function to filter the table based on search input
     function filterTable() {
       const searchInput = document.getElementById('search-input').value.toLowerCase();
+      const searchSeverities = document.querySelectorAll('#checkboxDropdown-severity label');
+      const searchTags = document.querySelectorAll('#checkboxDropdown-tags label');
 
-      // Filter the vulnerabilities array based on search input (Title or Package)
+      const filter_severities = [];
+      const filter_tags = [];
+
+      searchSeverities.forEach(label => {
+        const checkbox = label.querySelector('input');
+        if (checkbox.checked) filter_severities.push(label.innerText.toLowerCase().trim());
+      });
+      searchTags.forEach(label => {
+        const checkbox = label.querySelector('input');
+        if (checkbox.checked) filter_tags.push(label.innerText.toLowerCase().trim());
+      });
+
+
+      document.getElementById('selected-severities').innerText = filter_severities.length;
+      document.getElementById('selected-tags').innerText = filter_tags.length;
+
       const filteredVulnerabilities = vulnerabilities.filter(vuln => {
         const title = vuln.name.toLowerCase();
         const packageName = vuln.package.toLowerCase();
 
-        // Check if the search input matches either the title or the package name
+        if (!searchInput) return true;
         return title.includes(searchInput) || packageName.includes(searchInput);
+      }).filter(vuln => {
+        if (filter_severities.length === 0) return true;
+
+        const severity = vuln.severity.toLowerCase();
+        return filter_severities.includes(severity);
+      }).filter(vuln => {
+        if (filter_tags.length === 0) return true;
+
+        const tags = vuln.tags.map(tag => tag.toLowerCase().trim());
+        return tags.filter(tag => filter_tags.includes(tag)).length > 0;
       });
 
-      // Repopulate the table with the filtered results
-      const tbody = document.getElementById('vulnerability-table-body');
-      tbody.innerHTML = ''; // Clear current table content
+      document.getElementById('vulnerability-table-body').innerHTML = ''; // Clear current table content
 
       // Populate table with filtered vulnerabilities
       populateTable(filteredVulnerabilities);
+    }
+
+    function clearFilters() {
+      document.getElementById('search-input').value = "";
+
+      document.querySelectorAll('#checkboxDropdown-severity input').forEach((input) => input.checked = false);
+      document.querySelectorAll('#checkboxDropdown-tags input').forEach((input) => input.checked = false);
+
+      document.getElementById('selected-severities').innerText = "0";
+      document.getElementById('selected-tags').innerText = "0";
+
+      document.getElementById('vulnerability-table-body').innerHTML = ''; // Clear current table content
+      populateTable(vulnerabilities);
     }
 
     function showCheckboxDropdown(event, id) {
