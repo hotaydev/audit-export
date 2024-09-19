@@ -50,7 +50,7 @@
     "fs-extra": "^11.2.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.9.1",
+    "@biomejs/biome": "^1.9.2",
     "@playwright/test": "^1.47.1",
     "commit-and-tag-version": "^12.4.4",
     "playwright": "^1.47.1"

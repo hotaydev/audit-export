@@ -147,9 +147,8 @@
 
     input[type="text"] {
       width: 100%;
-      max-width: 800px;
+      max-width: 300px;
       padding: 10px 15px;
-      margin: 15px 0 20px;
       border: 1px solid #ddd;
       border-radius: 10px;
       font-size: 16px;
@@ -168,6 +167,53 @@
     a {
       color: #007bff;
       text-decoration: none;
+    }
+
+    .dropdown-container {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdownButton {
+      padding: 10px 15px;
+      font-size: 16px;
+      cursor: pointer;
+      border: 1px solid #ddd;
+      background-color: #fff;
+      border-radius: 10px;
+      width: 100%;
+    }
+
+    .checkbox-list {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+      z-index: 1;
+      padding: 10px;
+    }
+
+    .checkbox-list label {
+      display: block;
+      padding: 5px;
+      text-wrap: nowrap;
+    }
+
+    .checkbox-list label input {
+      margin-right: 8px;
+    }
+
+    .filters-section {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      gap: 10px;
+      margin: 20px 0;
     }
   </style>
 </head>
@@ -209,9 +255,36 @@
         <% }); %>
   </div>
 
-  <!-- Add a search input field -->
-  <div>
+  <div class="filters-section">
     <input type="text" id="search-input" placeholder="Search by Title or Package" onkeyup="filterTable()">
+
+    <div class="dropdown-container">
+      <button class="dropdownButton" onclick="showCheckboxDropdown(event, 'checkboxDropdown-severity')">Filter by
+        Severity</button>
+      <div id="checkboxDropdown-severity" class="checkbox-list">
+        <% vulnCategories.forEach(category=> { %>
+          <label><input type="checkbox">
+            <%=category.label%>
+          </label>
+          <% }); %>
+      </div>
+    </div>
+
+    <% const available_tags=[].concat(...(vulnerabilities.map(vuln=> vuln.tags))).filter((value, index, array) => {
+      return array.indexOf(value) === index;
+      }); %>
+
+      <div class="dropdown-container">
+        <button class="dropdownButton" onclick="showCheckboxDropdown(event, 'checkboxDropdown-tags')">Filter by
+          Tags</button>
+        <div id="checkboxDropdown-tags" class="checkbox-list">
+          <% available_tags.forEach(tag=> { %>
+            <label><input type="checkbox">
+              <%=tag%>
+            </label>
+            <% }); %>
+        </div>
+      </div>
   </div>
 
   <table id="sortable-table">
@@ -336,9 +409,27 @@
       populateTable(filteredVulnerabilities);
     }
 
+    function showCheckboxDropdown(event, id) {
+      const checkboxDropdown = document.getElementById(id);
+      checkboxDropdown.style.display = checkboxDropdown.style.display === 'block' ? 'none' : 'block';
+      event.stopPropagation(); // Prevent closing the dropdown when clicking the button
+    }
+
     window.onload = function () {
       populateTable(vulnerabilities);
       sortTable(2, document.querySelector('#sortable-table th:nth-child(3)'));
+
+      const checkboxDropdownSeverity = document.getElementById('checkboxDropdown-severity');
+      const checkboxDropdownTags = document.getElementById('checkboxDropdown-tags');
+
+      document.addEventListener('click', function (event) {
+        if (!checkboxDropdownSeverity.contains(event.target)) {
+          checkboxDropdownSeverity.style.display = 'none';
+        }
+        if (!checkboxDropdownTags.contains(event.target)) {
+          checkboxDropdownTags.style.display = 'none';
+        }
+      });
     };
   </script>
 
