@@ -144,3 +144,4 @@ dist
 
 # Extra Ignores
 *.html
+.DS_Store

@@ -32,7 +32,7 @@
     .vulnerability-category {
       background-color: #fff;
       border: 1px solid #ddd;
-      padding: 20px;
+      padding: 15px 25px;
       margin: 10px;
       text-align: center;
       display: flex;
@@ -98,9 +98,10 @@
     }
 
     th {
-      background-color: #f2f2f2;
+      background-color: #ececec;
       position: relative;
       cursor: pointer;
+      text-wrap: nowrap;
     }
 
     .sort-icon {
@@ -108,7 +109,7 @@
       right: 8px;
       top: 50%;
       transform: translateY(-50%);
-      color: #acacac;
+      color: #9b9b9b;
       font-size: 12px;
     }
 
@@ -307,7 +308,7 @@
   </table>
 
   <script>
-    let sortDirection = 1;
+    let sortDirection = -1;
 
     function sortTable(columnIndex, header) {
       const table = document.getElementById("sortable-table");
@@ -358,7 +359,7 @@
       }
     }
 
-    let vulnerabilities = JSON.parse('<%- JSON.stringify(vulnerabilities) %>');
+    let vulnerabilities = JSON.parse("<%= JSON.stringify(vulnerabilities) %>".replaceAll("&#34;", "\""));
 
     function populateTable(vuln_list) {
       const tbody = document.getElementById('vulnerability-table-body');
@@ -409,7 +410,6 @@
         const checkbox = label.querySelector('input');
         if (checkbox.checked) filter_tags.push(label.innerText.toLowerCase().trim());
       });
-
 
       document.getElementById('selected-severities').innerText = filter_severities.length;
       document.getElementById('selected-tags').innerText = filter_tags.length;
