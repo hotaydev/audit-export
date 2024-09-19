@@ -98,6 +98,7 @@
     .tag {
       background-color: #742eff;
       margin-bottom: 5px;
+      margin-right: 5px;
     }
 
     table {
@@ -144,6 +145,34 @@
     .sort-icon.desc {
       font-weight: bold;
       color: #000;
+    }
+
+    [data-title]:hover:after {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    [data-title]:after {
+      content: attr(data-title);
+      background-color: white;
+      color: #2b2b2b;
+      font-size: 75%;
+      position: absolute;
+      padding: 4px 6px;
+      border-radius: 4px;
+      bottom: 30px;
+      left: -40%;
+      white-space: nowrap;
+      /* box-shadow: 1px 1px 4px #585858; */
+      opacity: 0;
+      border: 1px solid #6a6a6a;
+      z-index: 100;
+      visibility: hidden;
+      font-weight: 500;
+    }
+
+    [data-title] {
+      position: relative;
     }
   </style>
 </head>
@@ -210,44 +239,8 @@
         <th onclick="sortTable(4, this)">Related CWEs and CVEs<span class="sort-icon">▼</span></th>
       </tr>
     </thead>
-    <tbody>
-      <% if (vulnerabilities.length> 0) { %>
-        <% vulnerabilities.forEach((vuln)=> { %>
-          <tr>
-            <td><a href="<%= vuln.link %>">
-                <%= vuln.name %>
-              </a></td>
-            <td><a href="https://www.npmjs.com/package/<%= vuln.package %>">
-                <%= vuln.package %>
-              </a></td>
-            <td><span class="badge <%= vuln.severity %>">
-                <span style="display: none;">
-                  <%= vuln.severity_number %>
-                </span>
-                <%= vuln.severity %>
-              </span></td>
-            <td>
-              <% vuln.tags.forEach((tag)=> { %>
-                <span class="badge tag" <% if (tag==="Fix Available" ) {%>title="Run `npm audit fix` to fix this
-                  vulnerability"<%} %>>
-                    <%= tag %>
-                </span>
-                <% }); %>
-            </td>
-            <td>
-              <%= vuln.cwes %>
-            </td>
-          </tr>
-          <% }); %>
-            <% } else { %>
-              <tr>
-                <td colspan="4">
-                  <div style="width: 100%; text-align: center; opacity: 0.8;">
-                    <p>No vulnerabilities found!</p>
-                  </div>
-                </td>
-              </tr>
-              <% } %>
+    <tbody id="vulnerability-table-body">
+      <!-- The rows will be dynamically inserted here -->
     </tbody>
   </table>
 
@@ -309,7 +302,43 @@
       }
     }
 
+    let vulnerabilities = JSON.parse('<%- JSON.stringify(vulnerabilities) %>');
+
+    // Function to populate the table with data from the vulnerabilities object
+    function populateTable() {
+      const tbody = document.getElementById('vulnerability-table-body');
+
+      if (vulnerabilities.length > 0) {
+        vulnerabilities.forEach(vuln => {
+          const row = document.createElement('tr');
+
+          row.innerHTML = `
+            <td><a href="${vuln.link}">${vuln.name}</a></td>
+            <td><a href="https://www.npmjs.com/package/${vuln.package}">${vuln.package}</a></td>
+            <td><span class="badge ${vuln.severity}">
+                <span style="display: none;">${vuln.severity_number}</span>
+                ${vuln.severity}
+              </span></td>
+            <td>${vuln.tags.map(tag => `<span class="badge tag" ${tag === 'Fix Available' ? 'data-title="Run `npm audit fix` to fix this vulnerability"' : ''}>${tag}</span>`).join('')}</td>
+            <td>${vuln.cwes}</td>
+          `;
+          tbody.appendChild(row);
+        });
+      } else {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="5">
+              <div style="width: 100%; text-align: center; opacity: 0.8;">
+                <p>No vulnerabilities found!</p>
+              </div>
+            </td>
+          </tr>
+        `;
+      }
+    }
+
     window.onload = function () {
+      populateTable();
       sortTable(2, document.querySelector('#sortable-table th:nth-child(3)'));
     };
   </script>
