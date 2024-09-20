@@ -359,7 +359,7 @@
       }
     }
 
-    let vulnerabilities = JSON.parse("<%= JSON.stringify(vulnerabilities) %>".replaceAll("&#34;", "\""));
+    let vulnerabilities = JSON.parse(atob("<%- Buffer.from(JSON.stringify(vulnerabilities)).toString('base64') %>"));
 
     function populateTable(vuln_list) {
       const tbody = document.getElementById('vulnerability-table-body');
@@ -391,6 +391,9 @@
           </tr>
         `;
       }
+
+      sortDirection = -1;
+      sortTable(2, document.querySelector('#sortable-table th:nth-child(3)'));
     }
 
     // Function to filter the table based on search input
@@ -459,7 +462,6 @@
 
     window.onload = function () {
       populateTable(vulnerabilities);
-      sortTable(2, document.querySelector('#sortable-table th:nth-child(3)'));
 
       const checkboxDropdownSeverity = document.getElementById('checkboxDropdown-severity');
       const checkboxDropdownTags = document.getElementById('checkboxDropdown-tags');
