@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [3.0.1](https://github.com/hotaydev/audit-export/compare/v3.0.0...v3.0.1) (2024-09-20)
+
+
+### Bug Fixes
+
+* correctly parsing vulnerabilities in the EJS template for JS script ([8acc286](https://github.com/hotaydev/audit-export/commit/8acc28640779d9d2e3241affb706380ba3680e2d))
+
+
+### Enhancements
+
+* **tests:** added various string interpolations to validate EJS templating stringify ([5c82fb7](https://github.com/hotaydev/audit-export/commit/5c82fb7dde8f502c41452b3f3fc255f3bba5474d))
+
 ## [3.0.0](https://github.com/hotaydev/audit-export/compare/v2.1.7...v3.0.0) (2024-09-19)
 
 
