@@ -187,7 +187,7 @@
           "source": 1094087,
           "name": "decode-uri-component",
           "dependency": "decode-uri-component",
-          "title": "decode-uri-component vulnerable to Denial of Service (DoS)",
+          "title": "`decode-uri-component` vulnerable to Denial of Service (DoS)",
           "url": "https://github.com/advisories/GHSA-w573-4hg7-7wgq",
           "severity": "high",
           "cwe": [
@@ -422,7 +422,7 @@
           "source": 1089810,
           "name": "hosted-git-info",
           "dependency": "hosted-git-info",
-          "title": "Regular Expression Denial of Service in hosted-git-info",
+          "title": "'Regular Expression Denial of Service' in hosted-git-info",
           "url": "https://github.com/advisories/GHSA-43f8-2h32-f4cj",
           "severity": "moderate",
           "cwe": [
@@ -806,7 +806,7 @@
           "source": 1094500,
           "name": "lodash",
           "dependency": "lodash",
-          "title": "Regular Expression Denial of Service (ReDoS) in lodash",
+          "title": "\"Regular Expression Denial of Service\" (ReDoS) in lodash",
           "url": "https://github.com/advisories/GHSA-29mw-wpgm-hmr9",
           "severity": "moderate",
           "cwe": [
