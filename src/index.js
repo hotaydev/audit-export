@@ -1,9 +1,12 @@
 #!/usr/bin/env node
 
 const fs = require("fs-extra");
+const ejs = require("ejs");
+
 // biome-ignore lint/style/useNodejsImportProtocol: The node: protocol doesn't work on NodeJS v10 and v12, so it's not added to make the compatibility possible.
 const os = require("os");
-const ejs = require("ejs");
+// biome-ignore lint/style/useNodejsImportProtocol: The node: protocol doesn't work on NodeJS v10 and v12, so it's not added to make the compatibility possible.
+const child_process = require("child_process");
 
 const OUTPUT_FILE_NAME = "audit-report.html";
 const OPTIONS = {
@@ -11,6 +14,7 @@ const OPTIONS = {
 	file: undefined,
 	title: "NPM Audit Report",
 	template: join([__dirname, "template.ejs"]),
+	open: false,
 };
 const HELP_TEXT = `
   Usage:
@@ -35,6 +39,9 @@ const HELP_TEXT = `
 function processInput(options, inputData) {
 	const finalPath = getFinalPath(options.folder, options.file);
 	writeIfFolderExists(options, finalPath, inputData);
+	if (options.open) {
+		openReport(finalPath);
+	}
 }
 
 /**
@@ -264,6 +271,20 @@ function checkNumLength(number) {
 }
 
 /**
+ * Opens the generated report in the default browser.
+ * @param {string} finalPath - Final path of the generated report.
+ */
+function openReport(finalPath) {
+	const start =
+		process.platform === "darwin"
+			? "open"
+			: process.platform === "win32"
+				? "start"
+				: "xdg-open";
+	child_process.exec(`${start} ${finalPath}`);
+}
+
+/**
  * Processes command line arguments passed to the script.
  * If a parameter is provided, it invokes the processParameter function to handle it.
  * If folder or file parameters are provided as positional arguments, it assigns them to the OPTIONS object.
@@ -294,20 +315,22 @@ function processParameter(arg, args, index) {
 	let param;
 	let value;
 
+	const argumentName = arg.slice(2);
+
 	if (arg.includes("=")) {
-		[param, value] = arg.slice(2).split(/=(.+)/);
+		[param, value] = argumentName.split(/=(.+)/);
 	} else if (
 		args[index + 1] &&
 		!args[index + 1].startsWith("--") &&
-		arg.slice(2) !== "help"
+		argumentName !== "help"
 	) {
-		param = arg.slice(2);
+		param = argumentName;
 		value = args[index + 1];
-	} else if (arg.slice(2) !== "help") {
-		console.error(`Error: Missing value for parameter '${arg.slice(2)}'.`);
+	} else if (argumentName !== "help" && argumentName !== "open") {
+		console.error(`Error: Missing value for parameter '${argumentName}'.`);
 		process.exit(1);
 	} else {
-		param = arg.slice(2);
+		param = argumentName;
 	}
 
 	switch (param) {
@@ -315,6 +338,9 @@ function processParameter(arg, args, index) {
 		case "file":
 		case "title":
 			handleParameter(param, value);
+			break;
+		case "open":
+			OPTIONS.open = true;
 			break;
 		case "help":
 			showHelp();
