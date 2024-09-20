@@ -55,6 +55,8 @@ or:
 npm audit --json | audit-export <path> <file_name>
 ```
 
+For all options you can pass the `--open` parameter to automatically open the report in the default browser.
+
 <sub><strong>All parameters are optional.</strong><br/>By default it will use <i>the current folder</i>, <i>"audit-report.html"</i> as file name, and <i>"NPM Audit Report"</i> as title.</sub>
 
 

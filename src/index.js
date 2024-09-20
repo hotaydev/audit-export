@@ -29,6 +29,7 @@ const HELP_TEXT = `
     $ npm audit --json | audit-export --folder <folder_path> --file <file_name.html> --title <HTML_file_title>
 
     // All parameters are optional
+		// Use --open to automatically open the report in the default browser
 `;
 
 /**
