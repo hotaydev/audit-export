@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [4.1.0](https://github.com/hotaydev/audit-export/compare/v4.0.0...v4.1.0) (2024-10-07)
+
+
+### Features
+
+* exporting as CSV/JSON and new UI styles ([458ba7e](https://github.com/hotaydev/audit-export/commit/458ba7eb94f9cec61e4310c544f4a6ec782e176a))
+
+
+### Bug Fixes
+
+* tests suite in Github Actions after upgrading to v4 ([2b0af55](https://github.com/hotaydev/audit-export/commit/2b0af55595c8ca48539216318aca44580c9a13eb))
+
+
+### Enhancements
+
+* badges click link ([f49aa48](https://github.com/hotaydev/audit-export/commit/f49aa487f78157435d0124a3db2f56613f0946df))
+
+
+### Code Style
+
+* better dropdown styles ([3896980](https://github.com/hotaydev/audit-export/commit/3896980279b8faf1691f47c0161036d78623b348))
+
 ## [4.0.0](https://github.com/hotaydev/audit-export/compare/v3.1.1...v4.0.0) (2024-10-07)
 
 
