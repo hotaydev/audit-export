@@ -6,7 +6,7 @@
 A convenient tool to **export npm audit results** to a comprehensive **offline HTML page**, providing a clear overview of your project's vulnerabilities.
 
 <div align="center" width="100%">
-    <img src="https://raw.githubusercontent.com/hotaydev/audit-export/refs/heads/main/.github/images/screenshot.jpg" alt="Screenshot of the output of audit-export" width="80%" /><br/>
+    <img src="https://raw.githubusercontent.com/hotaydev/audit-export/refs/heads/main/.github/images/screenshot.jpg" alt="Screenshot of the output of audit-export"/><br/>
     <sub align="center">Example of the output file from audit-export</sub>
 </div><br/><br/>
 
@@ -18,6 +18,7 @@ A convenient tool to **export npm audit results** to a comprehensive **offline H
 * Advanced Filters, Search, and Ordering
 * Tags Filtering Supported
 * Supports projects since Node v10
+* Download results as CSV or JSON
 
 ## Compatibility
 

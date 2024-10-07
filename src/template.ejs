@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<!-- TODO: se um dropdown estiver aberto, fechar quando clicar no outro. -->
+<!-- TODO: fazer com que o Dropdown tenha o mesmo tamanho que o select input -->
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,30 +25,40 @@
       padding: 3rem;
     }
 
-    h1 {
+    .title-area {
       color: #333;
       text-align: center;
       margin-bottom: 2rem;
     }
 
-    .info-block,
+    .title-area h1 {
+      line-height: 1.6;
+    }
+
+    .title-area h5 {
+      color: gray;
+      font-weight: 400;
+    }
+
     .vulnerability-category {
       background-color: #fff;
       border: 1px solid #ddd;
+      border-radius: 10px;
       padding: 15px 25px;
-      margin: 10px;
+      margin: 10px 5px;
       text-align: center;
       display: flex;
       flex-direction: column;
+      width: 100px;
     }
 
-    .info-block strong,
     .vulnerability-category strong {
       margin-top: 7px;
     }
 
     .info-categories {
       display: flex;
+      max-width: 1200px;
       flex-wrap: wrap;
       justify-content: space-around;
     }
@@ -80,6 +93,11 @@
 
     .tag {
       background-color: #742eff;
+      margin: 0 5px 5px 0;
+    }
+
+    .total {
+      background-color: #8b8b8b;
       margin: 0 5px 5px 0;
     }
 
@@ -216,44 +234,104 @@
       gap: 10px;
       margin: 20px 0;
     }
+
+    .download {
+      position: fixed;
+      top: 15px;
+      right: 20px;
+      padding: 8px 10px;
+      border-radius: 50px;
+      border: none;
+      background: #e7e7e7;
+      transition: all ease .3s;
+      cursor: pointer;
+      z-index: 100;
+    }
+
+    .download:hover {
+      background: #d8d8d8;
+    }
+
+    .dropdown-menu {
+      position: fixed;
+      top: 55px;
+      right: 20px;
+      display: none;
+      background: #f9f9f9;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      z-index: 99;
+    }
+
+    .dropdown-menu ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .dropdown-menu ul li {
+      padding: 10px 15px;
+      color: #333;
+      cursor: pointer;
+      transition: all ease .3s;
+    }
+
+    .dropdown-menu ul li:hover {
+      background-color: #ececec;
+    }
+
+    .download:hover+.dropdown-menu,
+    .dropdown-menu:hover {
+      display: block;
+    }
   </style>
 </head>
 
 <body>
 
-  <h1>
-    <%= npmReportTitle %>
-  </h1>
+  <button class="download" onclick="download()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#333333"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download">
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+      <polyline points="7 10 12 15 17 10" />
+      <line x1="12" x2="12" y1="15" y2="3" />
+    </svg>
+  </button>
+  <div class="dropdown-menu">
+    <ul>
+      <li onclick="downloadAsCSV()" style="border-bottom: 1px solid #e0e0e0;">Download as CSV</li>
+      <li onclick="downloadAsJSON()">Download as JSON</li>
+    </ul>
+  </div>
 
-  <div class="info-categories">
-    <% const infoBlocks=[ { label: 'Vulnerabilities Found' , value: vulnsFound }, { label: 'Vulnerable Dependencies' ,
-      value: vulnerableDependencies }, { label: 'Generated at' , value: currentDate } ]; %>
-      <% infoBlocks.forEach(block=> { %>
-        <div class="info-block">
-          <p>
-            <%= block.label %>:
-          </p>
-          <strong>
-            <%= block.value %>
-          </strong>
-        </div>
-        <% }); %>
+  <div class="title-area">
+    <h1 style="margin-bottom: 5px;">
+      <%= npmReportTitle %>
+    </h1>
+    <h5>
+      <%= currentDate %>
+    </h5>
+    <h5 style=" margin-top: 10px;">Generated with <a href="https://www.npmjs.com/package/audit-export"
+        target="_blank">audit-export</a></h5>
   </div>
 
   <div class="info-categories">
     <% const vulnCategories=[ { label: 'Critical' , value: criticalVulns, class: 'critical' }, { label: 'High' , value:
       highVulns, class: 'high' }, { label: 'Moderate' , value: moderateVulns, class: 'moderate' }, { label: 'Low' ,
-      value: lowVulns, class: 'low' }, { label: 'Informative' , value: infoVulns, class: 'informative' } ]; %>
+      value: lowVulns, class: 'low' }, { label: 'Informative' , value: infoVulns, class: 'informative' }, {
+      label: 'Total' , value: vulnsFound, class: 'total' }, { label: 'Dependencies' , value: vulnerableDependencies,
+      class: 'total' } ]; %>
       <% vulnCategories.forEach(category=> { %>
-        <div class="vulnerability-category">
-          <p>
-            <%= category.label %>:
-          </p>
-          <strong class="badge <%= category.class %>">
-            <%= category.value %>
-          </strong>
-        </div>
-        <% }); %>
+        <% if (category.value> 0) { %>
+          <div class="vulnerability-category">
+            <p>
+              <%= category.label %>:
+            </p>
+            <strong class="badge <%= category.class %>">
+              <%= category.value %>
+            </strong>
+          </div>
+          <% }}); %>
   </div>
 
   <div class="filters-section">
@@ -458,6 +536,40 @@
       const checkboxDropdown = document.getElementById(id);
       checkboxDropdown.style.display = checkboxDropdown.style.display === 'block' ? 'none' : 'block';
       event.stopPropagation(); // Prevent closing the dropdown when clicking the button
+    }
+
+    function download() {
+      downloadAsJSON();
+      downloadAsCSV();
+    }
+
+    function downloadAsJSON() {
+      _generateFileToDownload("vulnerabilities.json", "application/json", JSON.stringify(vulnerabilities));
+    }
+    function downloadAsCSV() {
+      const csv = ["link,name,tags,package,severity,severity_number,cwes"];
+
+      for (const vuln of vulnerabilities) {
+        csv.push(`${vuln.link},${vuln.name.split(", ").join(" ")},${vuln.tags},${vuln.package},${vuln.severity},${vuln.severity_number},${vuln.cwes.split(", ").join(" ")}`);
+      }
+
+      _generateFileToDownload("vulnerabilities.csv", "text/csv", csv.join("\n"));
+    }
+
+    function _generateFileToDownload(name, type, data) {
+      const blob = new Blob([data], { type: type });
+
+      if (window.navigator.msSaveOrOpenBlob) {
+        window.navigator.msSaveBlob(blob, name);
+      } else {
+        const elem = window.document.createElement('a');
+        elem.href = window.URL.createObjectURL(blob, { oneTimeOnly: true });
+        elem.download = name;
+        elem.style.display = 'none';
+        document.body.appendChild(elem);
+        elem.click();
+        document.body.removeChild(elem);
+      }
     }
 
     window.onload = function () {
