@@ -10,15 +10,15 @@ test("has the expected title", async ({ page }) => {
 });
 
 test("reports the total number of vulnerabilities", async ({ page }) => {
-  await expect(page.getByText("Vulnerabilities Found: 54")).toBeVisible();
+  await expect(page.getByText("Total: 54")).toBeVisible();
 });
 
 test("displays the number of vulnerable dependencies", async ({ page }) => {
-  await expect(page.getByText("Vulnerable Dependencies: 36")).toBeVisible();
+  await expect(page.getByText("Dependencies: 36")).toBeVisible();
 });
 
 test("displays the date when the report was last updated", async ({ page }) => {
-  await expect(page.getByText(/Generated at:/)).toBeVisible();
+  await expect(page.getByText(/\d{2} of [A-Za-z]+, \d{4} - \d{2}:\d{2}:\d{2}/)).toBeVisible();
 });
 
 test("displays the number of critical vulnerabilities", async ({ page }) => {
@@ -38,5 +38,5 @@ test("displays the number of low vulnerabilities", async ({ page }) => {
 });
 
 test("displays the number of informative vulnerabilities", async ({ page }) => {
-  await expect(page.getByText("Informative: 0")).toBeVisible();
+  await expect(page.getByText("Informative: 0")).not.toBeVisible();
 });
