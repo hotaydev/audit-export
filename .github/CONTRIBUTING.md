@@ -4,25 +4,17 @@
 
 ## Local Testing
 
-To test the project locally, follow these steps:
+To test the project locally, you use one of the test audits as input to this script, as shown below:
 
-1. Install the tool globally using npm (on this package folder):
+1. To test with a NodeJS v16+ audit:
+```bash
+cat .playwright/fixtures/npm-audit-v16.json | node ./src/index.js <parameters>
+```
 
-    ```bash
-    npm install -g
-    ```
-
-2. Run the tool with `npm audit` (on another project, to test):
-
-    ```bash
-    npm audit --json | audit-export
-    ```
-
-3. 🧹 It's recommended to clean up after testing (also on this package folder):
-
-    ```bash
-    npm remove -g
-    ```
+2. To test with a NodeJS v10 to v15 audits:
+```bash
+cat .playwright/fixtures/npm-audit-v10.json | node ./src/index.js <parameters>
+```
 
 ## Node.js Version Compatibility
 
@@ -31,7 +23,7 @@ The tool is designed to work with different versions of Node.js. Specifically:
 - For Node.js v10 to v14.
 - For Node.js v16 and higher.
 
-<sub>odd versions aren't listed, but work also.</sub>
+<sub>odd versions aren't listed, but also works.</sub>
 
 So make sure to test the tool in both version ranges to ensure compatibility. 🔄
 
