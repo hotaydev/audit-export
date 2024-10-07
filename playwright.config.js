@@ -1,6 +1,6 @@
 // @ts-check
-const { defineConfig} = require("@playwright/test");
-const path = require("path");
+const { defineConfig } = require("@playwright/test");
+const path = require("node:path");
 const { getBrowserConfig } = require("./.playwright/lib");
 
 /**
