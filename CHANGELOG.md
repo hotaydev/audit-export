@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [4.0.0](https://github.com/hotaydev/audit-export/compare/v3.1.1...v4.0.0) (2024-10-07)
+
+
+### Features
+
+* merging path parameters into single parameter ([be9f728](https://github.com/hotaydev/audit-export/commit/be9f72818acc6a53b0ee73d43c5379d66632348a))
+
 ## [3.1.1](https://github.com/hotaydev/audit-export/compare/v3.1.0...v3.1.1) (2024-09-23)
 
 
