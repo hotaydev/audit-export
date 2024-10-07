@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<!-- TODO: se um dropdown estiver aberto, fechar quando clicar no outro. -->
-<!-- TODO: fazer com que o Dropdown tenha o mesmo tamanho que o select input -->
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -214,12 +211,14 @@
       box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
       z-index: 1;
       padding: 10px;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     .checkbox-list label {
       display: block;
       padding: 5px;
-      text-wrap: nowrap;
+      text-wrap: wrap;
     }
 
     .checkbox-list label input {
@@ -318,10 +317,9 @@
   <div class="info-categories">
     <% const vulnCategories=[ { label: 'Critical' , value: criticalVulns, class: 'critical' }, { label: 'High' , value:
       highVulns, class: 'high' }, { label: 'Moderate' , value: moderateVulns, class: 'moderate' }, { label: 'Low' ,
-      value: lowVulns, class: 'low' }, { label: 'Informative' , value: infoVulns, class: 'informative' }, {
-      label: 'Total' , value: vulnsFound, class: 'total' }, { label: 'Dependencies' , value: vulnerableDependencies,
-      class: 'total' } ]; %>
-      <% vulnCategories.forEach(category=> { %>
+      value: lowVulns, class: 'low' }, { label: 'Informative' , value: infoVulns, class: 'informative' } ]; %>
+      <% [...vulnCategories, { label: 'Total' , value: vulnsFound, class: 'total' }, { label: 'Dependencies' , value:
+        vulnerableDependencies, class: 'total' }].forEach(category=> { %>
         <% if (category.value> 0) { %>
           <div class="vulnerability-category">
             <p>
@@ -533,6 +531,15 @@
     }
 
     function showCheckboxDropdown(event, id) {
+      // Close all dropdowns first
+      const dropdowns = document.querySelectorAll('.checkbox-list');
+      dropdowns.forEach(dropdown => {
+        if (dropdown.id !== id) {
+          dropdown.style.display = 'none';
+        }
+      });
+
+      // Toggle the clicked dropdown
       const checkboxDropdown = document.getElementById(id);
       checkboxDropdown.style.display = checkboxDropdown.style.display === 'block' ? 'none' : 'block';
       event.stopPropagation(); // Prevent closing the dropdown when clicking the button
