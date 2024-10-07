@@ -10,27 +10,13 @@ const child_process = require("child_process");
 
 const OUTPUT_FILE_NAME = "audit-report.html";
 const OPTIONS = {
-	folder: undefined,
-	file: undefined,
+	path: undefined,
 	title: "NPM Audit Report",
-	template: join([__dirname, "template.ejs"]),
 	open: false,
 };
-const HELP_TEXT = `
-  Usage:
 
-    // Option 1
-    $ npm audit --json | audit-export
-
-    // Option 2
-    $ npm audit --json | audit-export <path> <file_name>
-
-    // Option 3
-    $ npm audit --json | audit-export --folder <folder_path> --file <file_name.html> --title <HTML_file_title>
-
-    // All parameters are optional
-		// Use --open to automatically open the report in the default browser
-`;
+const HELP_TEXT =
+	"\n  Usage:\n\n    // Option 1\n    $ npm audit --json | audit-export\n\n    // Option 2\n    $ npm audit --json | audit-export <path>\n\n    // Option 3\n    $ npm audit --json | audit-export --path <path> --title <title of the HTML report>\n\n    // <path> can be a folder path or a html file path,\n    // this way you can choose the location and the file name\n\n    // All parameters are optional\n    // Use --open to automatically open the report in the default browser\n";
 
 /**
  * Processes the input data and writes it to the specified file or folder.
@@ -38,7 +24,7 @@ const HELP_TEXT = `
  * @param {string} inputData - Data read from stdin.
  */
 function processInput(options, inputData) {
-	const finalPath = getFinalPath(options.folder, options.file);
+	const finalPath = getFinalPath(options.path);
 	writeIfFolderExists(options, finalPath, inputData);
 	if (options.open) {
 		openReport(finalPath);
@@ -47,14 +33,12 @@ function processInput(options, inputData) {
 
 /**
  * Constructs the final path based on the folder and file paths.
- * @param {string} folderPath - Path to the folder.
- * @param {string} filePath - Path to the file within the folder (optional).
+ * @param {string} path - Path to the folder and/or file.
  * @returns {string} - The final path to write the output.
  */
-function getFinalPath(folderPath, filePath) {
-	return filePath
-		? join([folderPath, filePath])
-		: join([folderPath, OUTPUT_FILE_NAME]);
+function getFinalPath(path) {
+	if (path.includes(".html")) return path;
+	return join([path, OUTPUT_FILE_NAME]);
 }
 
 /**
@@ -64,7 +48,8 @@ function getFinalPath(folderPath, filePath) {
  * @param {string} data - Data to be written to the file.
  */
 function writeIfFolderExists(options, finalPath, data) {
-	fs.access(options.folder, fs.constants.F_OK, (err) => {
+	const folderPath = finalPath.replace(/[\/\\][^\/\\]+\.html$/, ""); // Remove the file name part
+	fs.access(folderPath, fs.constants.F_OK, (err) => {
 		if (err) {
 			console.error("Error: The provided folder does not exist.");
 			process.exit(1);
@@ -99,7 +84,7 @@ function writeOutput(options, path, data) {
  * @returns {string} - HTML content generated from the template.
  */
 function generateHtmlTemplateContent(options, data) {
-	const TEMPLATE = fs.readFileSync(options.template, "utf-8");
+	const TEMPLATE = fs.readFileSync(join([__dirname, "template.ejs"]), "utf-8");
 
 	const vulnerabilities = getVulnerabilities(JSON.parse(data));
 
@@ -296,10 +281,8 @@ function processArgument() {
 	args.forEach((arg, index) => {
 		if (arg.startsWith("--")) {
 			processParameter(arg, args, index);
-		} else if (!OPTIONS.folder) {
-			OPTIONS.folder = arg;
-		} else if (!OPTIONS.file) {
-			OPTIONS.file = arg;
+		} else if (!OPTIONS.path) {
+			OPTIONS.path = arg;
 		}
 	});
 }
@@ -335,8 +318,7 @@ function processParameter(arg, args, index) {
 	}
 
 	switch (param) {
-		case "folder":
-		case "file":
+		case "path":
 		case "title":
 			handleParameter(param, value);
 			break;
@@ -379,8 +361,8 @@ if (process.argv.length > 2) {
 	processArgument();
 }
 
-if (!OPTIONS.folder) {
-	OPTIONS.folder = process.cwd();
+if (!OPTIONS.path) {
+	OPTIONS.path = process.cwd();
 }
 
 // Set encoding for stdin

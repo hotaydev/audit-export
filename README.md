@@ -37,6 +37,8 @@ npm install -g audit-export
 
 The tool is packed with a help function to see the usage ways. To see it, just pass the `--help` option.
 
+There are some breaking changes in the usage syntax between versions <=3 and >=4. [See the upgrading guide](#usage-syntax-breaking-changes).
+
 The simplest usage is as the following:
 
 ```
@@ -46,19 +48,23 @@ npm audit --json | audit-export
 But with more customizations you can use it in two different main ways:
 
 ```
-npm audit --json | audit-export --folder <folder_path> --file <file_name.html> --title <HTML_file_title>
+npm audit --json | audit-export --path <path> --title <HTML_file_title>
 ```
 
 or:
 
 ```
-npm audit --json | audit-export <path> <file_name>
+npm audit --json | audit-export <path>
 ```
 
 For all options you can pass the `--open` parameter to automatically open the report in the default browser.
+The `<path>` part can be just a folder, just a file, or a folder with file path. Can be relative or full. It will work using the defaults when needed.
 
 <sub><strong>All parameters are optional.</strong><br/>By default it will use <i>the current folder</i>, <i>"audit-report.html"</i> as file name, and <i>"NPM Audit Report"</i> as title.</sub>
 
+## Usage syntax breaking changes
+
+In versions **lower or equal than 3**, folder and file where separated parameters. **After version 4** both were merged into a single `--path` parameter, that can be the folder, the file, or both. Previously it was `--folder` and `--file`, now removed parameters.
 
 ## Contributing
 
