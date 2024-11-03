@@ -1,7 +1,7 @@
 # Npm Audit Export 🕵️‍♂️
 
 [![npm version](https://img.shields.io/npm/v/audit-export?style=flat-square)](https://www.npmjs.com/package/audit-export)
-[![npm downloads](https://img.shields.io/npm/dt/audit-export?style=flat-square)](https://www.npmjs.com/package/audit-export)
+[![npm downloads](https://img.shields.io/npm/dy/audit-export?style=flat-square)](https://www.npmjs.com/package/audit-export)
 
 A convenient tool to **export npm audit results** to a comprehensive **offline HTML page**, providing a clear overview of your project's vulnerabilities.
 
