@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [4.2.0](https://github.com/hotaydev/audit-export/compare/v4.1.0...v4.2.0) (2024-12-02)
+
+
+### Features
+
+* upgraded packages and added a severity filter on summary ([9c4c100](https://github.com/hotaydev/audit-export/commit/9c4c1009fe2446dfba1d72ed07ac5c2f9a1c2b80))
+
+
+### Bug Fixes
+
+* adapted tests for the new UI structure ([35ab279](https://github.com/hotaydev/audit-export/commit/35ab2792f5401fddb6f8f71bf5adb4883502cfe4))
+
+
+### Enhancements
+
+* changed README downloads badge ([4803740](https://github.com/hotaydev/audit-export/commit/4803740151426f0e699426af01318a834bd36ba1))
+* upgraded dependencies ([e2a184c](https://github.com/hotaydev/audit-export/commit/e2a184c967945536f431e3a07eb9ebc995b303d4))
+* upgraded dependencies ([74a831f](https://github.com/hotaydev/audit-export/commit/74a831fc9c90f04b3b4bab0591c9674155ac9339))
+* upgraded dev dependencies ([9d4e322](https://github.com/hotaydev/audit-export/commit/9d4e322654d4eed57d44fb7bfaba3316128d9f94))
+* upgraded some dependencies ([21329bd](https://github.com/hotaydev/audit-export/commit/21329bd16d4a5ee0f8d547e24c23bcb75c566b72))
+
 ## [4.1.0](https://github.com/hotaydev/audit-export/compare/v4.0.0...v4.1.0) (2024-10-07)
 
 
