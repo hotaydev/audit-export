@@ -19,7 +19,7 @@
   },
   "author": "Hotay <hi@hotay.dev>",
   "contributors": [
-    "TaylorHo <taylor@hotay.dev>",
+    "Taylor Hoffmann <taylor@hotay.dev>",
     "Camilo Bernal <https://github.com/CamiloBernal>",
     "VeekeeFr <https://github.com/VeekeeFr>",
     "Uchenna Chilaka <https://github.com/uchilaka>"
@@ -51,9 +51,9 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "@playwright/test": "^1.48.2",
+    "@playwright/test": "^1.49.0",
     "commit-and-tag-version": "^12.5.0",
-    "playwright": "^1.48.2"
+    "playwright": "^1.49.0"
   },
   "commit-and-tag-version": {
     "types": [

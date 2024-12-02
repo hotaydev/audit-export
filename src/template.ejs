@@ -68,6 +68,10 @@
       color: #fff;
     }
 
+    .pointer {
+      cursor: pointer;
+    }
+
     .critical {
       background-color: #dc3545;
     }
@@ -325,7 +329,8 @@
             <p>
               <%= category.label %>:
             </p>
-            <strong class="badge <%= category.class %>">
+            <strong class="badge <%= category.class %> pointer"
+              onclick="filterBySeverityOnResumeBadges('<%= category.label %>')">
               <%= category.value %>
             </strong>
           </div>
@@ -470,6 +475,21 @@
 
       sortDirection = -1;
       sortTable(2, document.querySelector('#sortable-table th:nth-child(3)'));
+    }
+
+    function filterBySeverityOnResumeBadges(severity) {
+      const severitiesCheckboxes = document.querySelectorAll('#checkboxDropdown-severity label');
+
+      severitiesCheckboxes.forEach(label => {
+        const checkbox = label.querySelector('input');
+        if (label.innerText.toLowerCase().trim() === severity.toLowerCase().trim()) {
+          checkbox.checked = true;
+        } else {
+          checkbox.checked = false;
+        }
+      });
+
+      filterTable();
     }
 
     // Function to filter the table based on search input
