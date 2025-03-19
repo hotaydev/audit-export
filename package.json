@@ -51,9 +51,9 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "@playwright/test": "^1.50.0",
+    "@playwright/test": "^1.51.1",
     "commit-and-tag-version": "^12.5.0",
-    "playwright": "^1.50.0"
+    "playwright": "^1.51.1"
   },
   "commit-and-tag-version": {
     "types": [
