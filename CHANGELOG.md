@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [4.3.1](https://github.com/hotaydev/audit-export/compare/v4.3.0...v4.3.1) (2025-03-23)
+
+
+### Bug Fixes
+
+* sarif file location ([4629738](https://github.com/hotaydev/audit-export/commit/46297381cf25cb09b447b26f56a4eaa10d1add32))
+
+
+### Enhancements
+
+* removed rounded borders of readme's image ([f400cf8](https://github.com/hotaydev/audit-export/commit/f400cf849deb548f82b1a1e0c5f58ad484d9453f))
+
 ## [4.3.0](https://github.com/hotaydev/audit-export/compare/v4.2.1...v4.3.0) (2025-03-23)
 
 
