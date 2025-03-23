@@ -107,6 +107,7 @@ function generateHtmlTemplateContent(options, data) {
 		},
 		vulnerabilities: vulnerabilities,
 		version: JSON.parse(packageJson).version ?? "Unknown",
+		packageLockLocation: join([process.cwd(), "package-lock.json"]),
 	};
 
 	return ejs.render(TEMPLATE, templateData);

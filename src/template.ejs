@@ -579,14 +579,29 @@
 
     function downloadAsSarif() {
       const resultsInSarifFormat = vulnerabilities.map(vuln => {
+        const ruleGHSA = vuln.link.includes("/GHSA-") ? `GHSA-${vuln.link.split("/GHSA-")[1]}` : null;
+        const ruleCVE = vuln.link.includes("/CVE-") ? `CVE-${vuln.link.split("/CVE-")[1]}` : null;
+        const rule = ruleGHSA || ruleCVE || vuln.link;
+
         return {
-          "ruleId": vuln.name,
+          "ruleId": rule,
           "level": vuln.tags.includes("Indirect") ? "warning" : "error",
           "message": {
-            "text": `(${vuln.severity}) ${vuln.name}`,
+            "text": `(${vuln.severity}) ${vuln.name} | ${rule}`,
+            "markdown": `(**${vuln.severity}**) ${vuln.name} | [${rule}](${vuln.link})`,
           },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///<%- packageLockLocation %>"
+                }
+              }
+            }
+          ],
           "properties": {
             "package": vuln.package,
+            "advisory": vuln.link,
             "cwes": vuln.cwes,
             "tags": vuln.tags,
           }
@@ -613,6 +628,13 @@
                 "informationUri": "https://github.com/hotaydev/audit-export"
               }
             },
+            "artifacts": [
+              {
+                "location": {
+                  "uri": "file:///<%- packageLockLocation %>"
+                }
+              }
+            ],
             "results": resultsInSarifFormat
           }
         ]
