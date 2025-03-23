@@ -85,8 +85,11 @@ function writeOutput(options, path, data) {
  */
 function generateHtmlTemplateContent(options, data) {
 	const TEMPLATE = fs.readFileSync(join([__dirname, "template.ejs"]), "utf-8");
-
 	const vulnerabilities = getVulnerabilities(JSON.parse(data));
+	const packageJson = fs.readFileSync(
+		join([__dirname, "..", "package.json"]),
+		"utf-8",
+	);
 
 	const templateData = {
 		npmReportTitle: options.title,
@@ -95,12 +98,15 @@ function generateHtmlTemplateContent(options, data) {
 			...new Set(vulnerabilities.map((vuln) => vuln.package)),
 		].length,
 		currentDate: getCurrentDate(),
-		criticalVulns: countVulnerabilities(vulnerabilities, "critical"),
-		highVulns: countVulnerabilities(vulnerabilities, "high"),
-		moderateVulns: countVulnerabilities(vulnerabilities, "moderate"),
-		lowVulns: countVulnerabilities(vulnerabilities, "low"),
-		infoVulns: countVulnerabilities(vulnerabilities, "info"),
+		totals: {
+			critical: countVulnerabilities(vulnerabilities, "critical"),
+			high: countVulnerabilities(vulnerabilities, "high"),
+			moderate: countVulnerabilities(vulnerabilities, "moderate"),
+			low: countVulnerabilities(vulnerabilities, "low"),
+			info: countVulnerabilities(vulnerabilities, "info"),
+		},
 		vulnerabilities: vulnerabilities,
+		version: JSON.parse(packageJson).version ?? "Unknown",
 	};
 
 	return ejs.render(TEMPLATE, templateData);

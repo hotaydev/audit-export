@@ -303,6 +303,7 @@
   <div class="dropdown-menu">
     <ul>
       <li onclick="downloadAsCSV()" style="border-bottom: 1px solid #e0e0e0;">Download as CSV</li>
+      <li onclick="downloadAsSarif()">Download as SARIF</li>
       <li onclick="downloadAsJSON()">Download as JSON</li>
     </ul>
   </div>
@@ -319,9 +320,10 @@
   </div>
 
   <div class="info-categories">
-    <% const vulnCategories=[ { label: 'Critical' , value: criticalVulns, class: 'critical' }, { label: 'High' , value:
-      highVulns, class: 'high' }, { label: 'Moderate' , value: moderateVulns, class: 'moderate' }, { label: 'Low' ,
-      value: lowVulns, class: 'low' }, { label: 'Informative' , value: infoVulns, class: 'informative' } ]; %>
+    <% const vulnCategories=[ { label: 'Critical' , value: totals.critical , class: 'critical' }, { label: 'High' ,
+      value: totals.high , class: 'high' }, { label: 'Moderate' , value: totals.moderate , class: 'moderate' }, {
+      label: 'Low' , value: totals.low , class: 'low' }, { label: 'Informative' , value: totals.info ,
+      class: 'informative' } ]; %>
       <% [...vulnCategories, { label: 'Total' , value: vulnsFound, class: 'total' }, { label: 'Dependencies' , value:
         vulnerableDependencies, class: 'total' }].forEach(category=> { %>
         <% if (category.value> 0) { %>
@@ -568,11 +570,55 @@
     function download() {
       downloadAsJSON();
       downloadAsCSV();
+      downloadAsSarif();
     }
 
     function downloadAsJSON() {
       _generateFileToDownload("vulnerabilities.json", "application/json", JSON.stringify(vulnerabilities));
     }
+
+    function downloadAsSarif() {
+      const resultsInSarifFormat = vulnerabilities.map(vuln => {
+        return {
+          "ruleId": vuln.name,
+          "level": vuln.tags.includes("Indirect") ? "warning" : "error",
+          "message": {
+            "text": `(${vuln.severity}) ${vuln.name}`,
+          },
+          "properties": {
+            "package": vuln.package,
+            "cwes": vuln.cwes,
+            "tags": vuln.tags,
+          }
+        }
+      });
+
+      _generateFileToDownload("vulnerabilities.sarif", "application/sarif+json", JSON.stringify({
+        "version": "2.1.0",
+        "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+        "runs": [
+          {
+            "tool": {
+              "driver": {
+                "name": "audit-export",
+                "organization": "Hotay",
+                "shortDescription": {
+                  "text": "A tool to export npm audit results to a fully offline HTML page."
+                },
+                "fullDescription": {
+                  "text": "A convenient tool to export npm audit results to a comprehensive offline HTML page, providing a clear overview of your project's vulnerabilities."
+                },
+                "version": "<%- version %>",
+                "downloadUri": "https://www.npmjs.com/package/audit-export",
+                "informationUri": "https://github.com/hotaydev/audit-export"
+              }
+            },
+            "results": resultsInSarifFormat
+          }
+        ]
+      }));
+    }
+
     function downloadAsCSV() {
       const csv = ["link,name,tags,package,severity,severity_number,cwes"];
 
