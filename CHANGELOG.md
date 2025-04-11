@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [4.4.0](https://github.com/hotaydev/audit-export/compare/v4.3.1...v4.4.0) (2025-04-11)
+
+
+### Features
+
+* added --version parameter ([8df55a0](https://github.com/hotaydev/audit-export/commit/8df55a07626e73130fbe89b65df1e972cc5f9496))
+
 ## [4.3.1](https://github.com/hotaydev/audit-export/compare/v4.3.0...v4.3.1) (2025-03-23)
 
 
