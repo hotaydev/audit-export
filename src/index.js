@@ -2,6 +2,7 @@
 
 const fs = require("fs-extra");
 const ejs = require("ejs");
+const packageJson = require("../package.json");
 
 // biome-ignore lint/style/useNodejsImportProtocol: The node: protocol doesn't work on NodeJS v10 and v12, so it's not added to make the compatibility possible.
 const os = require("os");
@@ -313,11 +314,16 @@ function processParameter(arg, args, index) {
 	} else if (
 		args[index + 1] &&
 		!args[index + 1].startsWith("--") &&
-		argumentName !== "help"
+		argumentName !== "help" &&
+		argumentName !== "version"
 	) {
 		param = argumentName;
 		value = args[index + 1];
-	} else if (argumentName !== "help" && argumentName !== "open") {
+	} else if (
+		argumentName !== "help" &&
+		argumentName !== "version" &&
+		argumentName !== "open"
+	) {
 		console.error(`Error: Missing value for parameter '${argumentName}'.`);
 		process.exit(1);
 	} else {
@@ -333,7 +339,10 @@ function processParameter(arg, args, index) {
 			OPTIONS.open = true;
 			break;
 		case "help":
-			showHelp();
+			showMessageAndExit(HELP_TEXT);
+			break;
+		case "version":
+			showMessageAndExit(`v${packageJson.version}`);
 			break;
 		default:
 			console.error(`Error: Unknown parameter '${param}'.`);
@@ -359,8 +368,8 @@ function handleParameter(param, value) {
 /**
  * Displays the help text and exits the script with a success status code.
  */
-function showHelp() {
-	console.log(HELP_TEXT);
+function showMessageAndExit(msg) {
+	console.log(msg);
 	process.exit(0);
 }
 
