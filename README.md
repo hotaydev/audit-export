@@ -12,71 +12,77 @@ A convenient tool to **export npm audit results** to a comprehensive **offline H
 
 > Inspired by [npm-audit-html](https://www.npmjs.com/package/npm-audit-html), but with more Node.js versions supported, offline support and lightweight ⚡
 
+## Table of Contents
+
+- [Main Features](#main-features)
+- [Compatibility](#compatibility)
+- [Supported Audit Tools](#supported-audit-tools)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [Download](#download)
+- [License](#license)
+
 ## Main Features
 
-- Lightweight & Efficient
-- Fully Offline Functionality
-- Advanced Filters, Search, and Ordering
-- Tags Filtering Supported
-- Supports projects since Node v10
-- Download results as CSV or JSON
+- **Lightweight & Efficient**
+- **Fully Offline Functionality**
+- **Advanced Filters, Search, and Ordering**
+- **Tags Filtering Supported**
+- **Supports projects since Node v10**
+- **Download results as CSV or JSON**
 
 ## Compatibility
 
-**This package is compatible with Node.js versions 10 through 22, as well as future versions.**
+**This package supports Node.js versions 10 through 22, as well as future versions.**
 
-The syntax remains consistent with the earlier version 1.0.0; however, it's advisable to always use the latest version, as it offers numerous new features and enhancements.
+## Supported Audit Tools
+
+This tool processes the JSON output from your audit tool. It works with:
+
+- `npm audit --json`
+- `pnpm audit --json`
+- `yarn audit --json`
 
 ## Installation
 
-Install globally using npm, pnpm or yarn:
+Install globally using your preferred package manager:
 
 ```bash
 npm install -g audit-export
-```
-
-```bash
 pnpm install -g audit-export
-```
-
-```bash
 yarn global add audit-export
 ```
 
 ## Usage
 
-The tool is packed with a help function to see the usage ways. To see it, just pass the `--help` option.
+Pipe the JSON output from your audit command into `audit-export`:
 
-There are some breaking changes in the usage syntax between versions <=3 and >=4. [See the upgrading guide](#usage-syntax-breaking-changes).
-
-The simplest usage is as the following:
-
-Note: All examples can change `npm audit --json` by the alternative tools `pnpm audit --json` or `yarn audit --json`.
-
-```
+```bash
 npm audit --json | audit-export
+pnpm audit --json | audit-export
+yarn audit --json | audit-export
 ```
 
-But with more customizations you can use it in two different main ways:
+Customize the output path and HTML title:
 
-```
-npm audit --json | audit-export --path <path> --title <HTML_file_title>
-```
-
-or:
-
-```
-npm audit --json | audit-export <path>
+```bash
+npm audit --json | audit-export --path <output_path> --title <report_title> [--open]
 ```
 
-For all options you can pass the `--open` parameter to automatically open the report in the default browser.
-The `<path>` part can be just a folder, just a file, or a folder with file path. Can be relative or full. It will work using the defaults when needed.
+- `--path`: output file or directory (default: `./audit-report.html`)
+- `--title`: HTML report title (default: `NPM Audit Report`)
+- `--open`: automatically open the report in your default browser
 
-<sub><strong>All parameters are optional.</strong><br/>By default it will use <i>the current folder</i>, <i>"audit-report.html"</i> as file name, and <i>"NPM Audit Report"</i> as title.</sub>
+For all options and advanced usage, run:
 
-## Usage syntax breaking changes
+```bash
+audit-export --help
+```
 
-In versions **lower or equal than 3**, folder and file where separated parameters. **After version 4** both were merged into a single `--path` parameter, that can be the folder, the file, or both. Previously it was `--folder` and `--file`, now removed parameters.
+## Usage Syntax Breaking Changes
+
+In versions **lower or equal than 3**, folder and file were separate parameters. **After version 4** both were merged into a single `--path` parameter, that can be the folder, the file, or both. Previously it was `--folder` and `--file`, now removed parameters.
 
 ## Contributing
 

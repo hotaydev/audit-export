@@ -17,7 +17,7 @@ const OPTIONS = {
 };
 
 const HELP_TEXT =
-	"\n  Usage:\n\n    // Option 1\n    $ npm audit --json | audit-export\n\n    // Option 2\n    $ npm audit --json | audit-export <path>\n\n    // Option 3\n    $ npm audit --json | audit-export --path <path> --title <title of the HTML report>\n\n    // <path> can be a folder path or a html file path,\n    // this way you can choose the location and the file name\n\n    // All parameters are optional\n    // Use --open to automatically open the report in the default browser\n";
+	'\n  Usage:\n\n    $ npm audit --json | audit-export [--path <output_path>] [--title <report_title>] [--open]\n\n    Supported package managers:\n    $ npm/pnpm/yarn audit --json | audit-export\n\n    Parameters:\n    --path    Output file or directory path (default: ./audit-report.html)\n    --title   HTML report title (default: NPM Audit Report)\n    --open    Automatically open the report in your default browser\n\n    Examples:\n    $ npm audit --json | audit-export\n    $ npm audit --json | audit-export --path ./reports/security.html\n    $ npm audit --json | audit-export --title "Project Security Report" --open\n';
 
 /**
  * Processes the input data and writes it to the specified file or folder.
