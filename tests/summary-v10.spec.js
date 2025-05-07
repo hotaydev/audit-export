@@ -2,7 +2,7 @@
 const { test, expect } = require("@playwright/test");
 
 test.beforeEach(async ({ page }) => {
-  await page.goto("npm-audit-v10.html");
+  await page.goto("npm-audit-node-v10.html");
 });
 
 test("has the expected title", async ({ page }) => {

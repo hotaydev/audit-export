@@ -13,12 +13,13 @@ A convenient tool to **export npm audit results** to a comprehensive **offline H
 > Inspired by [npm-audit-html](https://www.npmjs.com/package/npm-audit-html), but with more Node.js versions supported, offline support and lightweight ⚡
 
 ## Main Features
-* Lightweight & Efficient
-* Fully Offline Functionality
-* Advanced Filters, Search, and Ordering
-* Tags Filtering Supported
-* Supports projects since Node v10
-* Download results as CSV or JSON
+
+- Lightweight & Efficient
+- Fully Offline Functionality
+- Advanced Filters, Search, and Ordering
+- Tags Filtering Supported
+- Supports projects since Node v10
+- Download results as CSV or JSON
 
 ## Compatibility
 
@@ -28,10 +29,18 @@ The syntax remains consistent with the earlier version 1.0.0; however, it's advi
 
 ## Installation
 
-Install globally using npm:
+Install globally using npm, pnpm or yarn:
 
 ```bash
 npm install -g audit-export
+```
+
+```bash
+pnpm install -g audit-export
+```
+
+```bash
+yarn global add audit-export
 ```
 
 ## Usage
@@ -41,6 +50,8 @@ The tool is packed with a help function to see the usage ways. To see it, just p
 There are some breaking changes in the usage syntax between versions <=3 and >=4. [See the upgrading guide](#usage-syntax-breaking-changes).
 
 The simplest usage is as the following:
+
+Note: All examples can change `npm audit --json` by the alternative tools `pnpm audit --json` or `yarn audit --json`.
 
 ```
 npm audit --json | audit-export

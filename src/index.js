@@ -146,7 +146,15 @@ function getVulnerabilities(data) {
 		}
 	} else if (data.advisories) {
 		for (const vuln in data.advisories) {
-			allVulns.push(data.advisories[vuln]);
+			const vulnerability = data.advisories[vuln];
+			allVulns.push({
+				...vulnerability,
+				fixAvailable:
+					vulnerability.recommendation && vulnerability.patched_versions,
+				isDirect: vulnerability.findings.some((finding) =>
+					finding.paths.some((path) => (path.match(/>/g) || []).length === 1),
+				),
+			});
 		}
 	}
 
@@ -161,25 +169,29 @@ function getVulnerabilities(data) {
  * @returns {Object} - Processed vulnerability object.
  */
 function processVulnerability(vuln) {
+	const tags = [];
+	const cvesAndCwes = (vuln.cwe || [])
+		.concat(vuln.cves || [])
+		.filter((cwe) => cwe)
+		.join(", ");
+
+	if ("fixAvailable" in vuln) {
+		tags.push(vuln.fixAvailable ? "Fix Available" : "No Fix");
+	}
+
+	if ("isDirect" in vuln) {
+		tags.push(vuln.isDirect ? "Direct" : "Indirect");
+	}
+
 	if (vuln.title) {
 		return {
 			link: vuln.url,
 			name: vuln.title,
-			tags:
-				"isDirect" in vuln && "fixAvailable" in vuln
-					? [
-							// This `if` is used to avoid errors on node v10/v12, since these versions doesn't export these informations
-							vuln.isDirect ? "Direct" : "Indirect", // Direct or Indirect
-							vuln.fixAvailable === false ? "No Fix" : "Fix Available", // There's a fix available (we check if it's different than false because if there's a fix available the value will be an object, else it will be "false")
-						].filter((tag) => tag)
-					: [], // Ensure "null" items are removed
+			tags: tags,
 			package: vuln.name || vuln.module_name,
 			severity: vuln.severity,
 			severity_number: getNumberOfSeverity(vuln.severity),
-			cwes: (vuln.cwe || [])
-				.concat(vuln.cves)
-				.filter((cwe) => cwe)
-				.join(", "),
+			cwes: cvesAndCwes,
 		};
 	}
 }
