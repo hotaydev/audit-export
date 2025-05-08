@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [5.0.0](https://github.com/hotaydev/audit-export/compare/v4.4.0...v5.0.0) (2025-05-08)
+
+
+### ⚠ BREAKING CHANGES
+
+* yarn support + tests linting + deduplication of findings
+* support pnpm audit + removing duplicated tests + updated docs
+
+### Features
+
+* support pnpm audit + removing duplicated tests + updated docs ([f9da643](https://github.com/hotaydev/audit-export/commit/f9da643511aaec345f7219651615324b6e6c3d55))
+* yarn support + tests linting + deduplication of findings ([6ce65c1](https://github.com/hotaydev/audit-export/commit/6ce65c11efeb869d921de62b9669a1cfbeb587d1))
+
+
+### Documentation
+
+* improved usage description for new tools ([623da62](https://github.com/hotaydev/audit-export/commit/623da62e8a2d36eaae2af9ed59439ecbd85847e9))
+* readme tags and sponsor logo ([3fb16d2](https://github.com/hotaydev/audit-export/commit/3fb16d2df71908729361a804d3d16ecd19862bb3))
+
 ## [4.4.0](https://github.com/hotaydev/audit-export/compare/v4.3.1...v4.4.0) (2025-04-11)
 
 
