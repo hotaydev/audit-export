@@ -17,7 +17,7 @@ const OPTIONS = {
 };
 
 const HELP_TEXT =
-	"\n  Usage:\n\n    // Option 1\n    $ npm audit --json | audit-export\n\n    // Option 2\n    $ npm audit --json | audit-export <path>\n\n    // Option 3\n    $ npm audit --json | audit-export --path <path> --title <title of the HTML report>\n\n    // <path> can be a folder path or a html file path,\n    // this way you can choose the location and the file name\n\n    // All parameters are optional\n    // Use --open to automatically open the report in the default browser\n";
+	'\n  Usage:\n\n    $ npm audit --json | audit-export [--path <output_path>] [--title <report_title>] [--open]\n\n    Supported package managers:\n    $ npm/pnpm/yarn audit --json | audit-export\n\n    Parameters:\n    --path    Output file or directory path (default: ./audit-report.html)\n    --title   HTML report title (default: NPM Audit Report)\n    --open    Automatically open the report in your default browser\n\n    Examples:\n    $ npm audit --json | audit-export\n    $ npm audit --json | audit-export --path ./reports/security.html\n    $ npm audit --json | audit-export --title "Project Security Report" --open\n';
 
 /**
  * Processes the input data and writes it to the specified file or folder.
@@ -85,8 +85,26 @@ function writeOutput(options, path, data) {
  * @returns {string} - HTML content generated from the template.
  */
 function generateHtmlTemplateContent(options, data) {
+	// Handling yarn audit data - that is jsonl, not json
+	let tool;
+	let jsonData;
+	try {
+		jsonData = JSON.parse(data);
+		tool = data.advisories ? "pnpm" : "npm";
+	} catch (error) {
+		// Data couldn't be parsed as JSON, so it's a jsonl file
+		jsonData = JSON.parse(
+			`[${data
+				.split("\n")
+				.filter((line) => line.trim())
+				.join(",")}]`,
+		);
+
+		tool = "yarn";
+	}
+
 	const TEMPLATE = fs.readFileSync(join([__dirname, "template.ejs"]), "utf-8");
-	const vulnerabilities = getVulnerabilities(JSON.parse(data));
+	const vulnerabilities = getVulnerabilities(jsonData);
 	const packageJson = fs.readFileSync(
 		join([__dirname, "..", "package.json"]),
 		"utf-8",
@@ -109,6 +127,7 @@ function generateHtmlTemplateContent(options, data) {
 		vulnerabilities: vulnerabilities,
 		version: JSON.parse(packageJson).version ?? "Unknown",
 		packageLockLocation: join([process.cwd(), "package-lock.json"]),
+		tool: tool,
 	};
 
 	return ejs.render(TEMPLATE, templateData);
@@ -130,29 +149,95 @@ function countVulnerabilities(vulnerabilities, severity) {
  * @returns {Array} - Array of processed vulnerability objects.
  */
 function getVulnerabilities(data) {
+	let allVulns = [];
+
+	if (Array.isArray(data)) {
+		allVulns = getVulnerabilitiesFromYarnAudit(data);
+	} else if (data.vulnerabilities) {
+		allVulns = getVulnerabilitiesFromNpmAudit(data);
+	} else if (data.advisories) {
+		allVulns = getVulnerabilitiesFromPnpmAudit(data);
+	}
+
+	return deduplicateEntries(
+		allVulns.map((vuln) => processVulnerability(vuln)).filter((vuln) => vuln),
+	);
+}
+
+/**
+ * Extracts and processes vulnerability data from npm audit report.
+ *
+ * @param {Object} data - The npm audit report data.
+ * @returns {Array} - An array of processed vulnerability objects.
+ */
+function getVulnerabilitiesFromNpmAudit(data) {
 	const allVulns = [];
 
-	if (data.vulnerabilities) {
-		for (const pkg in data.vulnerabilities) {
-			for (const vulnerability of data.vulnerabilities[pkg].via) {
-				if (typeof vulnerability !== "string") {
-					allVulns.push({
-						...vulnerability,
-						isDirect: data.vulnerabilities[pkg].isDirect,
-						fixAvailable: data.vulnerabilities[pkg].fixAvailable,
-					});
-				}
+	for (const pkg in data.vulnerabilities) {
+		for (const vulnerability of data.vulnerabilities[pkg].via) {
+			if (typeof vulnerability !== "string") {
+				allVulns.push({
+					...vulnerability,
+					isDirect: data.vulnerabilities[pkg].isDirect,
+					fixAvailable: data.vulnerabilities[pkg].fixAvailable,
+				});
 			}
-		}
-	} else if (data.advisories) {
-		for (const vuln in data.advisories) {
-			allVulns.push(data.advisories[vuln]);
 		}
 	}
 
-	return allVulns
-		.map((vuln) => processVulnerability(vuln))
-		.filter((vuln) => vuln);
+	return allVulns;
+}
+
+/**
+ * Extracts and processes vulnerability data from pnpm audit report.
+ *
+ * @param {Object} data - The pnpm audit report data.
+ * @returns {Array} - An array of processed vulnerability objects.
+ */
+function getVulnerabilitiesFromPnpmAudit(data) {
+	const allVulns = [];
+
+	for (const vuln in data.advisories) {
+		const vulnerability = data.advisories[vuln];
+
+		allVulns.push({
+			...vulnerability,
+			fixAvailable:
+				vulnerability.recommendation && vulnerability.patched_versions,
+			isDirect: vulnerability.findings.some((finding) =>
+				finding.paths.some((path) => (path.match(/>/g) || []).length === 1),
+			),
+		});
+	}
+
+	return allVulns;
+}
+
+/**
+ * Extracts and processes vulnerability data from yarn audit report.
+ *
+ * @param {Array} data - The yarn audit report data.
+ * @returns {Array} - An array of processed vulnerability objects.
+ */
+function getVulnerabilitiesFromYarnAudit(data) {
+	const allVulns = [];
+
+	for (const arrayItem of data) {
+		if (arrayItem.type === "auditAdvisory") {
+			const vulnerability = arrayItem.data.advisory;
+
+			allVulns.push({
+				...vulnerability,
+				fixAvailable:
+					vulnerability.recommendation && vulnerability.patched_versions,
+				isDirect: vulnerability.findings.some((finding) =>
+					finding.paths.some((path) => (path.match(/>/g) || []).length === 1),
+				),
+			});
+		}
+	}
+
+	return allVulns;
 }
 
 /**
@@ -161,27 +246,63 @@ function getVulnerabilities(data) {
  * @returns {Object} - Processed vulnerability object.
  */
 function processVulnerability(vuln) {
+	const tags = [];
+	const cvesAndCwes = (vuln.cwe || [])
+		.concat(vuln.cves || [])
+		.filter((cwe) => cwe)
+		.join(", ");
+
+	if ("fixAvailable" in vuln) {
+		tags.push(vuln.fixAvailable ? "Fix Available" : "No Fix");
+	}
+
+	if ("isDirect" in vuln) {
+		tags.push(vuln.isDirect ? "Direct" : "Indirect");
+	}
+
 	if (vuln.title) {
 		return {
 			link: vuln.url,
 			name: vuln.title,
-			tags:
-				"isDirect" in vuln && "fixAvailable" in vuln
-					? [
-							// This `if` is used to avoid errors on node v10/v12, since these versions doesn't export these informations
-							vuln.isDirect ? "Direct" : "Indirect", // Direct or Indirect
-							vuln.fixAvailable === false ? "No Fix" : "Fix Available", // There's a fix available (we check if it's different than false because if there's a fix available the value will be an object, else it will be "false")
-						].filter((tag) => tag)
-					: [], // Ensure "null" items are removed
+			tags: tags,
 			package: vuln.name || vuln.module_name,
 			severity: vuln.severity,
 			severity_number: getNumberOfSeverity(vuln.severity),
-			cwes: (vuln.cwe || [])
-				.concat(vuln.cves)
-				.filter((cwe) => cwe)
-				.join(", "),
+			cwes: cvesAndCwes,
 		};
 	}
+}
+/**
+ * Removes duplicate entries from an array of objects based on their keys and values.
+ *
+ * @param {Array} array - The array of objects to deduplicate.
+ * @returns {Array} - A new array with duplicate entries removed.
+ */
+function deduplicateEntries(array) {
+	return array.filter((item, index, self) => {
+		return (
+			index ===
+			self.findIndex((other) => {
+				const keys1 = Object.keys(item);
+				const keys2 = Object.keys(other);
+				if (keys1.length !== keys2.length) return false;
+
+				return keys1.every((key) => {
+					const val1 = item[key];
+					const val2 = other[key];
+
+					// Compare arrays
+					if (Array.isArray(val1) && Array.isArray(val2)) {
+						return (
+							val1.length === val2.length && val1.every((v, i) => v === val2[i])
+						);
+					}
+
+					return val1 === val2;
+				});
+			})
+		);
+	});
 }
 
 /**

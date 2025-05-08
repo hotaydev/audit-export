@@ -55,10 +55,16 @@ jobs:
         if: matrix.browser == 'webkit'
 
       - name: Generate mock audit report for Node v10 ~ v14 (default options)
-        run: cat ${{ github.workspace }}/.playwright/fixtures/npm-audit-v10.json | node ./src/index.js --path ${{ github.workspace }}/npm-audit-v10.html --title playwright-test
+        run: cat ${{ github.workspace }}/.playwright/fixtures/npm-audit-node-v10.json | node ./src/index.js --path ${{ github.workspace }}/npm-audit-node-v10.html --title playwright-test
 
       - name: Generate mock audit report for Node v16 ~ lts (default options)
-        run: cat ${{ github.workspace }}/.playwright/fixtures/npm-audit-v16.json | node ./src/index.js --path ${{ github.workspace }}/npm-audit-v16.html --title playwright-test
+        run: cat ${{ github.workspace }}/.playwright/fixtures/npm-audit-node-v16.json | node ./src/index.js --path ${{ github.workspace }}/npm-audit-node-v16.html --title playwright-test
+
+      - name: Generate mock audit report for pnpm v10 (default options)
+        run: cat ${{ github.workspace }}/.playwright/fixtures/pnpm-audit-v10.json | node ./src/index.js --path ${{ github.workspace }}/pnpm-audit-v10.html --title playwright-test
+
+      - name: Generate mock audit report for yarn (default options)
+        run: cat ${{ github.workspace }}/.playwright/fixtures/yarn-audit.jsonl | node ./src/index.js --path ${{ github.workspace }}/yarn-audit.html --title playwright-test
 
       - name: Run Playwright tests for ${{ matrix.browser }}
         env:
