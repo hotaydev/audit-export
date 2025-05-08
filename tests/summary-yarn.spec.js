@@ -2,7 +2,7 @@
 const { test, expect } = require("@playwright/test");
 
 test.beforeEach(async ({ page }) => {
-	await page.goto("pnpm-audit-v10.html");
+	await page.goto("yarn-audit.html");
 });
 
 test("has the expected title", async ({ page }) => {
@@ -10,11 +10,11 @@ test("has the expected title", async ({ page }) => {
 });
 
 test("reports the total number of vulnerabilities", async ({ page }) => {
-	await expect(page.getByText("Total: 3")).toBeVisible();
+	await expect(page.getByText("Total: 1")).toBeVisible();
 });
 
 test("displays the number of vulnerable dependencies", async ({ page }) => {
-	await expect(page.getByText("Dependencies: 3")).toBeVisible();
+	await expect(page.getByText("Dependencies: 1")).toBeVisible();
 });
 
 test("displays the date when the report was last updated", async ({ page }) => {
@@ -32,12 +32,12 @@ test("displays the date when the report was last updated", async ({ page }) => {
 // });
 
 test("displays the number of moderate vulnerabilities", async ({ page }) => {
-	await expect(page.getByText("Moderate: 2")).toBeVisible();
+	await expect(page.getByText("Moderate: 1")).toBeVisible();
 });
 
-test("displays the number of low vulnerabilities", async ({ page }) => {
-	await expect(page.getByText("Low: 1")).toBeVisible();
-});
+// test("displays the number of low vulnerabilities", async ({ page }) => {
+//   await expect(page.getByText("Low: 1")).toBeVisible();
+// });
 
 // test("displays the number of informative vulnerabilities", async ({ page }) => {
 //   await expect(page.getByText("Informative: 0")).not.toBeVisible();

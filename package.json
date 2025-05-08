@@ -7,13 +7,14 @@
     "audit-export": "src/index.js"
   },
   "scripts": {
-    "format": "npx @biomejs/biome check --write ./src/",
+    "format": "npx @biomejs/biome check --write ./src/ ./tests/",
     "prepare": "git init && git config --local core.hooksPath .hooks/",
     "playwright:install": "npx playwright install",
     "test:prepare:nodev10": "cat .playwright/fixtures/npm-audit-node-v10.json | node ./src/index.js --path ./npm-audit-node-v10.html --title playwright-test",
     "test:prepare:nodev16": "cat .playwright/fixtures/npm-audit-node-v16.json | node ./src/index.js --path ./npm-audit-node-v16.html --title playwright-test",
     "test:prepare:pnpmv10": "cat .playwright/fixtures/pnpm-audit-v10.json | node ./src/index.js --path ./pnpm-audit-v10.html --title playwright-test",
-    "pretest": "npm run playwright:install && npm run test:prepare:nodev10 && npm run test:prepare:nodev16 && npm run test:prepare:pnpmv10",
+    "test:prepare:yarn": "cat .playwright/fixtures/yarn-audit.jsonl | node ./src/index.js --path ./yarn-audit.html --title playwright-test",
+    "pretest": "npm run playwright:install && npm run test:prepare:nodev10 && npm run test:prepare:nodev16 && npm run test:prepare:pnpmv10 && npm run test:prepare:yarn",
     "test": "playwright test",
     "release": "commit-and-tag-version",
     "pre-release": "commit-and-tag-version --prerelease beta"
