@@ -125,7 +125,7 @@ function generateHtmlTemplateContent(options, data) {
 			info: countVulnerabilities(vulnerabilities, "info"),
 		},
 		vulnerabilities: vulnerabilities,
-		version: JSON.parse(packageJson).version ?? "Unknown",
+		version: JSON.parse(packageJson).version || "Unknown",
 		packageLockLocation: join([process.cwd(), "package-lock.json"]),
 		tool: tool,
 	};

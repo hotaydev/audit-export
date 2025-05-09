@@ -17,12 +17,6 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - run: |
           npm install --ignore-scripts
-          npm i -g minify
-          mkdir new-src
-          cat src/template.ejs | minify --html > new-src/template.ejs
-          cat src/index.js | minify --js > new-src/index.js
-          rm -rf src
-          mv new-src src
       - run: npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
