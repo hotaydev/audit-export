@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [5.0.1](https://github.com/hotaydev/audit-export/compare/v5.0.0...v5.0.1) (2025-05-09)
+
+
+### Bug Fixes
+
+* remove minifying step because it was breaking the code ([66d9564](https://github.com/hotaydev/audit-export/commit/66d95649c1d8db30149ede902ac8f178d8e910fc))
+
 ## [5.0.0](https://github.com/hotaydev/audit-export/compare/v4.4.0...v5.0.0) (2025-05-08)
 
 
