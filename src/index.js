@@ -92,7 +92,7 @@ function generateHtmlTemplateContent(options, data) {
 		jsonData = JSON.parse(data);
 		tool = data.advisories
 			? "pnpm"
-			: Object.values(jsonData)[0][0]?.id
+			: (Object.values(jsonData)[0][0] || {}).id
 				? "bun"
 				: "npm";
 	} catch (error) {
@@ -161,7 +161,7 @@ function getVulnerabilities(data) {
 		allVulns = getVulnerabilitiesFromNpmAudit(data);
 	} else if (data.advisories) {
 		allVulns = getVulnerabilitiesFromPnpmAudit(data);
-	} else if (Object.values(data)[0][0]?.id) {
+	} else if ((Object.values(data)[0][0] || {}).id) {
 		allVulns = getVulnerabilitiesFromBunAudit(data);
 	}
 
