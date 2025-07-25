@@ -24,6 +24,18 @@ cat .playwright/fixtures/npm-audit-node-v10.json | node ./src/index.js <paramete
 cat .playwright/fixtures/pnpm-audit-v10.json | node ./src/index.js <parameters>
 ```
 
+4. To test with yarn audits:
+
+```bash
+cat .playwright/fixtures/yarn-audit.jsonl | node ./src/index.js <parameters>
+```
+
+5. To test with bun audits:
+
+```bash
+cat .playwright/fixtures/bun-audit.json | node ./src/index.js <parameters>
+```
+
 ## Node.js Version Compatibility
 
 The tool is designed to work with different versions of Node.js. Specifically:
@@ -31,7 +43,7 @@ The tool is designed to work with different versions of Node.js. Specifically:
 - For Node.js v10 to v14.
 - For Node.js v16 and higher.
 
-<sub>It also works with <code>npm</code>, <code>pnpm</code> and <code>yarn</code></sub><br/>
+<sub>It also works with <code>npm</code>, <code>pnpm</code>, <code>yarn</code> and <code>bun</code></sub><br/>
 <sub>Odd versions aren't listed, but also works.</sub>
 
 So make sure to test the tool in both version ranges and tools to ensure compatibility. 🔄
