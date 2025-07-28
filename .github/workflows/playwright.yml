@@ -66,6 +66,9 @@ jobs:
       - name: Generate mock audit report for yarn (default options)
         run: cat ${{ github.workspace }}/.playwright/fixtures/yarn-audit.jsonl | node ./src/index.js --path ${{ github.workspace }}/yarn-audit.html --title playwright-test
 
+      - name: Generate mock audit report for bun (default options)
+        run: cat ${{ github.workspace }}/.playwright/fixtures/bun-audit.json | node ./src/index.js --path ${{ github.workspace }}/bun-audit.html --title playwright-test
+
       - name: Run Playwright tests for ${{ matrix.browser }}
         env:
           WEB_BROWSER: ${{ matrix.browser }}
