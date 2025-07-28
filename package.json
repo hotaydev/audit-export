@@ -43,7 +43,7 @@
   "funding": "https://github.com/sponsors/hotaydev",
   "repository": {
     "type": "git",
-    "url": "https://github.com/hotaydev/audit-export.git"
+    "url": "git+https://github.com/hotaydev/audit-export.git"
   },
   "engines": {
     "node": ">=10"
