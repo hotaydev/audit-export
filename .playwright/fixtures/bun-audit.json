@@ -1,0 +1,80 @@
+{
+  "@eslint/plugin-kit": [
+    {
+      "id": 1106487,
+      "url": "https://github.com/advisories/GHSA-xffm-g5w8-qvg7",
+      "title": "@eslint/plugin-kit is vulnerable to Regular Expression Denial of Service attacks through ConfigCommentParser",
+      "severity": "high",
+      "vulnerable_versions": "<0.3.3",
+      "cwe": [
+        "CWE-1333"
+      ],
+      "cvss": {
+        "score": 0,
+        "vectorString": null
+      }
+    }
+  ],
+  "axios": [
+    {
+      "id": 1103618,
+      "url": "https://github.com/advisories/GHSA-jr5f-v2jv-69x6",
+      "title": "axios Requests Vulnerable To Possible SSRF and Credential Leakage via Absolute URL",
+      "severity": "high",
+      "vulnerable_versions": ">=1.0.0 <1.8.2",
+      "cwe": [
+        "CWE-918"
+      ],
+      "cvss": {
+        "score": 0,
+        "vectorString": null
+      }
+    }
+  ],
+  "brace-expansion": [
+    {
+      "id": 1105443,
+      "url": "https://github.com/advisories/GHSA-v6h2-p8h4-qcjw",
+      "title": "brace-expansion Regular Expression Denial of Service vulnerability",
+      "severity": "low",
+      "vulnerable_versions": ">=1.0.0 <=1.1.11",
+      "cwe": [
+        "CWE-400"
+      ],
+      "cvss": {
+        "score": 3.1,
+        "vectorString": "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:N/I:N/A:L"
+      }
+    },
+    {
+      "id": 1105444,
+      "url": "https://github.com/advisories/GHSA-v6h2-p8h4-qcjw",
+      "title": "brace-expansion Regular Expression Denial of Service vulnerability",
+      "severity": "low",
+      "vulnerable_versions": ">=2.0.0 <=2.0.1",
+      "cwe": [
+        "CWE-400"
+      ],
+      "cvss": {
+        "score": 3.1,
+        "vectorString": "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:N/I:N/A:L"
+      }
+    }
+  ],
+  "form-data": [
+    {
+      "id": 1106507,
+      "url": "https://github.com/advisories/GHSA-fjxv-7rqg-78g4",
+      "title": "form-data uses unsafe random function in form-data for choosing boundary",
+      "severity": "critical",
+      "vulnerable_versions": ">=4.0.0 <4.0.4",
+      "cwe": [
+        "CWE-330"
+      ],
+      "cvss": {
+        "score": 0,
+        "vectorString": null
+      }
+    }
+  ]
+}

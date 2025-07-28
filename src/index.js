@@ -90,7 +90,11 @@ function generateHtmlTemplateContent(options, data) {
 	let jsonData;
 	try {
 		jsonData = JSON.parse(data);
-		tool = data.advisories ? "pnpm" : "npm";
+		tool = data.advisories
+			? "pnpm"
+			: (Object.values(jsonData)[0][0] || {}).id
+				? "bun"
+				: "npm";
 	} catch (error) {
 		// Data couldn't be parsed as JSON, so it's a jsonl file
 		jsonData = JSON.parse(
@@ -157,11 +161,34 @@ function getVulnerabilities(data) {
 		allVulns = getVulnerabilitiesFromNpmAudit(data);
 	} else if (data.advisories) {
 		allVulns = getVulnerabilitiesFromPnpmAudit(data);
+	} else if ((Object.values(data)[0][0] || {}).id) {
+		allVulns = getVulnerabilitiesFromBunAudit(data);
 	}
 
 	return deduplicateEntries(
 		allVulns.map((vuln) => processVulnerability(vuln)).filter((vuln) => vuln),
 	);
+}
+
+/**
+ * Extracts and processes vulnerability data from bun audit report.
+ *
+ * @param {Object} data - The bun audit report data.
+ * @returns {Array} - An array of processed vulnerability objects.
+ */
+function getVulnerabilitiesFromBunAudit(data) {
+	const allVulns = [];
+
+	for (const [name, vulnerabilities] of Object.entries(data)) {
+		for (const vuln of vulnerabilities) {
+			allVulns.push({
+				...vuln,
+				name,
+			});
+		}
+	}
+
+	return allVulns;
 }
 
 /**

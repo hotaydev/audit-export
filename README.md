@@ -66,6 +66,7 @@ This tool processes the JSON output from your audit tool. It works with:
 - `npm audit --json`
 - `pnpm audit --json`
 - `yarn audit --json`
+- `bun audit --json`
 
 ## Installation
 
@@ -75,6 +76,7 @@ Install globally using your preferred package manager:
 npm install -g audit-export
 pnpm install -g audit-export
 yarn global add audit-export
+bun add -g audit-export
 ```
 
 ## Usage
@@ -85,6 +87,7 @@ Pipe the JSON output from your audit command into `audit-export`:
 npm audit --json | audit-export
 pnpm audit --json | audit-export
 yarn audit --json | audit-export
+bun audit --json | audit-export
 ```
 
 Customize the output path and HTML title:
