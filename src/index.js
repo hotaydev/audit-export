@@ -4,9 +4,9 @@ const fs = require("fs-extra");
 const ejs = require("ejs");
 const packageJson = require("../package.json");
 
-// biome-ignore lint/style/useNodejsImportProtocol: The node: protocol doesn't work on NodeJS v10 and v12, so it's not added to make the compatibility possible.
+// biome-ignore lint/style/useNodejsImportProtocol: The "node:" protocol doesn't work on NodeJS v10 and v12, so it's not added to make the compatibility possible.
 const os = require("os");
-// biome-ignore lint/style/useNodejsImportProtocol: The node: protocol doesn't work on NodeJS v10 and v12, so it's not added to make the compatibility possible.
+// biome-ignore lint/style/useNodejsImportProtocol: The "node:" protocol doesn't work on NodeJS v10 and v12, so it's not added to make the compatibility possible.
 const child_process = require("child_process");
 
 const OUTPUT_FILE_NAME = "audit-report.html";
@@ -49,7 +49,7 @@ function getFinalPath(path) {
  * @param {string} data - Data to be written to the file.
  */
 function writeIfFolderExists(options, finalPath, data) {
-	const folderPath = finalPath.replace(/[\/\\][^\/\\]+\.html$/, ""); // Remove the file name part
+	const folderPath = finalPath.replace(/[/\\][^/\\]+\.html$/, ""); // Remove the file name part
 	fs.access(folderPath, fs.constants.F_OK, (err) => {
 		if (err) {
 			console.error("Error: The provided folder does not exist.");
@@ -92,10 +92,11 @@ function generateHtmlTemplateContent(options, data) {
 		jsonData = JSON.parse(data);
 		tool = data.advisories
 			? "pnpm"
-			: (Object.values(jsonData)[0][0] || {}).id
+			: // biome-ignore lint/complexity/useOptionalChain: Old NodeJS versions don't support optional chaining
+				(Object.values(jsonData)[0][0] || {}).id
 				? "bun"
 				: "npm";
-	} catch (error) {
+	} catch (_error) {
 		// Data couldn't be parsed as JSON, so it's a jsonl file
 		jsonData = JSON.parse(
 			`[${data
@@ -161,6 +162,7 @@ function getVulnerabilities(data) {
 		allVulns = getVulnerabilitiesFromNpmAudit(data);
 	} else if (data.advisories) {
 		allVulns = getVulnerabilitiesFromPnpmAudit(data);
+		// biome-ignore lint/complexity/useOptionalChain: Old NodeJS versions don't support optional chaining
 	} else if ((Object.values(data)[0][0] || {}).id) {
 		allVulns = getVulnerabilitiesFromBunAudit(data);
 	}
