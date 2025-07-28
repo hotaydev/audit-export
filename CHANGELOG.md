@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [5.1.0](https://github.com/hotaydev/audit-export/compare/v5.0.1...v5.1.0) (2025-07-28)
+
+
+### Features
+
+* bun support ([b959643](https://github.com/hotaydev/audit-export/commit/b959643ba9d8f9ec91555fa0a55e1ab92f0338db))
+
+
+### Bug Fixes
+
+* add bun test to github workflows ([7ff4736](https://github.com/hotaydev/audit-export/commit/7ff4736fb899c1c24db272fea75eb2e4a44905a2))
+* replace optional chaining ([c53e1bd](https://github.com/hotaydev/audit-export/commit/c53e1bdaa4cc30f27af823d7a08b5282bec306ce))
+
+
+### Enhancements
+
+* upgraded Biome version + npm audit fix ([ba5dcc9](https://github.com/hotaydev/audit-export/commit/ba5dcc90ad9baea090d014b9bd19c3063840569a))
+
+
+### Documentation
+
+* update readme and contributing with bun ([8eb4d6e](https://github.com/hotaydev/audit-export/commit/8eb4d6e77227e69a182c97e54f547b3127400323))
+
 ## [5.0.1](https://github.com/hotaydev/audit-export/compare/v5.0.0...v5.0.1) (2025-05-09)
 
 
